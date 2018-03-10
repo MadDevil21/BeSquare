@@ -1,18 +1,16 @@
 package org.academiadecodigo.haltistas.besquare;
 
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.InputStreamReader;
-import java.io.PrintWriter;
+import java.io.*;
 import java.net.ServerSocket;
 import java.net.Socket;
 
 public class Server {
 
-    private Socket client1Socket;
-    private Socket client2Socket;
-    private boolean flag;
-    private final Integer lock = 0;
+    private final static int PORT_NUMBER = 8080;
+
+    private Socket playerOneSocket;
+    private Socket playerTwoSocket;
+    private boolean isConnected;
 
     public static void main(String[] args) {
 
@@ -21,52 +19,53 @@ public class Server {
 
     private void start() {
 
-        int portNumber = 20022;
-        System.out.println("Port bounded: " + portNumber);
+        int numConnections = 0;
+
+        System.out.println("Port bounded: " + PORT_NUMBER);
 
         try {
 
-            ServerSocket serverSocket = new ServerSocket(portNumber);
+            ServerSocket serverSocket = new ServerSocket(PORT_NUMBER);
 
-            while (true) {
+            while (numConnections < 2) {
 
-                System.out.println("Waiting for client connections!!");
+                System.out.println("Waiting for player connection!!");
                 Socket clientSocket = serverSocket.accept();
 
-                if (!flag) {
+                numConnections++;
 
-                    flag = true;
-                    client1Socket = clientSocket;
-                    System.out.println("Connected to client1: " + client1Socket);
+                if (!isConnected) {
+
+                    isConnected = true;
+
+                    playerOneSocket = clientSocket;
+                    System.out.println("Connected to client1: " + playerOneSocket);
+
                     continue;
                 }
 
-                client2Socket = clientSocket;
-                System.out.println("Connected to client2: " + client2Socket);
-
-                synchronized (lock) {
-
-                    System.out.println(Thread.currentThread().getName() + " have the lock");
-
-                    try {
-                        lock.wait();
-
-                    } catch (InterruptedException e) {
-                        e.printStackTrace();
-                    }
-
-                    talk();
-                }
+                playerTwoSocket = clientSocket;
+                System.out.println("Connected to client2: " + playerTwoSocket);
             }
+
+            talk(playerOneSocket, playerTwoSocket);
 
         } catch (IOException e) {
             e.printStackTrace();
         }
     }
 
-    private void talk() {
+    private void talk(Socket playerOne, Socket playerTwo) throws IOException {
 
+        BufferedReader in = new BufferedReader(new InputStreamReader(playerOne.getInputStream()));
+        PrintWriter out = new PrintWriter(playerOne.getOutputStream(), true);
 
+        String received = in.readLine();
+
+        System.out.println(received);
+        received = received.toUpperCase();
+        System.out.println(received);
+
+        out.println(received);
     }
-
 }
