@@ -28,8 +28,4 @@ public class Client implements Runnable {
             }
         }
     }
-
-    public Socket getSocket() {
-        return socket;
-    }
 }

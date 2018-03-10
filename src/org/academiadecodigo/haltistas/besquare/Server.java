@@ -49,7 +49,7 @@ public class Server {
             }
 
             while (true) {
-                
+
                 talk(playerOneSocket, playerTwoSocket);
             }
 
