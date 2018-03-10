@@ -1,11 +1,20 @@
 package org.academiadecodigo.haltistas.besquare;
 
+import java.io.IOException;
+import java.net.Socket;
+
 public class Client implements Runnable {
 
     private final Integer lock;
 
-    public Client(int lock) {
+    private Socket socket;
+    private String hostname = "localhost";
+    private int port = 8080;
+
+    public Client(int lock, Socket socket) throws IOException {
+
         this.lock = lock;
+        socket = new Socket(hostname, port);
     }
 
     @Override
@@ -18,5 +27,9 @@ public class Client implements Runnable {
             while (true) {
             }
         }
+    }
+
+    public Socket getSocket() {
+        return socket;
     }
 }
