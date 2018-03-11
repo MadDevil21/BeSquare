@@ -1,6 +1,9 @@
-package org.academiadecodigo.haltistas.besquare;
+package org.academiadecodigo.haltistas.besquare.client;
 
 public class Client implements Runnable {
+
+    private Controller controller;
+    private GraphicalGrid graphicalGrid;
 
     private final Integer lock;
 
