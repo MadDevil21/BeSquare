@@ -24,7 +24,7 @@ public class Server {
 
         int numConnections = 0;
 
-        System.out.println("Port bounded: " + PORT_NUMBER);
+        System.out.println("Port bound: " + PORT_NUMBER);
 
         try {
 
@@ -51,7 +51,10 @@ public class Server {
                 System.out.println("Connected to client2: " + playerTwoSocket);
             }
 
-            talk(playerOneSocket, playerTwoSocket);
+            while (true) {
+                
+                talk(playerOneSocket, playerTwoSocket);
+            }
 
         } catch (IOException e) {
             e.printStackTrace();
@@ -60,15 +63,24 @@ public class Server {
 
     private void talk(Socket playerOne, Socket playerTwo) throws IOException {
 
-        BufferedReader in = new BufferedReader(new InputStreamReader(playerOne.getInputStream()));
-        PrintWriter out = new PrintWriter(playerOne.getOutputStream(), true);
+        BufferedReader in1 = new BufferedReader(new InputStreamReader(playerOne.getInputStream()));
+        PrintWriter out1 = new PrintWriter(playerOne.getOutputStream(), true);
 
-        String received = in.readLine();
+        BufferedReader in2 = new BufferedReader(new InputStreamReader(playerTwo.getInputStream()));
+        PrintWriter out2 = new PrintWriter(playerTwo.getOutputStream(), true);
 
-        System.out.println(received);
-        received = received.toUpperCase();
-        System.out.println(received);
+        String received1 = in1.readLine();
 
-        out.println(received);
+        System.out.println("1: " + received1);
+        received1 = received1.toUpperCase();
+
+        out1.println(received1);
+
+        String received2 = in2.readLine();
+
+        System.out.println("2: " + received2);
+        received2 = received2.toUpperCase();
+
+        out2.println(received2);
     }
 }
