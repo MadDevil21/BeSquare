@@ -3,7 +3,7 @@ package org.academiadecodigo.haltistas.besquare;
 import java.io.*;
 import java.net.Socket;
 
-public class ServerThread extends Thread {
+public class ServerThread implements Runnable {
 
     // proprieties
     private Server server;
@@ -29,20 +29,22 @@ public class ServerThread extends Thread {
 
     public void run() {
 
-        System.out.println("Server Thread " + idPlayer + " running.");
+        try {
 
-        while (true) {
+            openStream();
+            System.out.println("Server Thread " + idPlayer + " running.");
 
-            try {
+            while (true) {
+
                 server.handle(idPlayer, streamIn.readLine());
-
-            } catch (IOException ex) {
-                ex.printStackTrace();
             }
+
+        } catch (IOException ex) {
+            ex.printStackTrace();
         }
     }
 
-    public void openStream() throws IOException {
+    private void openStream() throws IOException {
 
         streamIn = new BufferedReader(new InputStreamReader(socket.getInputStream()));
         streamOut = new PrintWriter(socket.getOutputStream(), true);
