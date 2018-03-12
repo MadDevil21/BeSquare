@@ -4,80 +4,77 @@ import java.io.*;
 import java.net.ServerSocket;
 import java.net.Socket;
 
-public class Server {
+public class Server implements Runnable {
 
-    private final static int PORT_NUMBER = 8080;
+    // constants and proprieties
+    private final static int PORT_NUMBER = 20021;
+    private final static int MAX_PLAYERS = 2;
 
-    private Socket playerOneSocket;
-    private Socket playerTwoSocket;
-    private boolean isConnected;
+    private ServerThread[] players = new ServerThread[MAX_PLAYERS];
+    private int num_players;
+    private Thread thread;
+    private ServerSocket server;
 
     public static void main(String[] args) {
 
         new Server().start();
     }
 
-    private void start() {
-
-        int numConnections = 0;
-
-        System.out.println("Port bound: " + PORT_NUMBER);
+    public void start() {
 
         try {
+            server = new ServerSocket(PORT_NUMBER);
+            System.out.println("Server started: " + server);
 
-            ServerSocket serverSocket = new ServerSocket(PORT_NUMBER);
+        } catch (IOException ex) {
+            ex.printStackTrace();
+        }
 
-            while (numConnections < 2) {
+        thread = new Thread(this);
+        thread.start();
+    }
 
-                System.out.println("Waiting for player connection!!");
-                Socket clientSocket = serverSocket.accept();
+    // method to broadcast information received from one player to both
+    public synchronized void handle(int idPlayer, String mapUpdate) {
 
-                numConnections++;
-
-                if (!isConnected) {
-
-                    isConnected = true;
-
-                    playerOneSocket = clientSocket;
-                    System.out.println("Connected to client1: " + playerOneSocket);
-
-                    continue;
-                }
-
-                playerTwoSocket = clientSocket;
-                System.out.println("Connected to client2: " + playerTwoSocket);
-            }
-
-            while (true) {
-
-                talk(playerOneSocket, playerTwoSocket);
-            }
-
-        } catch (IOException e) {
-            e.printStackTrace();
+        for (int i = 0; i < num_players; i++) {
+            players[i].send(idPlayer + ": " + mapUpdate);
         }
     }
 
-    private void talk(Socket playerOne, Socket playerTwo) throws IOException {
+    // method to accept the 2 players into the server
+    private void addPlayer(Socket socket) {
 
-        BufferedReader in1 = new BufferedReader(new InputStreamReader(playerOne.getInputStream()));
-        PrintWriter out1 = new PrintWriter(playerOne.getOutputStream(), true);
+        if (num_players < players.length) {
 
-        BufferedReader in2 = new BufferedReader(new InputStreamReader(playerTwo.getInputStream()));
-        PrintWriter out2 = new PrintWriter(playerTwo.getOutputStream(), true);
+            System.out.println("Player accepted: " + socket);
+            players[num_players] = new ServerThread(this, socket);
 
-        String received1 = in1.readLine();
+            try {
 
-        System.out.println("1: " + received1);
-        received1 = received1.toUpperCase();
+                players[num_players].openStream();
+                players[num_players].start();
+                num_players++;
 
-        out1.println(received1);
+            } catch (IOException ex) {
+                ex.printStackTrace();
+            }
+        }
+    }
 
-        String received2 = in2.readLine();
+    @Override
+    public void run() {
 
-        System.out.println("2: " + received2);
-        received2 = received2.toUpperCase();
+        while (thread != null) {
 
-        out2.println(received2);
+            try {
+
+                System.out.println("Waiting for players to connect..");
+                addPlayer(server.accept());
+
+            } catch (IOException ex) {
+                ex.printStackTrace();
+            }
+        }
     }
 }
