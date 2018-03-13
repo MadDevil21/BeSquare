@@ -1,6 +1,6 @@
 package org.academiadecodigo.haltistas.besquare.server;
 
-import org.academiadecodigo.haltistas.besquare.server.logic.LogicCenter;
+import org.academiadecodigo.haltistas.besquare.server.logic.Game;
 
 import java.io.*;
 import java.net.ServerSocket;
@@ -10,7 +10,7 @@ public class Server {
 
     private final static int PORT_NUMBER = 8080;
 
-    private LogicCenter logicCenter;
+    private Game game;
     private Socket playerOneSocket;
     private Socket playerTwoSocket;
     private boolean isConnected;
