@@ -14,19 +14,22 @@ public class Server {
     private final static int PORT_NUMBER = 20021;
     private final static int NUM_PLAYERS = 2;
 
+    private final List<PlayerHandler> players;
     private ExecutorService executor;
-    private List<ServerThread> players;
-    private ServerSocket server;
 
     public static void main(String[] args) {
 
         new Server().start();
     }
 
+    public Server() {
+        players = new ArrayList<>(NUM_PLAYERS);
+    }
+
     public void start() {
 
+        ServerSocket server;
         executor = Executors.newFixedThreadPool(NUM_PLAYERS);
-        players = new ArrayList<>(NUM_PLAYERS);
 
         try {
 
@@ -47,21 +50,27 @@ public class Server {
     }
 
     // method to broadcast information received from one player to both
-    public synchronized void handle(int idPlayer, String mapUpdate) {
+    public void handle(int idPlayer, String mapUpdate) {
 
-        for (ServerThread player : players) {
+        synchronized (players) {
 
-            player.send(idPlayer + ": " + mapUpdate);
+            for (PlayerHandler player : players) {
+
+                player.send(idPlayer + ": " + mapUpdate);
+            }
         }
     }
 
     // method to accept the 2 players into the server
     private void addPlayer(Socket socket) {
 
-        System.out.println("Player accepted: " + socket);
-        ServerThread player = new ServerThread(this, socket);
+        synchronized (players) {
 
-        players.add(player);
-        executor.submit(player);
+            System.out.println("Player accepted: " + socket);
+            PlayerHandler player = new PlayerHandler(this, socket);
+
+            players.add(player);
+            executor.submit(player);
+        }
     }
 }

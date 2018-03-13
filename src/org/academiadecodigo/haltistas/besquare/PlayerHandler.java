@@ -3,18 +3,18 @@ package org.academiadecodigo.haltistas.besquare;
 import java.io.*;
 import java.net.Socket;
 
-public class ServerThread implements Runnable {
+public class PlayerHandler implements Runnable {
 
     // proprieties
     private Server server;
     private Socket socket;
     private int idPlayer;
 
-    private BufferedReader streamIn;
-    private PrintWriter streamOut;
+    private BufferedReader fromPlayer;
+    private PrintWriter toPlayer;
 
     // constructor with server and player socket, socketPort to differ the 2 players
-    public ServerThread(Server server, Socket socket) {
+    public PlayerHandler(Server server, Socket socket) {
 
         this.server = server;
         this.socket = socket;
@@ -24,7 +24,7 @@ public class ServerThread implements Runnable {
 
     public void send(String mapUpdate) {
 
-        streamOut.println(mapUpdate);
+        toPlayer.println(mapUpdate);
     }
 
     public void run() {
@@ -36,7 +36,7 @@ public class ServerThread implements Runnable {
 
             while (true) {
 
-                server.handle(idPlayer, streamIn.readLine());
+                server.handle(idPlayer, fromPlayer.readLine());
             }
 
         } catch (IOException ex) {
@@ -46,8 +46,7 @@ public class ServerThread implements Runnable {
 
     private void openStream() throws IOException {
 
-        streamIn = new BufferedReader(new InputStreamReader(socket.getInputStream()));
-        streamOut = new PrintWriter(socket.getOutputStream(), true);
+        fromPlayer = new BufferedReader(new InputStreamReader(socket.getInputStream()));
+        toPlayer = new PrintWriter(socket.getOutputStream(), true);
     }
 }
-
