@@ -5,5 +5,5 @@ public interface Activates {
     void activate();
 
     boolean isActive();
-    
+
 }
