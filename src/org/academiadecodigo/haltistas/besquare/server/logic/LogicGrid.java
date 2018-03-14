@@ -38,23 +38,23 @@ public class LogicGrid {
 
                     case 'x':
 
-                        grid[col][row] = new Platform();
+                        grid[col][row] = new Platform(col, row);
                         break;
 
                     case '.':
 
-                        grid[col][row] = new Background();
+                        grid[col][row] = new Background(col, row);
                         break;
 
                     case 'e':
 
-                        grid[col][row] = new Exit();
+                        grid[col][row] = new Exit(col, row);
                         break;
 
                     case '1':
                     case '2':
 
-                        grid[col][row] = new Character();
+                        grid[col][row] = new Character(col, row);
                         break;
 
                     default:
