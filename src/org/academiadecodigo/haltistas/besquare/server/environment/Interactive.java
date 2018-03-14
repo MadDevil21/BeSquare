@@ -18,5 +18,5 @@ public class Interactive extends Platform implements Activates {
         return active;
 
     }
-    
+
 }

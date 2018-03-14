@@ -5,7 +5,7 @@ public abstract class Block {
     private int col;
     private int row;
 
-    public Block(int col, int row){
+    public Block(int col, int row) {
         this.col = col;
         this.row = row;
 
