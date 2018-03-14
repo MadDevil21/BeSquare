@@ -1,4 +1,4 @@
 package org.academiadecodigo.haltistas.besquare.server.logic;
 
-public class ControllerListener {
+public class InputHandler {
 }
