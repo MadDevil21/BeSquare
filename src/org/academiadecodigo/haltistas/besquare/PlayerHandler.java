@@ -36,7 +36,17 @@ public class PlayerHandler implements Runnable {
 
             while (true) {
 
-                server.handle(idPlayer, fromPlayer.readLine());
+                String message = fromPlayer.readLine();
+
+                // if one player lost connection spam null, block to prevent that
+                if (message == null) {
+
+                    System.out.println(idPlayer + " lost connection.");
+                    socket.close();
+                    break;
+                }
+
+                server.handle(idPlayer, message);
             }
 
         } catch (IOException ex) {
