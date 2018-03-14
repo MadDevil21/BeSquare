@@ -1,4 +1,6 @@
-package org.academiadecodigo.haltistas.besquare;
+package org.academiadecodigo.haltistas.besquare.server;
+
+import org.academiadecodigo.haltistas.besquare.Server;
 
 import java.io.*;
 import java.net.Socket;

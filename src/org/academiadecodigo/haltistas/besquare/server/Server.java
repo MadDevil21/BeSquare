@@ -1,5 +1,7 @@
 package org.academiadecodigo.haltistas.besquare;
 
+import org.academiadecodigo.haltistas.besquare.server.PlayerHandler;
+
 import java.io.*;
 import java.net.ServerSocket;
 import java.net.Socket;
