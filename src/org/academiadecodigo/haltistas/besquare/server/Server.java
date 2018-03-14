@@ -1,86 +1,78 @@
-package org.academiadecodigo.haltistas.besquare.server;
+package org.academiadecodigo.haltistas.besquare;
 
-import org.academiadecodigo.haltistas.besquare.server.logic.Game;
+import org.academiadecodigo.haltistas.besquare.server.PlayerHandler;
 
 import java.io.*;
 import java.net.ServerSocket;
 import java.net.Socket;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 
 public class Server {
 
-    private final static int PORT_NUMBER = 8080;
+    // constants and proprieties
+    private final static int PORT_NUMBER = 20021;
+    private final static int NUM_PLAYERS = 2;
 
-    private Game game;
-    private Socket playerOneSocket;
-    private Socket playerTwoSocket;
-    private boolean isConnected;
+    private final List<PlayerHandler> players;
+    private ExecutorService executor;
 
     public static void main(String[] args) {
 
         new Server().start();
     }
 
-    private void start() {
+    public Server() {
+        players = new ArrayList<>(NUM_PLAYERS);
+    }
 
-        int numConnections = 0;
+    public void start() {
 
-        System.out.println("Port bound: " + PORT_NUMBER);
+        ServerSocket server;
+        executor = Executors.newFixedThreadPool(NUM_PLAYERS);
 
         try {
 
-            ServerSocket serverSocket = new ServerSocket(PORT_NUMBER);
+            server = new ServerSocket(PORT_NUMBER);
+            System.out.println("Server started: " + server);
 
-            while (numConnections < 2) {
+            while (players.size() < NUM_PLAYERS) {
 
-                System.out.println("Waiting for player connection!!");
-                Socket clientSocket = serverSocket.accept();
-
-                numConnections++;
-
-                if (!isConnected) {
-
-                    isConnected = true;
-
-                    playerOneSocket = clientSocket;
-                    System.out.println("Connected to client1: " + playerOneSocket);
-
-                    continue;
-                }
-
-                playerTwoSocket = clientSocket;
-                System.out.println("Connected to client2: " + playerTwoSocket);
+                System.out.println("Waiting for players to connect..");
+                addPlayer(server.accept());
             }
 
-            while (true) {
-                
-                talk(playerOneSocket, playerTwoSocket);
-            }
+            executor.shutdown();
 
-        } catch (IOException e) {
-            e.printStackTrace();
+        } catch (IOException ex) {
+            ex.printStackTrace();
         }
     }
 
-    private void talk(Socket playerOne, Socket playerTwo) throws IOException {
+    // method to broadcast information received from one player to both
+    public void handle(int idPlayer, String mapUpdate) {
 
-        BufferedReader in1 = new BufferedReader(new InputStreamReader(playerOne.getInputStream()));
-        PrintWriter out1 = new PrintWriter(playerOne.getOutputStream(), true);
+        synchronized (players) {
 
-        BufferedReader in2 = new BufferedReader(new InputStreamReader(playerTwo.getInputStream()));
-        PrintWriter out2 = new PrintWriter(playerTwo.getOutputStream(), true);
+            for (PlayerHandler player : players) {
 
-        String received1 = in1.readLine();
+                player.send(idPlayer + ": " + mapUpdate);
+            }
+        }
+    }
 
-        System.out.println("1: " + received1);
-        received1 = received1.toUpperCase();
+    // method to accept the 2 players into the server
+    private void addPlayer(Socket socket) {
 
-        out1.println(received1);
+        synchronized (players) {
 
-        String received2 = in2.readLine();
+            System.out.println("Player accepted: " + socket);
+            PlayerHandler player = new PlayerHandler(this, socket);
 
-        System.out.println("2: " + received2);
-        received2 = received2.toUpperCase();
-
-        out2.println(received2);
+            players.add(player);
+            executor.submit(player);
+        }
     }
 }

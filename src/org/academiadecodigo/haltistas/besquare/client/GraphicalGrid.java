@@ -25,7 +25,7 @@ public class GraphicalGrid {
 
         GraphicalGrid grid = new GraphicalGrid();
         grid.createGrid();
-        grid.drawgrid();
+        grid.drawGrid();
     }
 
 
@@ -51,7 +51,7 @@ public class GraphicalGrid {
 
         try {
 
-            reader = new FileReader("assets/grid.txt");
+            reader = new FileReader("assets/test_grid.txt");
             BufferedReader bReader = new BufferedReader(reader);
 
             stringToReturn += bReader.readLine();
