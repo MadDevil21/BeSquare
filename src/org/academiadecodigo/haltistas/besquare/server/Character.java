@@ -4,4 +4,8 @@ import org.academiadecodigo.haltistas.besquare.server.environment.Block;
 import org.academiadecodigo.haltistas.besquare.server.environment.Collides;
 
 public class Character extends Block implements Collides {
+
+    public Character(int col, int row) {
+        super(col, row);
+    }
 }
