@@ -21,7 +21,7 @@ public class LogicGrid {
 
     private void load() throws IOException {
 
-        BufferedReader fromFile = new BufferedReader(new FileReader("resources/levels/level_1_tutorial.txt"));
+        BufferedReader fromFile = new BufferedReader(new FileReader(Levels.LEVEL_1.getFilePath()));
         String level = fromFile.readLine();
 
         int counter = -1;
