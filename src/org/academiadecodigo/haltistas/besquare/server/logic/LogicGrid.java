@@ -1,10 +1,7 @@
 package org.academiadecodigo.haltistas.besquare.server.logic;
 
 import org.academiadecodigo.haltistas.besquare.server.Character;
-import org.academiadecodigo.haltistas.besquare.server.environment.Background;
-import org.academiadecodigo.haltistas.besquare.server.environment.Block;
-import org.academiadecodigo.haltistas.besquare.server.environment.Exit;
-import org.academiadecodigo.haltistas.besquare.server.environment.Platform;
+import org.academiadecodigo.haltistas.besquare.server.environment.*;
 
 import java.io.BufferedReader;
 import java.io.FileReader;
@@ -38,23 +35,23 @@ public class LogicGrid {
 
                     case 'x':
 
-                        grid[col][row] = new Platform(col, row);
+                        grid[col][row] = BlockFactory.createBlock(BlockType.PLATFORM, col, row);
                         break;
 
                     case '.':
 
-                        grid[col][row] = new Background(col, row);
+                        grid[col][row] = BlockFactory.createBlock(BlockType.BACKGROUND, col, row);
                         break;
 
                     case 'e':
 
-                        grid[col][row] = new Exit(col, row);
+                        grid[col][row] = BlockFactory.createBlock(BlockType.EXIT, col, row);
                         break;
 
                     case '1':
                     case '2':
 
-                        grid[col][row] = new Character(col, row);
+                        grid[col][row] = BlockFactory.createBlock(BlockType.CHARACTER, col, row);
                         break;
 
                     default:
