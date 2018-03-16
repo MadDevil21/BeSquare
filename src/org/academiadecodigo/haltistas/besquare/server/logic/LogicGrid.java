@@ -49,9 +49,12 @@ public class LogicGrid {
                         break;
 
                     case '1':
+                        grid[col][row] = BlockFactory.createBlock(BlockType.CHARACTER_1, col, row);
+                        break;
+                        
                     case '2':
 
-                        grid[col][row] = BlockFactory.createBlock(BlockType.CHARACTER, col, row);
+                        grid[col][row] = BlockFactory.createBlock(BlockType.CHARACTER_2, col, row);
                         break;
 
                     default:

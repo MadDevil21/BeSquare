@@ -5,7 +5,11 @@ import org.academiadecodigo.haltistas.besquare.server.environment.Collides;
 
 public class Character extends Block implements Collides {
 
-    public Character(int col, int row) {
+    private int id;
+
+    public Character(int col, int row, int id) {
         super(col, row);
+        this.id = id;
+
     }
 }

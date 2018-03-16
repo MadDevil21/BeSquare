@@ -20,9 +20,13 @@ public class BlockFactory {
                 block = new Exit(col, row);
                 break;
 
-            case CHARACTER:
+            case CHARACTER_1:
 
-                block = new Character(col, row);
+                block = new Character(col, row, 1);
+                break;
+
+            case CHARACTER_2:
+                block = new Character(col, row, 2);
                 break;
 
             case BACKGROUND:
