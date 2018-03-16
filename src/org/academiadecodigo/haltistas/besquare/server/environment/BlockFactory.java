@@ -1,6 +1,6 @@
 package org.academiadecodigo.haltistas.besquare.server.environment;
 
-import org.academiadecodigo.haltistas.besquare.server.Character;
+import org.academiadecodigo.haltistas.besquare.server.PlayerCharacter;
 
 public class BlockFactory {
 
@@ -20,9 +20,13 @@ public class BlockFactory {
                 block = new Exit(col, row);
                 break;
 
-            case CHARACTER:
+            case CHARACTER_1:
 
-                block = new Character(col, row);
+                block = new PlayerCharacter(col, row, 1);
+                break;
+
+            case CHARACTER_2:
+                block = new PlayerCharacter(col, row, 2);
                 break;
 
             case BACKGROUND:
