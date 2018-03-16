@@ -1,5 +1,6 @@
 package org.academiadecodigo.haltistas.besquare.client;
 
+import org.academiadecodigo.haltistas.besquare.server.PlayerCharacter;
 import org.academiadecodigo.simplegraphics.graphics.Rectangle;
 
 import java.io.BufferedReader;
@@ -46,6 +47,36 @@ public class GraphicalGrid {
         }
         return stringToReturn;
     }
+
+    public void moveCharacter(PlayerCharacter playerCharacter, Action action) {
+
+        switch (action) {
+            case LEFT:
+                moveLeft(playerCharacter);
+                break;
+            case RIGHT:
+                moveRight(playerCharacter);
+                break;
+            case JUMP_LEFT:
+                // not implemented yet
+                break;
+            case JUMP_RIGHT:
+                // not implemented yet
+                break;
+        }
+
+    }
+
+    private void moveLeft(PlayerCharacter playerCharacter){
+
+        
+    }
+
+    private void moveRight(PlayerCharacter playerCharacter){
+
+
+    }
+
 }
 
 

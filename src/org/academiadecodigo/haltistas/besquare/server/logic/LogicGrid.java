@@ -1,6 +1,5 @@
 package org.academiadecodigo.haltistas.besquare.server.logic;
 
-import org.academiadecodigo.haltistas.besquare.server.Character;
 import org.academiadecodigo.haltistas.besquare.server.environment.*;
 
 import java.io.BufferedReader;
