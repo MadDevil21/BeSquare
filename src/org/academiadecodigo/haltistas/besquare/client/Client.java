@@ -1,7 +1,6 @@
 package org.academiadecodigo.haltistas.besquare.client;
 
 
-
 import java.io.*;
 import java.net.Socket;
 import java.util.NoSuchElementException;
@@ -12,49 +11,58 @@ public class Client {
 
     private Controller controller;
     private Socket socket;
-    private PrintWriter outStream;
+    private PrintWriter toServer;
+
 
     public Client(Socket socket) {
+
         controller = new Controller(this);
         this.socket = socket;
-        initOutStream();
+        startConnections();
     }
 
-    private void sendAction() {
 
-        new Thread(new Receiver()).start();
+    private void startConnections() {
 
         initOutStream();
+        Receiver receiver = new Receiver();
+        Thread fromServer = new Thread(receiver);
+        fromServer.start();
 
-        System.out.println("Connected to chat, start typing.");
+    }
 
-        while (!socket.isClosed()) {
 
-            String fromKeyboard = readString("");
+    private void sendAction(int action) {
 
-            outStream.println(fromKeyboard);
+        if (!socket.isClosed()) {
+            toServer.println(action);
         }
-
-
     }
+
 
     public void moveRight() {
-        sendAction(); // send 1
+        sendAction(1);           // temporary solution
+
     }
 
+
     public void moveLeft() {
-        sendAction(); // send -1
+        sendAction(-1);         // temporary solution
     }
+
 
     private void initOutStream() {
 
         try {
-            outStream = new PrintWriter(new OutputStreamWriter(socket.getOutputStream()), true);
+            toServer = new PrintWriter(new OutputStreamWriter(socket.getOutputStream()), true);
+
+
         } catch (IOException e) {
             e.printStackTrace();
             System.err.println("unable to create output stream");
         }
     }
+
 
     private void close(Closeable clientSocket) {
 
@@ -67,26 +75,6 @@ public class Client {
         }
     }
 
-    private String readString(String question) {
-        Scanner scanner = new Scanner(System.in);
-
-        String read = "";
-
-        try {
-            System.out.print(question);
-            read = scanner.nextLine();
-
-        } catch (NoSuchElementException e) {
-            System.out.println("no input given");
-            return readString(question);
-        }
-
-        if (read.equals("")) {
-            return "localhost";
-        }
-
-        return read;
-    }
 
 
     private class Receiver implements Runnable {
@@ -104,10 +92,11 @@ public class Client {
 
                 if (fromServer != null) {
 
-                    System.out.println(fromServer);
+                    System.out.println(fromServer);         // stopped developing here
                 }
             }
         }
+
 
         private String receive() {
 
@@ -121,8 +110,8 @@ public class Client {
             return null;
         }
 
-        private void initInStream() {
 
+        private void initInStream() {
             inStream = null;
 
             try {
