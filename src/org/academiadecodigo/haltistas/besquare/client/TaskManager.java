@@ -2,18 +2,14 @@ package org.academiadecodigo.haltistas.besquare.client;
 
 public class TaskManager {
 
-
-    private Client client;
     private GameField field;
-    private boolean loadedGameField;
 
-    public TaskManager(Client client, GameField gameField) {
-        this.client = client;
+
+    TaskManager(GameField gameField) {
         this.field = gameField;
-        this.loadedGameField = false;
     }
 
-    protected void interpret(String fromServer) { // esta merda mete nojo
+    protected void interpret(String fromServer) {
 
         String[] instructions = fromServer.split(" ");
 

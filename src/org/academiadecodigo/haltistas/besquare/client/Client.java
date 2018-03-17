@@ -18,7 +18,7 @@ public class Client {
         this.socket = socket;
 
         GameField  gameField = new GameField();
-        taskManager = new TaskManager(this, gameField);
+        taskManager = new TaskManager(gameField);
         controller = new Controller(this);
         startConnections();       // TODO: temporary solution
     }

@@ -5,58 +5,52 @@ import java.util.Map;
 
 public class GameField {
 
-    static int PADDING = 10;
+    static final int PADDING = 10;
     static final int CELL_SIZE = 30;
 
     private Picture background;
-    private Map<Integer, Picture> charMap;
+    private CharacterSprite p1Sprite;
+    private CharacterSprite p2Sprite;
 
 
-    public void moveCharacter(int playerID, Action action) {
-
-        switch (action) {
-            case LEFT:
-                moveLeft(playerID);
-                break;
-            case RIGHT:
-                moveRight(playerID);
-                break;
-            case JUMP_LEFT:
-                // not implemented yet
-                break;
-            case JUMP_RIGHT:
-                // not implemented yet
-                break;
-        }
-
+    GameField(){
+        p1Sprite = new CharacterSprite("path to picture 1");
+        p2Sprite = new CharacterSprite("path to picture 2");
     }
 
-    private void moveLeft(int playerNumber) {
 
-        charMap.get(playerNumber).translate( -CELL_SIZE, 0);
-    }
+    protected void moveCharacters(int player1X, int player1Y, int player2X, int player2Y){ // TODO: resolv temporary solution
 
-    private void moveRight(int playerNumber) {
+        int xTranslation = ((p1Sprite.getSprite().getX() - player1X) + GameField.PADDING);
+        int yTranslation = ((p1Sprite.getSprite().getY() - player1Y) + GameField.PADDING);
 
-        charMap.get(playerNumber).translate( CELL_SIZE, 0);
+        p1Sprite.getSprite().translate(xTranslation, yTranslation);
 
-    }
+        xTranslation = ((p2Sprite.getSprite().getX() - player2X) + GameField.PADDING);
+        yTranslation = ((p2Sprite.getSprite().getY() - player2Y) + GameField.PADDING);
 
-    protected void moveCharacters(int player1X, int player1Y, int player2X, int player2Y){
-
+        p2Sprite.getSprite().translate(xTranslation, yTranslation);
     }
 
     protected void loadBackground(String path){
 
+        background.delete();
         background = new Picture(PADDING, PADDING, path);
-
+        background.draw();
     }
 
 
-    protected void loadCharacters(int p1initialX, int p1initialY, int p2initialX, int p2initialY){
+    protected void loadCharacters(int player1X, int player1Y, int player2X, int player2Y){
 
-        charMap.put(1, new Picture(p1initialX, p1initialY, "path to picture 1"));
-        charMap.put(2, new Picture(p2initialX, p2initialY, "path to picture 2"));
+        p1Sprite.getSprite().delete();
+        p2Sprite.getSprite().delete();
+
+        p1Sprite.setPosition(player1X, player1Y);
+        p2Sprite.setPosition(player2X, player2Y);
+
+        p1Sprite.getSprite().draw();
+        p2Sprite.getSprite().draw();
+
     }
 }
 
