@@ -46,7 +46,7 @@ public class PlayerHandler implements Runnable {
                     break;
                 }
 
-                server.handle(idPlayer, message);
+                server.process(idPlayer, message);
             }
 
         } catch (IOException ex) {

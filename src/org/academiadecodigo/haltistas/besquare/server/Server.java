@@ -50,7 +50,7 @@ public class Server {
     }
 
     // method to broadcast information received from one player to both
-    public void handle(int idPlayer, String mapUpdate) {
+    public void broadcast(int idPlayer, String mapUpdate) {
 
         synchronized (players) {
 
@@ -59,6 +59,12 @@ public class Server {
                 player.send(idPlayer + ": " + mapUpdate);
             }
         }
+    }
+
+    public void process(int idPlayer, String fromClient){
+        String toClient = game.process(fromClient);
+        broadcast(idPlayer, toClient);
+
     }
 
     // method to accept the 2 players into the server
