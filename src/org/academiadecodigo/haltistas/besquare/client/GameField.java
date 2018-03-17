@@ -1,5 +1,6 @@
 package org.academiadecodigo.haltistas.besquare.client;
 
+import org.academiadecodigo.haltistas.besquare.FilePath;
 import org.academiadecodigo.simplegraphics.pictures.Picture;
 import java.util.Map;
 
@@ -14,8 +15,8 @@ public class GameField {
 
 
     GameField(){
-        p1Sprite = new CharacterSprite("path to picture 1");
-        p2Sprite = new CharacterSprite("path to picture 2");
+        p1Sprite = new CharacterSprite(FilePath.PLAYER1);
+        p2Sprite = new CharacterSprite(FilePath.PLAYER2);
     }
 
 
