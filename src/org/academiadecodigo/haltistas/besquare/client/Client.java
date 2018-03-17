@@ -12,13 +12,15 @@ public class Client {
     private Controller controller;
     private Socket socket;
     private PrintWriter toServer;
+    private GameField gameField;
 
 
     public Client(Socket socket) {
 
         controller = new Controller(this);
+        gameField = new GameField(); // 
         this.socket = socket;
-        startConnections();
+        startConnections();       // TODO: temporary solution
     }
 
 
@@ -41,13 +43,15 @@ public class Client {
 
 
     public void moveRight() {
-        sendAction(1);           // temporary solution
+        final int actionValue = 1;
+        sendAction(actionValue);           // TODO: temporary solution
 
     }
 
 
     public void moveLeft() {
-        sendAction(-1);         // temporary solution
+        final int actionValue = -1;
+        sendAction(actionValue);         // TODO: temporary solution
     }
 
 
@@ -92,7 +96,7 @@ public class Client {
 
                 if (fromServer != null) {
 
-                    System.out.println(fromServer);         // stopped developing here
+                     InputTranslator.translate(fromServer, gameField);
                 }
             }
         }
