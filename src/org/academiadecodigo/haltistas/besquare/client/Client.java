@@ -3,8 +3,6 @@ package org.academiadecodigo.haltistas.besquare.client;
 
 import java.io.*;
 import java.net.Socket;
-import java.util.NoSuchElementException;
-import java.util.Scanner;
 
 public class Client {
 
@@ -12,14 +10,16 @@ public class Client {
     private Controller controller;
     private Socket socket;
     private PrintWriter toServer;
-    private GameField gameField;
+    private TaskManager taskManager;
+
 
 
     public Client(Socket socket) {
-
-        controller = new Controller(this);
-        gameField = new GameField(); // 
         this.socket = socket;
+
+        GameField  gameField = new GameField();
+        taskManager = new TaskManager(this, gameField);
+        controller = new Controller(this);
         startConnections();       // TODO: temporary solution
     }
 
@@ -80,7 +80,6 @@ public class Client {
     }
 
 
-
     private class Receiver implements Runnable {
 
         private BufferedReader inStream;
@@ -96,7 +95,7 @@ public class Client {
 
                 if (fromServer != null) {
 
-                     InputTranslator.translate(fromServer, gameField);
+                    taskManager.interpret(fromServer);
                 }
             }
         }

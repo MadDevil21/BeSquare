@@ -12,17 +12,6 @@ public class GameField {
     private Map<Integer, Picture> charMap;
 
 
-    public GameField(int p1initialX, int p1initialY, int p2initialX, int p2initialY) {
-
-        //TODO: we need to create the pictures and replace the placeholders for the actual paths
-
-        background = new Picture(PADDING, PADDING, "path to background");
-
-        charMap.put(1, new Picture(p1initialX, p1initialY, "path to picture 1"));
-        charMap.put(2, new Picture(p2initialX, p2initialY, "path to picture 2"));
-
-    }
-
     public void moveCharacter(int playerID, Action action) {
 
         switch (action) {
@@ -49,9 +38,25 @@ public class GameField {
 
     private void moveRight(int playerNumber) {
 
-
         charMap.get(playerNumber).translate( CELL_SIZE, 0);
 
+    }
+
+    protected void moveCharacters(int player1X, int player1Y, int player2X, int player2Y){
+
+    }
+
+    protected void loadBackground(String path){
+
+        background = new Picture(PADDING, PADDING, path);
+
+    }
+
+
+    protected void loadCharacters(int p1initialX, int p1initialY, int p2initialX, int p2initialY){
+
+        charMap.put(1, new Picture(p1initialX, p1initialY, "path to picture 1"));
+        charMap.put(2, new Picture(p2initialX, p2initialY, "path to picture 2"));
     }
 }
 
