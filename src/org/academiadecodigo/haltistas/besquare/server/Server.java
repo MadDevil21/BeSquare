@@ -1,5 +1,7 @@
 package org.academiadecodigo.haltistas.besquare.server;
 
+import org.academiadecodigo.haltistas.besquare.server.logic.Game;
+
 import java.io.*;
 import java.net.ServerSocket;
 import java.net.Socket;
@@ -16,20 +18,27 @@ public class Server {
 
     private final List<PlayerHandler> players;
     private ExecutorService executor;
+    private Game game;
 
     public static void main(String[] args) {
 
-        new Server().start();
+        new Server().init();
+
     }
 
     public Server() {
         players = new ArrayList<>(NUM_PLAYERS);
     }
 
-    public void start() {
+    public void init() {
+        this.game = new Game();
+        executor = Executors.newFixedThreadPool(NUM_PLAYERS);
+        start();
+    }
+
+    private void start() {
 
         ServerSocket server;
-        executor = Executors.newFixedThreadPool(NUM_PLAYERS);
 
         try {
 
@@ -50,7 +59,8 @@ public class Server {
     }
 
     // method to broadcast information received from one player to both
-    public void broadcast(int idPlayer, String mapUpdate) {
+
+    protected void broadcast(int idPlayer, String mapUpdate) {
 
         synchronized (players) {
 
@@ -61,7 +71,7 @@ public class Server {
         }
     }
 
-    public void process(int idPlayer, String fromClient){
+    protected void process(int idPlayer, String fromClient) {
         String toClient = game.process(fromClient);
         broadcast(idPlayer, toClient);
 
