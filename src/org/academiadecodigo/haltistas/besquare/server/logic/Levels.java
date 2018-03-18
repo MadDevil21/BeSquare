@@ -4,15 +4,21 @@ import org.academiadecodigo.haltistas.besquare.FilePath;
 
 public enum Levels {
 
-    LEVEL_1(FilePath.LEVEL_1);
+    LEVEL_1(FilePath.LEVEL_1_PNG, FilePath.LEVEL_1_TXT);
 
-    private final String filePath;
+    private final String background;
+    private  final String matrix;
 
-    Levels(String filePath) {
-        this.filePath = filePath;
+    Levels(String background, String matrix) {
+        this.background = background;
+        this.matrix = matrix;
     }
 
-    public String getFilePath() {
-        return filePath;
+    public String getBackground() {
+        return background;
+    }
+
+    public String getMatrix() {
+        return matrix;
     }
 }

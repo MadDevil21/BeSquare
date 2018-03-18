@@ -10,6 +10,7 @@ public class LogicGrid {
 
     private static final int COLS = 50;
     private static final int ROWS = 25;
+    private Levels currentLevel;
 
     private Block[][] grid;
 
@@ -18,19 +19,22 @@ public class LogicGrid {
         grid = new Block[COLS][ROWS];
     }
 
-    private void load() throws IOException {
+    private void load(Levels currentLevel) throws IOException {
 
-        BufferedReader fromFile = new BufferedReader(new FileReader(Levels.LEVEL_1.getFilePath()));
-        String level = fromFile.readLine();
+        this.currentLevel = currentLevel;
+        BufferedReader fromFile = new BufferedReader(new FileReader(currentLevel.getMatrix()));
 
         int counter = -1;
 
         for (int row = 0; row < ROWS; row++) {
+
+            String levelRow = fromFile.readLine();
+
             for (int col = 0; col < COLS; col++) {
 
                 counter++;
 
-                switch (level.charAt(counter)) {
+                switch (levelRow.charAt(counter)) {
 
                     case 'x':
 
