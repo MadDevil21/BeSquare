@@ -22,7 +22,7 @@ public class Game {
 
     public String process(int playerId, String fromClient) {
 
-        inputHandler.interpret(playerId, fromClient);
+        inputHandler.interpret(fromClient);
 
         if (fromClient.equals("1")) {
             return "x x x x 30 0 30 0";
