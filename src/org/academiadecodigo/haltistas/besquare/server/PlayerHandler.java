@@ -36,6 +36,7 @@ public class PlayerHandler implements Runnable {
 
             while (true) {
 
+                System.out.println("received message");
                 String message = fromPlayer.readLine();
 
                 // if one player lost connection spam null, block to prevent that
@@ -46,7 +47,7 @@ public class PlayerHandler implements Runnable {
                     break;
                 }
 
-                server.process(idPlayer, message);
+                server.process(message);
             }
 
         } catch (IOException ex) {

@@ -20,6 +20,7 @@ public class Client {
         GameField  gameField = new GameField();
         taskManager = new TaskManager(gameField);
         controller = new Controller(this);
+        controller.init();
         startConnections();       // TODO: temporary solution
     }
 
@@ -92,11 +93,16 @@ public class Client {
             while (!socket.isClosed()) {
 
                 String fromServer = receive();
+                System.out.println("lá");
+                System.out.println(fromServer);
 
                 if (fromServer != null) {
 
                     taskManager.interpret(fromServer);
+                    return;
                 }
+
+                close(socket);
             }
         }
 
@@ -104,6 +110,7 @@ public class Client {
         private String receive() {
 
             try {
+                System.out.println("quase lá");
                 return inStream.readLine();
 
             } catch (IOException e) {

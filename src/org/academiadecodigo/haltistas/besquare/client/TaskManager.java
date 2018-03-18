@@ -19,12 +19,12 @@ public class TaskManager {
         int player2X = toInt(instructions[6]);
         int player2Y = toInt(instructions[7]);
 
-       if(!backgroundPath.equals("x")){
-           field.loadBackground(backgroundPath);
-           field.loadCharacters(player1X, player1Y, player2X, player2Y);
-       }
+        if (!backgroundPath.equals("x")) {
+            field.loadBackground(backgroundPath);
+            field.loadCharacters(player1X, player1Y, player2X, player2Y);
+        }
 
-      field.moveCharacters(player1X, player1Y, player2X, player2Y);
+        field.moveCharacters(player1X, player1Y, player2X, player2Y);
 
     }
 

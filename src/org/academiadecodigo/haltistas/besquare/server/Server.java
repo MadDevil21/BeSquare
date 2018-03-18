@@ -51,6 +51,7 @@ public class Server {
                 addPlayer(server.accept());
             }
 
+            broadcast("x backgrounds/backgroundMockup_Level1_30x30.png x x 200 100 600 300");
             executor.shutdown();
 
         } catch (IOException ex) {
@@ -60,20 +61,20 @@ public class Server {
 
     // method to broadcast information received from one player to both
 
-    protected void broadcast(int idPlayer, String mapUpdate) {
+    protected void broadcast(String toClient) {
 
         synchronized (players) {
 
             for (PlayerHandler player : players) {
 
-                player.send(idPlayer + ": " + mapUpdate);
+                player.send(toClient);
             }
         }
     }
 
-    protected void process(int idPlayer, String fromClient) {
+    protected void process(String fromClient) {
         String toClient = game.process(fromClient);
-        broadcast(idPlayer, toClient);
+        broadcast(toClient);
 
     }
 

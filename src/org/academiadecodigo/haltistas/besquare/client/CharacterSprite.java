@@ -15,6 +15,8 @@ public class CharacterSprite {
         this.xPosition = initialX;
         this.yPosition = initialY;
         this.sprite = new Picture(xPosition, yPosition, pictureSpritePath);
+        sprite.draw();
+        System.out.println("created sprite");
     }
 
     public void setPosition(int xPosition, int yPosition) {
@@ -23,6 +25,8 @@ public class CharacterSprite {
         int xTranslation = ((sprite.getX() - xPosition) + GameField.PADDING);
         int yTranslation = ((sprite.getY() - yPosition) + GameField.PADDING);
         sprite.translate(xTranslation, yTranslation);
+        sprite.draw();
+        System.out.println("set position for sprite");
     }
 
 

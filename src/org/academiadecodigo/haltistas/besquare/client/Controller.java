@@ -40,11 +40,13 @@ public class Controller implements KeyboardHandler {
 
         if(keyboardEvent.getKey() == KeyboardEvent.KEY_RIGHT){
             client.moveRight();
+            System.out.println("key pressed right");
             return;
         }
 
         if(keyboardEvent.getKey() == KeyboardEvent.KEY_LEFT){
             client.moveLeft();
+            System.out.println("key pressed left");
             return;
         }
     }
