@@ -20,6 +20,7 @@ public class PlayerHandler implements Runnable {
         this.socket = socket;
         this.playerId = playerId;
 
+        System.out.println("Initialized game handler: " + this);
     }
 
     public void send(String mapUpdate) {
@@ -47,7 +48,7 @@ public class PlayerHandler implements Runnable {
                     break;
                 }
 
-                server.process(message);
+                server.process(this.playerId, message);
             }
 
         } catch (IOException ex) {
@@ -60,4 +61,14 @@ public class PlayerHandler implements Runnable {
         fromPlayer = new BufferedReader(new InputStreamReader(socket.getInputStream()));
         toPlayer = new PrintWriter(socket.getOutputStream(), true);
     }
+
+    @Override
+    public String toString() {
+        return "PlayerHandler{" +
+                "server=" + server +
+                ", socket=" + socket +
+                ", playerId=" + playerId +
+                '}';
+    }
+
 }

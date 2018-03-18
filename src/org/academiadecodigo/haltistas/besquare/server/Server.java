@@ -24,46 +24,49 @@ public class Server {
 
     public static void main(String[] args) {
 
-        new Server().init();
+        try {
+            new Server().init();
+
+        } catch (IOException ex) {
+            System.err.println(ex.getMessage());
+
+        }
 
     }
 
     public Server() {
-        players = new HashMap<>();
+        this.players = new HashMap<>();
+        this.game = new Game();
+        this.executor = Executors.newFixedThreadPool(NUM_PLAYERS);
+
     }
 
-    public void init() {
-        this.game = new Game();
-        executor = Executors.newFixedThreadPool(NUM_PLAYERS);
+    public void init() throws IOException {
+        this.game.init();
         start();
     }
 
-    private void start() {
+    private void start() throws IOException {
         int connectedPlayers = 0;
         ServerSocket server;
 
-        try {
+        server = new ServerSocket(PORT_NUMBER);
+        System.out.println("Server started: " + server);
 
-            server = new ServerSocket(PORT_NUMBER);
-            System.out.println("Server started: " + server);
+        while (connectedPlayers < NUM_PLAYERS) {
 
-            while (connectedPlayers < NUM_PLAYERS) {
+            System.out.println("Waiting for players to connect..");
+            Socket clientSocket = server.accept();
 
-                System.out.println("Waiting for players to connect..");
-                Socket clientSocket = server.accept();
+            connectedPlayers++;
 
-                connectedPlayers++;
+            addPlayer(connectedPlayers, clientSocket);
 
-                addPlayer(connectedPlayers, clientSocket);
-
-            }
-
-            broadcast("x backgrounds/backgroundMockup_Level1_30x30.png x x 50 100 150 300");
-            executor.shutdown();
-
-        } catch (IOException ex) {
-            ex.printStackTrace();
         }
+
+        broadcast("x backgrounds/backgroundMockup_Level1_30x30.png x x 50 100 150 300");
+        executor.shutdown();
+
     }
 
     // method to broadcast information received from one player to both
@@ -81,8 +84,8 @@ public class Server {
         }
     }
 
-    protected void process(String fromClient) {
-        String toClient = game.process(fromClient);
+    protected void process(int playerId, String fromClient) {
+        String toClient = game.process(playerId, fromClient);
         broadcast(toClient);
 
     }
