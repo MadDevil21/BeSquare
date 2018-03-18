@@ -1,8 +1,10 @@
 package org.academiadecodigo.haltistas.besquare.server.logic;
 
+import org.academiadecodigo.haltistas.besquare.FilePath;
+
 public enum Levels {
 
-    LEVEL_1("resources/levels/level_1_tutorial.txt");
+    LEVEL_1(FilePath.LEVEL_1);
 
     private final String filePath;
 
