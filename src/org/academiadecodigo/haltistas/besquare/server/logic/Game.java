@@ -9,10 +9,16 @@ public class Game {
     private Levels level;
 
 
+    public String process(String fromClient) {
 
+        if (fromClient.equals("1")) {
+            return "x x x x 30 0 30 0";
+        }
 
-    public String process(String fromClient){
-        return  "x x x x 20 -100 30 -200";
+        if (fromClient.equals("-1")) {
+
+        }
+        return "x x x x -30 0 -30 0";
     }
 
 
