@@ -6,7 +6,9 @@ import java.io.*;
 import java.net.ServerSocket;
 import java.net.Socket;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
@@ -16,7 +18,7 @@ public class Server {
     private final static int PORT_NUMBER = 20021;
     private final static int NUM_PLAYERS = 2;
 
-    private final List<PlayerHandler> players;
+    private final Map<Integer, PlayerHandler> players;
     private ExecutorService executor;
     private Game game;
 
@@ -27,7 +29,7 @@ public class Server {
     }
 
     public Server() {
-        players = new ArrayList<>(NUM_PLAYERS);
+        players = new HashMap<>();
     }
 
     public void init() {
@@ -37,7 +39,7 @@ public class Server {
     }
 
     private void start() {
-
+        int connectedPlayers = 0;
         ServerSocket server;
 
         try {
@@ -45,10 +47,15 @@ public class Server {
             server = new ServerSocket(PORT_NUMBER);
             System.out.println("Server started: " + server);
 
-            while (players.size() < NUM_PLAYERS) {
+            while (connectedPlayers < NUM_PLAYERS) {
 
                 System.out.println("Waiting for players to connect..");
-                addPlayer(server.accept());
+                Socket clientSocket = server.accept();
+
+                connectedPlayers++;
+
+                addPlayer(connectedPlayers, clientSocket);
+
             }
 
             broadcast("x backgrounds/backgroundMockup_Level1_30x30.png x x 50 100 150 300");
@@ -65,10 +72,11 @@ public class Server {
 
         synchronized (players) {
 
-            for (PlayerHandler player : players) {
+            for (Integer playerId : players.keySet()) {
 
-                player.send(toClient);
+                players.get(playerId).send(toClient);
                 System.out.println("SERVER to client: " + toClient);
+
             }
         }
     }
@@ -80,15 +88,16 @@ public class Server {
     }
 
     // method to accept the 2 players into the server
-    private void addPlayer(Socket socket) {
+    private void addPlayer(int playerId, Socket socket) {
 
         synchronized (players) {
 
             System.out.println("Player accepted: " + socket);
-            PlayerHandler player = new PlayerHandler(this, socket);
+            PlayerHandler player = new PlayerHandler(this, socket, playerId);
 
-            players.add(player);
+            players.put(playerId, player);
             executor.submit(player);
+
         }
     }
 }
