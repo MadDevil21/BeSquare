@@ -8,18 +8,19 @@ public class PlayerHandler implements Runnable {
     // proprieties
     private Server server;
     private Socket socket;
-    private int idPlayer;
+    private int playerId;
 
     private BufferedReader fromPlayer;
     private PrintWriter toPlayer;
 
     // constructor with server and player socket, socketPort to differ the 2 players
-    public PlayerHandler(Server server, Socket socket) {
+    public PlayerHandler(Server server, Socket socket, int playerId) {
 
         this.server = server;
         this.socket = socket;
+        this.playerId = playerId;
 
-        idPlayer = socket.getPort();
+        System.out.println("Initialized game handler: " + this);
     }
 
     public void send(String mapUpdate) {
@@ -32,7 +33,7 @@ public class PlayerHandler implements Runnable {
         try {
 
             openStream();
-            System.out.println("Server Thread " + idPlayer + " running.");
+            System.out.println("Server Thread " + playerId + " running.");
 
             while (true) {
 
@@ -42,12 +43,12 @@ public class PlayerHandler implements Runnable {
                 // if one player lost connection spam null, block to prevent that
                 if (message == null) {
 
-                    System.out.println(idPlayer + " lost connection.");
+                    System.out.println(playerId + " lost connection.");
                     socket.close();
                     break;
                 }
 
-                server.process(message);
+                server.process(this.playerId, message);
             }
 
         } catch (IOException ex) {
@@ -60,4 +61,14 @@ public class PlayerHandler implements Runnable {
         fromPlayer = new BufferedReader(new InputStreamReader(socket.getInputStream()));
         toPlayer = new PrintWriter(socket.getOutputStream(), true);
     }
+
+    @Override
+    public String toString() {
+        return "PlayerHandler{" +
+                "server=" + server +
+                ", socket=" + socket +
+                ", playerId=" + playerId +
+                '}';
+    }
+
 }
