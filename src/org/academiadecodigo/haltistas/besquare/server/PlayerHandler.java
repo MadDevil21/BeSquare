@@ -36,8 +36,8 @@ public class PlayerHandler implements Runnable {
 
             while (true) {
 
-                System.out.println("received message");
                 String message = fromPlayer.readLine();
+                System.out.println("received message");
 
                 // if one player lost connection spam null, block to prevent that
                 if (message == null) {

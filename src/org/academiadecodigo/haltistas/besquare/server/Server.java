@@ -51,7 +51,7 @@ public class Server {
                 addPlayer(server.accept());
             }
 
-            broadcast("x backgrounds/backgroundMockup_Level1_30x30.png x x 200 100 600 300");
+            broadcast("x backgrounds/backgroundMockup_Level1_30x30.png x x 50 100 150 300");
             executor.shutdown();
 
         } catch (IOException ex) {
@@ -68,6 +68,7 @@ public class Server {
             for (PlayerHandler player : players) {
 
                 player.send(toClient);
+                System.out.println("SERVER to client: " + toClient);
             }
         }
     }

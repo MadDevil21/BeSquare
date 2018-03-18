@@ -13,11 +13,10 @@ public class Client {
     private TaskManager taskManager;
 
 
-
     public Client(Socket socket) {
         this.socket = socket;
 
-        GameField  gameField = new GameField();
+        GameField gameField = new GameField();
         taskManager = new TaskManager(gameField);
         controller = new Controller(this);
         controller.init();
@@ -93,13 +92,13 @@ public class Client {
             while (!socket.isClosed()) {
 
                 String fromServer = receive();
-                System.out.println("lá");
-                System.out.println(fromServer);
+
 
                 if (fromServer != null) {
 
                     taskManager.interpret(fromServer);
-                    return;
+                    System.out.println("from server: " + fromServer);
+                    continue;
                 }
 
                 close(socket);

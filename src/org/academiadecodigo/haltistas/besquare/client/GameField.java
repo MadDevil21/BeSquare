@@ -15,23 +15,11 @@ public class GameField {
     private CharacterSprite p2Sprite;
 
 
-    GameField() {
-        p1Sprite = new CharacterSprite(FilePath.PLAYER1);
-        p2Sprite = new CharacterSprite(FilePath.PLAYER2);
-    }
+    protected void moveCharacters(int player1X, int player1Y, int player2X, int player2Y) { // TODO: temporary solution
 
-
-    protected void moveCharacters(int player1X, int player1Y, int player2X, int player2Y) { // TODO: resolv temporary solution
-
-        int xTranslation = ((p1Sprite.getSprite().getX() - player1X) + GameField.PADDING);
-        int yTranslation = ((p1Sprite.getSprite().getY() - player1Y) + GameField.PADDING);
-
-        p1Sprite.getSprite().translate(xTranslation, yTranslation);
-
-        xTranslation = ((p2Sprite.getSprite().getX() - player2X) + GameField.PADDING);
-        yTranslation = ((p2Sprite.getSprite().getY() - player2Y) + GameField.PADDING);
-
-        p2Sprite.getSprite().translate(xTranslation, yTranslation);
+        p1Sprite.move(player1X, player1Y);
+        p2Sprite.move(player2X, player2Y);
+        System.out.println("moving characters");
     }
 
     protected void loadBackground(String path) {
@@ -47,8 +35,8 @@ public class GameField {
 
     protected void loadCharacters(int player1X, int player1Y, int player2X, int player2Y) {
 
-        p1Sprite.getSprite().delete();
-        p2Sprite.getSprite().delete();
+        p1Sprite = new CharacterSprite(FilePath.PLAYER1);
+        p2Sprite = new CharacterSprite(FilePath.PLAYER2);
 
         p1Sprite.setPosition(player1X, player1Y);
         p2Sprite.setPosition(player2X, player2Y);

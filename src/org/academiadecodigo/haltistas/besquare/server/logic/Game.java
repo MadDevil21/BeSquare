@@ -12,7 +12,7 @@ public class Game {
 
 
     public String process(String fromClient){
-        return  "x x x x 300 100 700 300";
+        return  "x x x x 20 -100 30 -200";
     }
 
 

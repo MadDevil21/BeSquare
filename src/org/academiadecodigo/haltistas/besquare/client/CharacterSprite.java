@@ -10,7 +10,7 @@ public class CharacterSprite {
     private Picture sprite;
 
     public CharacterSprite(String pictureSpritePath) {
-        int initialX = -100;
+        int initialX = 100;
         int initialY = 100;
         this.xPosition = initialX;
         this.yPosition = initialY;
@@ -22,13 +22,24 @@ public class CharacterSprite {
     public void setPosition(int xPosition, int yPosition) {
         this.xPosition = xPosition;
         this.yPosition = yPosition;
-        int xTranslation = ((sprite.getX() - xPosition) + GameField.PADDING);
-        int yTranslation = ((sprite.getY() - yPosition) + GameField.PADDING);
+        int xTranslation = ((xPosition - sprite.getX()) + GameField.PADDING);
+        int yTranslation = ((yPosition - sprite.getY()) + GameField.PADDING);
         sprite.translate(xTranslation, yTranslation);
         sprite.draw();
         System.out.println("set position for sprite");
     }
 
+
+
+    public void move(int finalX, int finalY){
+
+        int xTranslation = ((finalX - sprite.getX() ) + GameField.PADDING);
+        int yTranslation = ((finalY - sprite.getY() ) + GameField.PADDING);
+        sprite.translate(finalX,finalY);
+
+        System.out.println("MOOVED");
+
+    }
 
     public Picture getSprite() {
         return sprite;
