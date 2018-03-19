@@ -3,12 +3,15 @@ package org.academiadecodigo.haltistas.besquare.server;
 import org.academiadecodigo.haltistas.besquare.server.environment.Block;
 import org.academiadecodigo.haltistas.besquare.server.environment.Collides;
 
-public class PlayerCharacter extends Block implements Collides {
+public class PlayerCharacter {
 
     private final int id;
+    private int col;
+    private int row;
 
     public PlayerCharacter(int col, int row, int id) {
-        super(col, row);
+        this.col = col;
+        this.row = row;
         this.id = id;
 
     }
@@ -17,4 +20,11 @@ public class PlayerCharacter extends Block implements Collides {
         return id;
     }
 
+    public int getCol() {
+        return col;
+    }
+
+    public int getRow() {
+        return row;
+    }
 }
