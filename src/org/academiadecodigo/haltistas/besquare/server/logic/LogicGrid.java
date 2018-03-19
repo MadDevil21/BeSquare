@@ -56,18 +56,6 @@ public class LogicGrid {
                         grid[col][row] = BlockFactory.createBlock(BlockType.EXIT, col, row);
                         break;
 
-                    case '1':
-
-                        player1 = BlockFactory.createBlock(BlockType.CHARACTER_1, col, row);
-                        grid[col][row] = player1;
-                        break;
-
-                    case '2':
-
-                        player2 = BlockFactory.createBlock(BlockType.CHARACTER_2, col, row);
-                        grid[col][row] = player2;
-                        break;
-
                     default:
                         System.out.println("Error with sunglasses");
                 }
@@ -75,7 +63,7 @@ public class LogicGrid {
         }
     }
 
-    public int[] verifyAction(int playerId, Action selectedAction, CollisionDetector collisionDetector) {
+    public int[] verifyAction(int playerId, Action selectedAction) {
 
         Block movingPlayer;
 

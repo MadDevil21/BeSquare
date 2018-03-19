@@ -16,5 +16,6 @@ public class Background extends Block {
     @Override
     public void doCollide(PlayerCharacter player) {
         super.doCollide(player);
+        player.move(super.getCol(), super.getRow());// TODO: implement player move();
     }
 }

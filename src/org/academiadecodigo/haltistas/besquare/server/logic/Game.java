@@ -6,15 +6,11 @@ import org.academiadecodigo.haltistas.besquare.client.Action;
 public class Game {
 
     private LogicGrid grid;
-    private CollisionDetector collisionDetector;
-    private ActivationDetector activationDetector;
     private GameState gameState;
     private Levels level;
 
     public Game() {
         this.grid = new LogicGrid();
-        this.collisionDetector = new CollisionDetector();
-        this.activationDetector = new ActivationDetector();
     }
 
     public void init() {
@@ -26,7 +22,7 @@ public class Game {
 
         Action selectedAction = InputHandler.interpret(fromClient);
 
-        int[] positions = grid.verifyAction(playerId, selectedAction, collisionDetector);
+        int[] positions = grid.verifyAction(playerId, selectedAction);
 
         OutputHandler.buildPacket(gameState, level, positions);
 

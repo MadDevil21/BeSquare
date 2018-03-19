@@ -16,5 +16,6 @@ public class Platform extends Block {
     @Override
     public void doCollide(PlayerCharacter player) {
         super.doCollide(player);
+         // player.stop(); TODO : implement player.stop();
     }
 }
