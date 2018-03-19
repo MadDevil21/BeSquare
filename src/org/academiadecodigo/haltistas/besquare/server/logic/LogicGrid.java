@@ -1,5 +1,7 @@
 package org.academiadecodigo.haltistas.besquare.server.logic;
 
+import org.academiadecodigo.haltistas.besquare.client.Action;
+import org.academiadecodigo.haltistas.besquare.server.PlayerCharacter;
 import org.academiadecodigo.haltistas.besquare.server.environment.*;
 
 import java.io.BufferedReader;
@@ -8,8 +10,11 @@ import java.io.IOException;
 
 public class LogicGrid {
 
-    private static final int COLS = 50;
-    private static final int ROWS = 25;
+    private static final int COLS = 32;
+    private static final int ROWS = 20;
+
+    private Block player1;
+    private Block player2;
     private Levels currentLevel;
 
     private Block[][] grid;
@@ -19,7 +24,7 @@ public class LogicGrid {
         grid = new Block[COLS][ROWS];
     }
 
-    private void load(Levels currentLevel) throws IOException {
+    public void load(Levels currentLevel) throws IOException {
 
         this.currentLevel = currentLevel;
         BufferedReader fromFile = new BufferedReader(new FileReader(currentLevel.getMatrix()));
@@ -53,12 +58,14 @@ public class LogicGrid {
 
                     case '1':
 
-                        grid[col][row] = BlockFactory.createBlock(BlockType.CHARACTER_1, col, row);
+                        player1 = BlockFactory.createBlock(BlockType.CHARACTER_1, col, row);
+                        grid[col][row] = player1;
                         break;
 
                     case '2':
 
-                        grid[col][row] = BlockFactory.createBlock(BlockType.CHARACTER_2, col, row);
+                        player2 = BlockFactory.createBlock(BlockType.CHARACTER_2, col, row);
+                        grid[col][row] = player2;
                         break;
 
                     default:
@@ -66,5 +73,32 @@ public class LogicGrid {
                 }
             }
         }
+    }
+
+    public int[] verifyAction(int playerId, Action selectedAction, CollisionDetector collisionDetector) {
+
+        Block movingPlayer;
+
+        if (playerId == 1) {
+            movingPlayer = player1;
+        } else {
+            movingPlayer = player2;
+        }
+
+        int originPlayerCol = movingPlayer.getCol();
+        int originPlayerRow = movingPlayer.getRow();
+
+        int destinationCol = selectedAction.getColChange();
+        int destinationRow = selectedAction.getRowChange();
+
+        int transitionCol = originPlayerCol;
+        int transitionRow = originPlayerRow;
+
+        grid[originPlayerCol][originPlayerRow] = grid[destinationCol][destinationRow];
+        grid[transitionCol][transitionRow] = grid[originPlayerCol][originPlayerRow];
+
+
+
+        return null;
     }
 }

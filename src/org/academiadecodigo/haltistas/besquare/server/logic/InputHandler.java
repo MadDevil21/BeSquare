@@ -5,7 +5,7 @@ import org.academiadecodigo.haltistas.besquare.client.Action;
 public class InputHandler {
 
 
-    public Action interpret(String fromClient) {
+    public static Action interpret(String fromClient) {
 
         Action selectedAction = null;
 
