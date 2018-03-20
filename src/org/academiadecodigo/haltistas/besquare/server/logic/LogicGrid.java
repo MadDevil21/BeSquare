@@ -40,16 +40,8 @@ public class LogicGrid {
 
         System.out.println("verifing " + playerId + selectedAction.toString());
 
-        PlayerCharacter movingPlayer;
+        PlayerCharacter movingPlayer = checkPlayerNumber(playerId);
 
-        if (playerId == player1.getId()) {
-
-            movingPlayer = player1;
-
-        } else {
-
-            movingPlayer = player2;
-        }
 
         synchronized (this) {
 
@@ -71,7 +63,7 @@ public class LogicGrid {
             }
 
             // checks if PlayerCharacter is going to fall and if so sets it's positions
-            checkUnderlyingBlock(movingPlayer, destinationCol, destinationRow);
+            destinationBlock = checkFall(movingPlayer, (Block) destinationBlock);
 
             destinationBlock.doCollide(movingPlayer);
 
@@ -85,15 +77,30 @@ public class LogicGrid {
 
     }
 
-    private void checkUnderlyingBlock(PlayerCharacter movingPlayer, int destinationCol, int destinationRow) {
+    private PlayerCharacter checkPlayerNumber(int playerId) {
 
-        int underlyingBlockRow = destinationRow--;
-        Collidable underlyingblock = grid[destinationCol][underlyingBlockRow];
+        if (playerId == player1.getId()) {
 
-        if (!underlyingblock.isColliding(movingPlayer)) {
-            movingPlayer.setPosition(destinationCol, underlyingBlockRow);
-            checkUnderlyingBlock(movingPlayer, destinationCol, underlyingBlockRow);
+            return player1;
+        } else {
+
+            return player2;
         }
+    }
+
+    private Collidable checkFall(PlayerCharacter movingPlayer, Block destinationBlock) {
+
+        int underlyingBlockRow = destinationBlock.getRow() - 1;
+        System.out.println(underlyingBlockRow);
+        Collidable underlyingBlock = grid[destinationBlock.getCol()][underlyingBlockRow];
+        System.out.println("ff");
+
+        if (underlyingBlock.isColliding(movingPlayer)) {
+            movingPlayer.setPosition(destinationBlock.getCol(), underlyingBlockRow);
+            checkFall(movingPlayer, (Block) underlyingBlock);
+        }
+
+        return underlyingBlock;
     }
 
     public PlayerCharacter getPlayer1() {
@@ -106,7 +113,6 @@ public class LogicGrid {
 
     public boolean levelWon() {
         return win;
-        
     }
 
     public void setExit(Exit exit) {
