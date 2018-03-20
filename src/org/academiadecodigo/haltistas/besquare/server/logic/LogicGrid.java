@@ -10,12 +10,11 @@ import java.io.IOException;
 
 public class LogicGrid {
 
-    private static final int COLS = 32;
-    private static final int ROWS = 20;
+    public static final int COLS = 32;
+    public static final int ROWS = 20;
 
     private PlayerCharacter player1;
     private PlayerCharacter player2;
-    private Levels currentLevel;
 
     private Block[][] grid;
 
@@ -29,53 +28,9 @@ public class LogicGrid {
 
     public void load(Levels currentLevel) throws IOException {
 
-        this.currentLevel = currentLevel;
         BufferedReader fromFile = new BufferedReader(new FileReader(currentLevel.getMatrix()));
 
-        int counter = -1;
-
-        for (int row = 0; row < ROWS; row++) {
-
-            String levelRow = fromFile.readLine();
-
-            for (int col = 0; col < COLS; col++) {
-
-                counter++;
-
-                switch (levelRow.charAt(counter)) {
-
-                    case 'x':
-
-                        grid[col][row] = BlockFactory.createBlock(BlockType.PLATFORM, col, row);
-                        break;
-
-                    case '.':
-
-                        grid[col][row] = BlockFactory.createBlock(BlockType.BACKGROUND, col, row);
-                        break;
-
-                    case 'e':
-
-                        grid[col][row] = BlockFactory.createBlock(BlockType.EXIT, col, row);
-                        break;
-
-                    case '1':
-
-                        player1.setPosition(col, row);
-                        grid[col][row] = BlockFactory.createBlock(BlockType.BACKGROUND, col, row);
-                        break;
-
-                    case '2':
-
-                        player2.setPosition(col, row);
-                        grid[col][row] = BlockFactory.createBlock(BlockType.BACKGROUND, col, row);
-                        break;
-
-                    default:
-                        System.out.println("Error with sunglasses");
-                }
-            }
-        }
+        grid = LogicGridLoader.loadLevel(currentLevel, this);
     }
 
     public int[] verifyAction(int playerId, Action selectedAction) {
@@ -112,5 +67,13 @@ public class LogicGrid {
         int[] positions = {player1.getCol(), player1.getRow(), player2.getCol(), player2.getRow()};
 
         return positions;
+    }
+
+    public PlayerCharacter getPlayer1() {
+        return player1;
+    }
+
+    public PlayerCharacter getPlayer2() {
+        return player2;
     }
 }
