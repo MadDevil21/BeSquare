@@ -96,8 +96,8 @@ public class Client {
 
                 if (fromServer != null) {
 
-                    taskManager.interpret(fromServer);
                     System.out.println("from server: " + fromServer);
+                    taskManager.interpret(fromServer);
                     continue;
                 }
 

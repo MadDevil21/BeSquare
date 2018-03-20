@@ -15,7 +15,12 @@ public class GameField {
     private CharacterSprite p2Sprite;
 
 
-    protected void moveCharacters(int player1X, int player1Y, int player2X, int player2Y) { // TODO: temporary solution
+    protected void moveCharacters(int player1col, int player1row, int player2col, int player2row) { // TODO: temporary solution
+
+        int player1X = logicToCoord(player1col);
+        int player1Y = logicToCoord(player1row);
+        int player2X = logicToCoord(player2col);
+        int player2Y = logicToCoord(player2row);
 
         p1Sprite.move(player1X, player1Y);
         p2Sprite.move(player2X, player2Y);
@@ -33,10 +38,15 @@ public class GameField {
     }
 
 
-    protected void loadCharacters(int player1X, int player1Y, int player2X, int player2Y) {
+    protected void loadCharacters(int player1col, int player1row, int player2col, int player2row) {
 
         p1Sprite = new CharacterSprite(FilePath.PLAYER1);
         p2Sprite = new CharacterSprite(FilePath.PLAYER2);
+
+        int player1X = logicToCoord(player1col);
+        int player1Y = logicToCoord(player1row);
+        int player2X = logicToCoord(player2col);
+        int player2Y = logicToCoord(player2row);
 
         p1Sprite.setPosition(player1X, player1Y);
         p2Sprite.setPosition(player2X, player2Y);
@@ -45,6 +55,12 @@ public class GameField {
         p2Sprite.getSprite().draw();
 
         System.out.println("loaded characters");
+    }
+
+    private int logicToCoord(int number){
+
+        return number * CELL_SIZE;
+
     }
 }
 

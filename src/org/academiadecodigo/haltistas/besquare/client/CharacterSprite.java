@@ -4,19 +4,17 @@ import org.academiadecodigo.simplegraphics.pictures.Picture;
 
 public class CharacterSprite {
 
-    private int xPosition;
-    private int yPosition;
+    private int xPosition = 0;
+    private int yPosition = 0;
 
     private Picture sprite;
 
     public CharacterSprite(String pictureSpritePath) {
-        int initialX = -100;
-        int initialY = 100;
-        this.xPosition = initialX;
-        this.yPosition = initialY;
+
         this.sprite = new Picture(xPosition, yPosition, pictureSpritePath);
         sprite.draw();
         System.out.println("created sprite");
+
     }
 
     public void setPosition(int xPosition, int yPosition) {
@@ -31,10 +29,19 @@ public class CharacterSprite {
 
 
     public void move(int finalX, int finalY) {
-        int xTranslate = this.xPosition - finalX;
-        int yTranslate = this.yPosition - finalY;
+
+        int xTranslate = finalX - this.xPosition;
+        int yTranslate = finalY - this.yPosition;
+
+        System.out.println(this + " moving from " + this.xPosition + " to " + finalX);
+        System.out.println(xTranslate + yTranslate);
 
         sprite.translate(xTranslate, yTranslate);
+
+        this.xPosition += xTranslate;
+        this.yPosition += yTranslate;
+
+        System.out.println("New position " + this.getSprite().getX() + " " + this.getSprite().getY());
 
     }
 

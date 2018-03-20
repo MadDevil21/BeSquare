@@ -15,6 +15,7 @@ public class OutputHandler {
      */
 
     public static String buildPacket(GameState gs, Levels level, int[] playerCoordinates){
+
         StringBuilder sb = new StringBuilder();
 
         // TODO Gamestate: each gamestate will need to have a standard char or number which needs to be recognized
@@ -27,9 +28,12 @@ public class OutputHandler {
 
         for (int i = 0; i < playerCoordinates.length; i++) {
             sb.append(playerCoordinates[i]);
+
+            // check for the last number so an extra space is not sent at the end
             if (!( i == playerCoordinates.length - 1 )) {
                 sb.append(' ');
             }
+
         }
 
         return sb.toString();
