@@ -63,10 +63,14 @@ public class LogicGrid {
             Collidable destinationBlock = grid[destinationCol][destinationRow];
 
 
-            if (!destinationBlock.isColliding(movingPlayer, selectedAction)) {
+            // check if destination block is collidable and if it is sets PlayerCharacter's positions accordingly
+            if (!destinationBlock.isColliding(movingPlayer)) {
 
                 movingPlayer.setPosition(destinationCol, destinationRow);
             }
+
+            // checks if PlayerCharacter is going to fall and if so sets it's positions
+            checkUnderlyingBlock(movingPlayer, destinationCol, destinationRow);
 
             destinationBlock.doCollide(movingPlayer);
 
@@ -77,6 +81,17 @@ public class LogicGrid {
             return new int[]{player1.getCol(), player1.getRow(), player2.getCol(), player2.getRow()};
         }
 
+    }
+
+    private void checkUnderlyingBlock(PlayerCharacter movingPlayer, int destinationCol, int destinationRow) {
+
+        int underlyingBlockRow = destinationRow--;
+        Collidable underlyingblock = grid[destinationCol][underlyingBlockRow];
+
+        if (!underlyingblock.isColliding(movingPlayer)) {
+            movingPlayer.setPosition(destinationCol, underlyingBlockRow);
+            checkUnderlyingBlock(movingPlayer, destinationCol, underlyingBlockRow);
+        }
     }
 
     public PlayerCharacter getPlayer1() {
