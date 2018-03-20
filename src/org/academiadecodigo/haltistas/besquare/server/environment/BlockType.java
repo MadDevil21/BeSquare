@@ -4,8 +4,6 @@ public enum BlockType {
 
     PLATFORM,
     EXIT,
-    CHARACTER_1,
-    CHARACTER_2,
     BACKGROUND,
     KILLER,
     TOKEN,

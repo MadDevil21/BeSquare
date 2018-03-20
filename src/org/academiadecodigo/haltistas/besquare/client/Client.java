@@ -34,7 +34,7 @@ public class Client {
     }
 
 
-    private void sendAction(int action) {
+    private void sendAction(String action) {
 
         if (!socket.isClosed()) {
             toServer.println(action);
@@ -43,14 +43,14 @@ public class Client {
 
 
     public void moveRight() {
-        final int actionValue = 1;
+        String actionValue = "M R";
         sendAction(actionValue);           // TODO: temporary solution
 
     }
 
 
     public void moveLeft() {
-        final int actionValue = -1;
+        String actionValue = "M L";
         sendAction(actionValue);         // TODO: temporary solution
     }
 

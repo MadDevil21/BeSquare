@@ -13,8 +13,8 @@ public class LogicGrid {
     private static final int COLS = 32;
     private static final int ROWS = 20;
 
-    private Block player1;
-    private Block player2;
+    private PlayerCharacter player1;
+    private PlayerCharacter player2;
     private Levels currentLevel;
 
     private Block[][] grid;
@@ -22,6 +22,9 @@ public class LogicGrid {
     public LogicGrid() {
 
         grid = new Block[COLS][ROWS];
+        player1 = new PlayerCharacter(COLS, ROWS, 1);
+        player2 = new PlayerCharacter(COLS, ROWS, 2);
+
     }
 
     public void load(Levels currentLevel) throws IOException {
@@ -56,6 +59,18 @@ public class LogicGrid {
                         grid[col][row] = BlockFactory.createBlock(BlockType.EXIT, col, row);
                         break;
 
+                    case '1':
+
+                        player1.setPosition(col, row);
+                        grid[col][row] = BlockFactory.createBlock(BlockType.BACKGROUND, col, row);
+                        break;
+
+                    case '2':
+
+                        player2.setPosition(col, row);
+                        grid[col][row] = BlockFactory.createBlock(BlockType.BACKGROUND, col, row);
+                        break;
+
                     default:
                         System.out.println("Error with sunglasses");
                 }
@@ -65,28 +80,37 @@ public class LogicGrid {
 
     public int[] verifyAction(int playerId, Action selectedAction) {
 
-        Block movingPlayer;
+        System.out.println("verifing " + playerId + selectedAction.toString());
 
-        if (playerId == 1) {
+        PlayerCharacter movingPlayer;
+
+        if (playerId == player1.getId()) {
+
             movingPlayer = player1;
+
         } else {
+
             movingPlayer = player2;
         }
 
-        int originPlayerCol = movingPlayer.getCol();
-        int originPlayerRow = movingPlayer.getRow();
+        int destinationCol = movingPlayer.getCol() + selectedAction.getColChange();
+        int destinationRow = movingPlayer.getRow() + selectedAction.getRowChange();
 
-        int destinationCol = selectedAction.getColChange();
-        int destinationRow = selectedAction.getRowChange();
+        Collidable destinationBlock = grid[destinationCol][destinationRow];
 
-        int transitionCol = originPlayerCol;
-        int transitionRow = originPlayerRow;
+        if (destinationBlock.isColliding()){
 
-        grid[originPlayerCol][originPlayerRow] = grid[destinationCol][destinationRow];
-        grid[transitionCol][transitionRow] = grid[originPlayerCol][originPlayerRow];
+            destinationBlock.doCollide(movingPlayer);
 
+            int[] positions = {player1.getCol(), player1.getRow(), player2.getCol(), player2.getRow()};
 
+            return positions;
+        }
 
-        return null;
+        movingPlayer.setPosition(destinationCol, destinationRow);
+
+        int[] positions = {player1.getCol(), player1.getRow(), player2.getCol(), player2.getRow()};
+
+        return positions;
     }
 }

@@ -32,9 +32,6 @@ public class CharacterSprite {
     public void move(int finalX, int finalY) {
 
         sprite.translate(finalX, finalY);
-
-        System.out.println("MOOVED");
-
     }
 
     public Picture getSprite() {

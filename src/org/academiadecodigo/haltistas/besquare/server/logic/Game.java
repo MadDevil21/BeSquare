@@ -3,6 +3,8 @@ package org.academiadecodigo.haltistas.besquare.server.logic;
 import org.academiadecodigo.haltistas.besquare.GameState;
 import org.academiadecodigo.haltistas.besquare.client.Action;
 
+import java.io.IOException;
+
 public class Game {
 
     private LogicGrid grid;
@@ -24,17 +26,6 @@ public class Game {
 
         int[] positions = grid.verifyAction(playerId, selectedAction);
 
-        OutputHandler.buildPacket(gameState, level, positions);
-
-        if (fromClient.equals("1")) {
-            return "x x x x 30 0 30 0";
-        }
-
-        if (fromClient.equals("-1")) {
-
-        }
-        return "x x x x -30 0 -30 0";
+        return OutputHandler.buildPacket(gameState, level, positions);
     }
-
-
 }

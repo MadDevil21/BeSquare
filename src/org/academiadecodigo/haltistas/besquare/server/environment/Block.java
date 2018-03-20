@@ -2,11 +2,11 @@ package org.academiadecodigo.haltistas.besquare.server.environment;
 
 import org.academiadecodigo.haltistas.besquare.server.PlayerCharacter;
 
-public abstract class Block implements Collides{
+public abstract class Block implements Collidable {
 
     private int col;
     private int row;
-    boolean isColliding;
+    private boolean isColliding;
 
     public Block(int col, int row) {
         this.col = col;
@@ -15,7 +15,7 @@ public abstract class Block implements Collides{
     }
 
     @Override
-    public boolean isColliding(Block block, int col, int row) {
+    public boolean isColliding() {
         return isColliding;
     }
 

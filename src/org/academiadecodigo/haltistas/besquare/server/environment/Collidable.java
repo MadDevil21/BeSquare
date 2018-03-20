@@ -2,9 +2,9 @@ package org.academiadecodigo.haltistas.besquare.server.environment;
 
 import org.academiadecodigo.haltistas.besquare.server.PlayerCharacter;
 
-public interface Collides {
+public interface Collidable {
 
-    boolean isColliding(Block block, int col, int row);
+    boolean isColliding();
 
     void doCollide(PlayerCharacter player);
 }

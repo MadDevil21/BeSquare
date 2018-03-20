@@ -11,8 +11,8 @@ public class Interactive extends Platform {
     private boolean active;
 
     @Override
-    public boolean isColliding(Block block, int col, int row) {
-        return super.isColliding(block, col, row);
+    public boolean isColliding() {
+        return super.isColliding();
     }
 
     @Override

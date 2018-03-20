@@ -9,9 +9,12 @@ public class InputHandler {
 
         Action selectedAction = null;
 
+        System.out.println(fromClient);
+
         switch (fromClient) {
 
             case "M R":
+                System.out.println("switch move right");
                 selectedAction = Action.MOVE_RIGHT;
                 break;
 

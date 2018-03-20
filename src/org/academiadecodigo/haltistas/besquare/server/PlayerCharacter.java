@@ -24,4 +24,9 @@ public class PlayerCharacter {
     public int getRow() {
         return row;
     }
+
+    public void setPosition(int col, int row) {
+        this.col = col;
+        this.row = row;
+    }
 }
