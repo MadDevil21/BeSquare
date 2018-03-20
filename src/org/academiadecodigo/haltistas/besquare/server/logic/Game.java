@@ -26,7 +26,6 @@ public class Game {
 
         loadNewLevel(level);
 
-        gameLoop();
 
     }
 
@@ -51,6 +50,8 @@ public class Game {
 
         server.broadcast(initialBroadcast);
 
+        gameLoop();
+
     }
 
     private void gameLoop() {
@@ -65,7 +66,36 @@ public class Game {
 
         int[] positions = grid.verifyAction(playerId, selectedAction);
 
+        if (grid.levelWon()){
+
+            level = nextLevel();
+
+            if(level!= null) {
+                gameState = GameState.NEW_LEVEL;
+                loadNewLevel(level);
+            }
+
+        }
+
         return OutputHandler.buildPacket(gameState, level, positions);
+    }
+
+    private Levels nextLevel(){
+
+        Levels nextLevel = null;
+
+        // TODO if there are no more levels, the game should end
+
+        for (Levels levels : Levels.values()) {
+            if (level.ordinal() == levels.ordinal()){
+                nextLevel = Levels.values()[level.ordinal()+1];
+
+            }
+
+        }
+
+        return nextLevel;
+
     }
 
 
