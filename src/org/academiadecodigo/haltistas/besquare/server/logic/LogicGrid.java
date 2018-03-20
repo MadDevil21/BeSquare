@@ -17,6 +17,7 @@ public class LogicGrid {
     private Block[][] grid;
     private Exit exit;
     private int tokensLeft = 0;
+    private boolean win;
 
     //TODO: Grid loader should inform the grid how many tokens there are and where they are
     //TODO: This could be stored in a list or a map
@@ -63,13 +64,12 @@ public class LogicGrid {
 
             destinationBlock.doCollide(movingPlayer);
 
-            if (exit.isColliding(player1, player2)) {
-
+            if (exit.isColliding(player1, player2) && tokensLeft == 0) {
+                win = true;
             }
 
             return new int[]{player1.getCol(), player1.getRow(), player2.getCol(), player2.getRow()};
         }
-
     }
 
     public PlayerCharacter getPlayer1() {
@@ -80,12 +80,8 @@ public class LogicGrid {
         return player2;
     }
 
-    public int getTokensLeft() {
-        return tokensLeft;
-    }
-
-    public boolean activeExit() {
-        return exit.isActive();
+    public boolean levelWon() {
+        return win;
     }
 
     public void setExit(Exit exit) {

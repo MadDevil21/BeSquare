@@ -1,5 +1,7 @@
 package org.academiadecodigo.haltistas.besquare.server;
 
+import org.academiadecodigo.haltistas.besquare.util.Message;
+
 import java.io.*;
 import java.net.Socket;
 
@@ -37,7 +39,7 @@ public class PlayerHandler implements Runnable {
                 // if one player lost connection spam null, block to prevent that
                 if (message == null) {
 
-                    System.out.println(playerId + " lost connection.");
+                    System.out.println(playerId + Message.LOST_CONNECTION);
                     socket.close();
                     break;
                 }

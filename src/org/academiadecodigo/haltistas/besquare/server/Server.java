@@ -1,6 +1,7 @@
 package org.academiadecodigo.haltistas.besquare.server;
 
 import org.academiadecodigo.haltistas.besquare.server.logic.Game;
+import org.academiadecodigo.haltistas.besquare.util.Message;
 
 import java.io.IOException;
 import java.net.ServerSocket;
@@ -47,11 +48,11 @@ public class Server {
         ServerSocket server;
 
         server = new ServerSocket(PORT_NUMBER);
-        System.out.println("Server started: " + server);
+        System.out.println(Message.SERVER_START + server);
 
         while (connectedPlayers < NUM_PLAYERS) {
 
-            System.out.println("Waiting for players to connect..");
+            System.out.println(Message.WAITING_PLAYERS);
             Socket clientSocket = server.accept();
 
             connectedPlayers++;
@@ -71,14 +72,17 @@ public class Server {
                 players.get(playerId).send(toClient);
             }
 
-            System.out.println("SERVER to players: " + toClient);
+            System.out.println(Message.HALP_BROADCAST + toClient);
         }
     }
 
     protected void process(int playerId, String fromClient) {
 
         String toClient = game.process(playerId, fromClient);
-        broadcast(toClient);
+
+        if (toClient != null) {
+            broadcast(toClient);
+        }
     }
 
     // method to accept the 2 players into the server
@@ -86,7 +90,7 @@ public class Server {
 
         synchronized (players) {
 
-            System.out.println("Player accepted: " + socket);
+            System.out.println(Message.ACCEPT_PLAYER + socket);
             PlayerHandler player = new PlayerHandler(this, socket, playerId);
 
             players.put(playerId, player);

@@ -34,7 +34,6 @@ public class GameField {
 
         p1Sprite.move(player1X, player1Y);
         p2Sprite.move(player2X, player2Y);
-        System.out.println("moving characters");
     }
 
     /**
@@ -77,14 +76,11 @@ public class GameField {
 
         p1Sprite.getSprite().draw();
         p2Sprite.getSprite().draw();
-
-        System.out.println("loaded characters");
     }
 
     private int logicToCoord(int number){
 
         return number * CELL_SIZE;
-
     }
 }
 
