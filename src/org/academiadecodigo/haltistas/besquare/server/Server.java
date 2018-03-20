@@ -36,13 +36,12 @@ public class Server {
 
     public Server() {
         this.players = new HashMap<>();
-        this.game = new Game();
+        this.game = new Game(this);
         this.executor = Executors.newFixedThreadPool(NUM_PLAYERS);
 
     }
 
     public void init() throws IOException {
-        this.game.init();
         start();
     }
 
@@ -64,13 +63,13 @@ public class Server {
 
         }
 
-        broadcast("NEW_LEVEL LEVEL_1 50 100 150 300");
+        this.game.init();
 
     }
 
     // method to broadcast information received from one player to both
 
-    protected void broadcast(String toClient) {
+    public void broadcast(String toClient) {
 
         synchronized (players) {
 

@@ -28,8 +28,6 @@ public class LogicGrid {
 
     public void load(Levels currentLevel) throws IOException {
 
-        BufferedReader fromFile = new BufferedReader(new FileReader(currentLevel.getMatrix()));
-
         grid = LogicGridLoader.loadLevel(currentLevel, this);
     }
 
@@ -48,41 +46,32 @@ public class LogicGrid {
             movingPlayer = player2;
         }
 
-
-        for (Block[] blocks : grid) {
-            for (Block block: blocks) {
-                System.out.println(block);
-            }
-
-        }
-
         synchronized (this) {
+
             System.out.println(movingPlayer);
 
             int destinationCol = movingPlayer.getCol() + selectedAction.getColChange();
             int destinationRow = movingPlayer.getRow() + selectedAction.getRowChange();
 
-            System.out.println(Thread.currentThread().getName());
-            System.out.println(destinationRow);
-            System.out.println(destinationCol);
             System.out.println(grid[destinationCol] + " " + grid[destinationCol][destinationRow]);
             Collidable destinationBlock = grid[destinationCol][destinationRow];
-        }
-/*
-        if (destinationBlock.isColliding()){
 
-            destinationBlock.doCollide(movingPlayer);
+            if (destinationBlock.isColliding()){
+
+                destinationBlock.doCollide(movingPlayer);
+
+                int[] positions = {player1.getCol(), player1.getRow(), player2.getCol(), player2.getRow()};
+
+                return positions;
+            }
+
+            movingPlayer.setPosition(destinationCol, destinationRow);
 
             int[] positions = {player1.getCol(), player1.getRow(), player2.getCol(), player2.getRow()};
 
             return positions;
         }
-        movingPlayer.setPosition(destinationCol, destinationRow);
-*/
-        System.out.println(player1.getCol() + " " + player1.getRow());
-        int[] positions = {player1.getCol(), player1.getRow(), player2.getCol(), player2.getRow()};
 
-        return positions;
     }
 
     public PlayerCharacter getPlayer1() {
@@ -92,4 +81,5 @@ public class LogicGrid {
     public PlayerCharacter getPlayer2() {
         return player2;
     }
+
 }

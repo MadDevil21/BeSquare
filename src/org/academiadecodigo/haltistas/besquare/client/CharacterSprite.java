@@ -22,6 +22,7 @@ public class CharacterSprite {
     public void setPosition(int xPosition, int yPosition) {
         this.xPosition = xPosition;
         this.yPosition = yPosition;
+
         int xTranslation = ((xPosition - sprite.getX()) + GameField.PADDING);
         int yTranslation = ((yPosition - sprite.getY()) + GameField.PADDING);
         sprite.translate(xTranslation, yTranslation);
@@ -30,8 +31,11 @@ public class CharacterSprite {
 
 
     public void move(int finalX, int finalY) {
+        int xTranslate = this.xPosition - finalX;
+        int yTranslate = this.yPosition - finalY;
 
-        sprite.translate(finalX, finalY);
+        sprite.translate(xTranslate, yTranslate);
+
     }
 
     public Picture getSprite() {

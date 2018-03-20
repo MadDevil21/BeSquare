@@ -19,7 +19,7 @@ public class OutputHandler {
 
         // TODO Gamestate: each gamestate will need to have a standard char or number which needs to be recognized
         // by clients 
-        sb.append('x');
+        sb.append(gs.name());
         sb.append(' ');
 
         sb.append(level.name());

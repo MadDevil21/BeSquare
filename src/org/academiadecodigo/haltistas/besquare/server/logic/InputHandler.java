@@ -14,7 +14,6 @@ public class InputHandler {
         switch (fromClient) {
 
             case "M R":
-                System.out.println("switch move right");
                 selectedAction = Action.MOVE_RIGHT;
                 break;
 
