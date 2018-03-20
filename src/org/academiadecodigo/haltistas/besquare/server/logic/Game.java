@@ -14,7 +14,6 @@ public class Game {
     private Server server;
 
     public Game(Server server) {
-        this.grid = new LogicGrid();
         this.server = server;
     }
 
@@ -24,6 +23,16 @@ public class Game {
         this.level = Levels.LEVEL_1;
 
         gameState = GameState.NEW_LEVEL;
+
+        loadNewLevel(level);
+
+        gameLoop();
+
+    }
+
+    private void loadNewLevel(Levels level) {
+
+        grid = new LogicGrid();
 
         try {
             grid.load(level);
@@ -42,17 +51,15 @@ public class Game {
 
         server.broadcast(initialBroadcast);
 
-        gameLoop();
-
     }
 
-    private void gameLoop(){
+    private void gameLoop() {
+
         gameState = GameState.GAME;
 
-
     }
 
-    public String process(int playerId, String fromClient) {
+    public synchronized String process(int playerId, String fromClient) {
 
         Action selectedAction = InputHandler.interpret(fromClient);
 
@@ -60,4 +67,6 @@ public class Game {
 
         return OutputHandler.buildPacket(gameState, level, positions);
     }
+
+
 }

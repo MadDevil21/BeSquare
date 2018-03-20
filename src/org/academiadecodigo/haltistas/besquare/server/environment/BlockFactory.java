@@ -8,18 +8,16 @@ public class BlockFactory {
 
         Block block = null;
 
+        if(blockType.equals(BlockType.EXIT)) {
+            throw new IllegalArgumentException();
+        }
+
         switch (blockType) {
 
             case PLATFORM:
 
                 block = new Platform(col, row);
                 break;
-
-            case EXIT:
-
-                block = new Exit(col, row);
-                break;
-
 
             case BACKGROUND:
 
@@ -28,5 +26,9 @@ public class BlockFactory {
         }
 
         return block;
+    }
+
+    public static Exit createExit(int col, int row) {
+        return new Exit(col, row);
     }
 }

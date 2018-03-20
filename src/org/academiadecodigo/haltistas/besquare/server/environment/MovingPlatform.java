@@ -9,11 +9,6 @@ public class MovingPlatform extends Platform{
     }
 
     @Override
-    public boolean isColliding() {
-        return super.isColliding();
-    }
-
-    @Override
     public void doCollide(PlayerCharacter player) {
         super.doCollide(player);
     }

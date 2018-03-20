@@ -4,8 +4,6 @@ import org.academiadecodigo.haltistas.besquare.client.Action;
 import org.academiadecodigo.haltistas.besquare.server.PlayerCharacter;
 import org.academiadecodigo.haltistas.besquare.server.environment.*;
 
-import java.io.BufferedReader;
-import java.io.FileReader;
 import java.io.IOException;
 
 public class LogicGrid {
@@ -17,6 +15,11 @@ public class LogicGrid {
     private PlayerCharacter player2;
 
     private Block[][] grid;
+    private Exit exit;
+    private int tokensLeft = 0;
+
+    //TODO: Grid loader should inform the grid how many tokens there are and where they are
+    //TODO: This could be stored in a list or a map
 
     public LogicGrid() {
 
@@ -27,8 +30,9 @@ public class LogicGrid {
     }
 
     public void load(Levels currentLevel) throws IOException {
-
         grid = LogicGridLoader.loadLevel(currentLevel, this);
+        exit.setActive();
+
     }
 
     public int[] verifyAction(int playerId, Action selectedAction) {
@@ -48,6 +52,8 @@ public class LogicGrid {
 
         synchronized (this) {
 
+            // TODO: Method should recognize when a token was grabbed and remove 1 from the number of tokens left
+
             System.out.println(movingPlayer);
 
             int destinationCol = movingPlayer.getCol() + selectedAction.getColChange();
@@ -56,20 +62,19 @@ public class LogicGrid {
             System.out.println(grid[destinationCol] + " " + grid[destinationCol][destinationRow]);
             Collidable destinationBlock = grid[destinationCol][destinationRow];
 
-            if (destinationBlock.isColliding()){
 
-                destinationBlock.doCollide(movingPlayer);
+            if (!destinationBlock.isColliding(movingPlayer, selectedAction)) {
 
-                int[] positions = {player1.getCol(), player1.getRow(), player2.getCol(), player2.getRow()};
-
-                return positions;
+                movingPlayer.setPosition(destinationCol, destinationRow);
             }
 
-            movingPlayer.setPosition(destinationCol, destinationRow);
+            destinationBlock.doCollide(movingPlayer);
 
-            int[] positions = {player1.getCol(), player1.getRow(), player2.getCol(), player2.getRow()};
+            if (exit.isColliding(player1, player2)) {
+                System.out.println("EXITOITOITOI");
+            }
 
-            return positions;
+            return new int[]{player1.getCol(), player1.getRow(), player2.getCol(), player2.getRow()};
         }
 
     }
@@ -82,4 +87,17 @@ public class LogicGrid {
         return player2;
     }
 
+    public int getTokensLeft() {
+        return tokensLeft;
+
+    }
+
+    public boolean activeExit() {
+        return exit.isActive();
+
+    }
+
+    public void setExit(Exit exit) {
+        this.exit = exit;
+    }
 }

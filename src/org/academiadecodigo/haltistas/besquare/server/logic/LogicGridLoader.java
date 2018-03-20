@@ -3,6 +3,7 @@ package org.academiadecodigo.haltistas.besquare.server.logic;
 import org.academiadecodigo.haltistas.besquare.server.environment.Block;
 import org.academiadecodigo.haltistas.besquare.server.environment.BlockFactory;
 import org.academiadecodigo.haltistas.besquare.server.environment.BlockType;
+import org.academiadecodigo.haltistas.besquare.server.environment.Exit;
 
 import java.io.BufferedReader;
 import java.io.FileReader;
@@ -57,7 +58,9 @@ public class LogicGridLoader {
 
             case 'e':
 
-                returnBlock = BlockFactory.createBlock(BlockType.EXIT, col, row);
+                Exit exit = BlockFactory.createExit(col, row);
+                logicGrid.setExit(exit);
+                returnBlock = exit;
                 break;
 
             case '1':
