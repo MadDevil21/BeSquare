@@ -42,7 +42,7 @@ public class Server {
     }
 
     public void init() throws IOException {
-        this.game.init();
+//        this.game.init();
         start();
     }
 
@@ -85,8 +85,8 @@ public class Server {
     }
 
     protected void process(int playerId, String fromClient) {
-        String toClient = game.process(playerId, fromClient);
-        broadcast(toClient);
+//        String toClient = game.process(playerId, fromClient);
+//        broadcast(toClient);
 
     }
 

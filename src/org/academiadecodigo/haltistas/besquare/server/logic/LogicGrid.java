@@ -8,8 +8,8 @@ import java.io.IOException;
 
 public class LogicGrid {
 
-    private static final int COLS = 50;
-    private static final int ROWS = 25;
+    public static final int COLS = 50;
+    public static final int ROWS = 25;
 
     private Block[][] grid;
 
