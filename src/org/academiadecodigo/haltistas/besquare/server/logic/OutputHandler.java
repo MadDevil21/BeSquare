@@ -18,8 +18,6 @@ public class OutputHandler {
 
         StringBuilder sb = new StringBuilder();
 
-        // TODO Gamestate: each gamestate will need to have a standard char or number which needs to be recognized
-        // by clients 
         sb.append(gs.name());
         sb.append(' ');
 
@@ -33,11 +31,8 @@ public class OutputHandler {
             if (!( i == playerCoordinates.length - 1 )) {
                 sb.append(' ');
             }
-
         }
 
         return sb.toString();
-
     }
-
 }

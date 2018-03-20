@@ -2,12 +2,10 @@ package org.academiadecodigo.haltistas.besquare.server;
 
 import org.academiadecodigo.haltistas.besquare.server.logic.Game;
 
-import java.io.*;
+import java.io.IOException;
 import java.net.ServerSocket;
 import java.net.Socket;
-import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
@@ -29,16 +27,14 @@ public class Server {
 
         } catch (IOException ex) {
             System.err.println(ex.getMessage());
-
         }
-
     }
 
     public Server() {
+
         this.players = new HashMap<>();
         this.game = new Game(this);
         this.executor = Executors.newFixedThreadPool(NUM_PLAYERS);
-
     }
 
     public void init() throws IOException {
@@ -46,6 +42,7 @@ public class Server {
     }
 
     private void start() throws IOException {
+
         int connectedPlayers = 0;
         ServerSocket server;
 
@@ -58,34 +55,30 @@ public class Server {
             Socket clientSocket = server.accept();
 
             connectedPlayers++;
-
             addPlayer(connectedPlayers, clientSocket);
-
         }
 
         this.game.init();
-
     }
 
     // method to broadcast information received from one player to both
-
     public void broadcast(String toClient) {
 
         synchronized (players) {
 
             for (Integer playerId : players.keySet()) {
-                System.out.println("About to send to client " + playerId);
-                players.get(playerId).send(toClient);
-                System.out.println("SERVER to client: " + toClient);
 
+                players.get(playerId).send(toClient);
             }
+
+            System.out.println("SERVER to players: " + toClient);
         }
     }
 
     protected void process(int playerId, String fromClient) {
+
         String toClient = game.process(playerId, fromClient);
         broadcast(toClient);
-
     }
 
     // method to accept the 2 players into the server
@@ -98,8 +91,7 @@ public class Server {
 
             players.put(playerId, player);
             executor.execute(player);
-
-                // TODO replace with submit after troubleshooting
+            // TODO replace with submit after troubleshooting
         }
     }
 }

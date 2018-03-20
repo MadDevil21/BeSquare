@@ -16,7 +16,7 @@ public class Initializer {
 
 
         try {
-            new Client(new Socket("192.168.2.2", 20021));
+            new Client(new Socket("localhost", 20021));
         } catch (IOException e) {
             e.printStackTrace();
         }
