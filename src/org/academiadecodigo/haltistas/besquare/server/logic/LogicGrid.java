@@ -48,14 +48,27 @@ public class LogicGrid {
             movingPlayer = player2;
         }
 
-        System.out.println(movingPlayer);
 
-        int destinationCol = movingPlayer.getCol() + selectedAction.getColChange();
-        int destinationRow = movingPlayer.getRow() + selectedAction.getRowChange();
+        for (Block[] blocks : grid) {
+            for (Block block: blocks) {
+                System.out.println(block);
+            }
 
-        System.out.println(destinationCol);
+        }
+
+        synchronized (this) {
+            System.out.println(movingPlayer);
+
+            int destinationCol = movingPlayer.getCol() + selectedAction.getColChange();
+            int destinationRow = movingPlayer.getRow() + selectedAction.getRowChange();
+
+            System.out.println(Thread.currentThread().getName());
+            System.out.println(destinationRow);
+            System.out.println(destinationCol);
+            System.out.println(grid[destinationCol] + " " + grid[destinationCol][destinationRow]);
+            Collidable destinationBlock = grid[destinationCol][destinationRow];
+        }
 /*
-        Collidable destinationBlock = grid[destinationCol][destinationRow];
         if (destinationBlock.isColliding()){
 
             destinationBlock.doCollide(movingPlayer);

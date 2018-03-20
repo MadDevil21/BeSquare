@@ -98,8 +98,9 @@ public class Server {
             PlayerHandler player = new PlayerHandler(this, socket, playerId);
 
             players.put(playerId, player);
-            executor.submit(player);
+            executor.execute(player);
 
+                // TODO replace with submit after troubleshooting
         }
     }
 }
