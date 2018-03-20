@@ -12,31 +12,17 @@ public class LogicGridLoader {
 
     public static Block[][] loadLevel(Levels level) throws IOException {
 
-        String filepath = level.getFilePath();
-        System.out.println(filepath);
-
         BufferedReader fromFile = new BufferedReader(new FileReader(level.getFilePath()));
-
-        // TODO: Investigate:
-        // Reading from file, turning it into a long line with \n's at the end, then splitting at the \n's
-        // There has to be a much easier way to do this
-
-        String fullString = "";
-        String readLine;
-
-        while ((readLine = fromFile.readLine()) != null) {
-            fullString += readLine;
-            fullString += "\n";
-
-        }
-
-        String[] lines = fullString.split("\n");
 
         Block[][] grid = new Block[LogicGrid.COLS][LogicGrid.ROWS];
 
+        String readLine;
 
-        for (int row = 0; row < lines.length; row++) {
-            readRow(row, lines[row], grid);
+        int workingRow = 0;
+
+        while ((readLine = fromFile.readLine()) != null) {
+            readRow(workingRow, readLine, grid);
+            workingRow++;
 
         }
 
@@ -49,8 +35,6 @@ public class LogicGridLoader {
         for (int col = 0; col < LogicGrid.COLS; col++) {
 
             grid[col][row] = interpretChar(line.charAt(col), col, row);
-
-            System.out.println(grid[col][row] + " at " + col + " " + row);
 
         }
 
