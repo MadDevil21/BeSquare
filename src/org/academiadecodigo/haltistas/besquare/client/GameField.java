@@ -14,6 +14,16 @@ public class GameField {
     private CharacterSprite p1Sprite;
     private CharacterSprite p2Sprite;
 
+    /**
+     * Method to calculate the final X and Y positions for players, which come in Col and Row format and need
+     * to be in coordinate format when the move method in the sprites
+     * @see CharacterSprite#move(int, int)
+     *
+     * @param player1col Player 1's destination column
+     * @param player1row Player 1's destination row
+     * @param player2col Player 2's destination column
+     * @param player2row Player 2's destination row
+     */
 
     protected void moveCharacters(int player1col, int player1row, int player2col, int player2row) { // TODO: temporary solution
 
@@ -27,6 +37,11 @@ public class GameField {
         System.out.println("moving characters");
     }
 
+    /**
+     *  Loads the background picture
+     * @param path Path to the background image in the resources folder
+     */
+
     protected void loadBackground(String path) {
 
         if (background != null) {
@@ -37,7 +52,16 @@ public class GameField {
         background.draw();
     }
 
-
+    /**
+     * Loads the character sprites to the initial positions when a new level starts
+     * Values come from server in columns and rows and need to be converted to coordinates format
+     * @see #logicToCoord(int)
+     *
+     * @param player1col Player 1's column value
+     * @param player1row Player 1's row value
+     * @param player2col Player 2's column value
+     * @param player2row Player 2's row value
+     */
     protected void loadCharacters(int player1col, int player1row, int player2col, int player2row) {
 
         p1Sprite = new CharacterSprite(FilePath.PLAYER1);

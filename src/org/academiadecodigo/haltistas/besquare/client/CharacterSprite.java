@@ -13,9 +13,15 @@ public class CharacterSprite {
 
         this.sprite = new Picture(xPosition, yPosition, pictureSpritePath);
         sprite.draw();
-        System.out.println("created sprite");
 
     }
+
+    /**
+     * Forces the sprite to the position, such as at the start of the level
+     *
+     * @param xPosition The X position in coordinates where the sprite should appear
+     * @param yPosition The Y position in coordinates where the sprite should appear
+     */
 
     public void setPosition(int xPosition, int yPosition) {
         this.xPosition = xPosition;
@@ -24,24 +30,25 @@ public class CharacterSprite {
         int xTranslation = ((xPosition - sprite.getX()) + GameField.PADDING);
         int yTranslation = ((yPosition - sprite.getY()) + GameField.PADDING);
         sprite.translate(xTranslation, yTranslation);
-        System.out.println("set position for sprite");
+
     }
 
+    /**
+     * Move a sprite to the final X and final Y parameters
+     *
+     * @param finalX The X position in coordinates where the sprite should translate to
+     * @param finalY The Y position in coordinates where the sprite should translate to
+     */
 
     public void move(int finalX, int finalY) {
 
         int xTranslate = finalX - this.xPosition;
         int yTranslate = finalY - this.yPosition;
 
-        System.out.println(this + " moving from " + this.xPosition + " to " + finalX);
-        System.out.println(xTranslate + yTranslate);
-
         sprite.translate(xTranslate, yTranslate);
 
         this.xPosition += xTranslate;
         this.yPosition += yTranslate;
-
-        System.out.println("New position " + this.getSprite().getX() + " " + this.getSprite().getY());
 
     }
 
