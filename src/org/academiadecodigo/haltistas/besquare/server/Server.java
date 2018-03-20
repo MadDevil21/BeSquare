@@ -64,8 +64,7 @@ public class Server {
 
         }
 
-        broadcast("x backgrounds/backgroundMockup_Level1_30x30.png x x 50 100 150 300");
-        executor.shutdown();
+        broadcast("NEW_LEVEL LEVEL_1 50 100 150 300");
 
     }
 
@@ -76,7 +75,7 @@ public class Server {
         synchronized (players) {
 
             for (Integer playerId : players.keySet()) {
-
+                System.out.println("About to send to client " + playerId);
                 players.get(playerId).send(toClient);
                 System.out.println("SERVER to client: " + toClient);
 

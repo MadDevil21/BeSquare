@@ -48,11 +48,14 @@ public class LogicGrid {
             movingPlayer = player2;
         }
 
+        System.out.println(movingPlayer);
+
         int destinationCol = movingPlayer.getCol() + selectedAction.getColChange();
         int destinationRow = movingPlayer.getRow() + selectedAction.getRowChange();
 
+        System.out.println(destinationCol);
+/*
         Collidable destinationBlock = grid[destinationCol][destinationRow];
-
         if (destinationBlock.isColliding()){
 
             destinationBlock.doCollide(movingPlayer);
@@ -61,9 +64,9 @@ public class LogicGrid {
 
             return positions;
         }
-
         movingPlayer.setPosition(destinationCol, destinationRow);
-
+*/
+        System.out.println(player1.getCol() + " " + player1.getRow());
         int[] positions = {player1.getCol(), player1.getRow(), player2.getCol(), player2.getRow()};
 
         return positions;
