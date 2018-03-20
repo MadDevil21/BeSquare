@@ -18,49 +18,11 @@ public class LogicGrid {
         grid = new Block[COLS][ROWS];
     }
 
-    private void load() throws IOException {
+    private void load(Levels level) throws IOException {
 
         BufferedReader fromFile = new BufferedReader(new FileReader(Levels.LEVEL_1.getFilePath()));
-        String level = fromFile.readLine();
 
-        int counter = -1;
+        grid = LogicGridLoader.loadLevel(level);
 
-        for (int row = 0; row < ROWS; row++) {
-            for (int col = 0; col < COLS; col++) {
-
-                counter++;
-
-                switch (level.charAt(counter)) {
-
-                    case 'x':
-
-                        grid[col][row] = BlockFactory.createBlock(BlockType.PLATFORM, col, row);
-                        break;
-
-                    case '.':
-
-                        grid[col][row] = BlockFactory.createBlock(BlockType.BACKGROUND, col, row);
-                        break;
-
-                    case 'e':
-
-                        grid[col][row] = BlockFactory.createBlock(BlockType.EXIT, col, row);
-                        break;
-
-                    case '1':
-
-                        grid[col][row] = BlockFactory.createBlock(BlockType.CHARACTER_1, col, row);
-                        break;
-
-                    case '2':
-
-                        grid[col][row] = BlockFactory.createBlock(BlockType.CHARACTER_2, col, row);
-                        break;
-
-                    default:
-                        System.out.println("Error with sunglasses");
-                }
-            }
-        }
     }
 }
