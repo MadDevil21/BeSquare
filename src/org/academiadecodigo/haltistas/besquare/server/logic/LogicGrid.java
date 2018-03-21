@@ -50,19 +50,41 @@ public class LogicGrid {
 
         synchronized (this) {
 
+            int destinationCol;
+            int destinationRow;
+
+            if (movingPlayer.isFalling()) {
+
+                destinationCol = movingPlayer.getCol();
+                destinationRow = movingPlayer.getRow() + 1;
+
+                return keepFalling(movingPlayer, grid, destinationCol, destinationRow);
+
+            }
+
             // TODO: Method should recognize when a token was grabbed and remove 1 from the number of tokens left
 
-            int destinationCol = movingPlayer.getCol() + selectedAction.getColChange();
-            int destinationRow = movingPlayer.getRow() + selectedAction.getRowChange();
+            destinationCol = movingPlayer.getCol() + selectedAction.getColChange();
+            destinationRow = movingPlayer.getRow() + selectedAction.getRowChange();
 
-            Collidable destinationBlock = grid[destinationCol][destinationRow];
+            Block destinationBlock = grid[destinationCol][destinationRow];
 
             if (!destinationBlock.isColliding(movingPlayer, selectedAction)) {
 
                 movingPlayer.setPosition(destinationCol, destinationRow);
+
+            }
+
+            if (!grid[movingPlayer.getCol()][movingPlayer.getRow() + 1].isColliding(movingPlayer, Action.MOVE_RIGHT)) {
+
+                movingPlayer.setFalling(true);
+                System.out.println("I'm about to fall");
+                verifyAction(movingPlayer.getId(), Action.FALLING);
+
             }
 
             destinationBlock.doCollide(movingPlayer);
+
 
             if (exit.isColliding(player1, player2) && tokensLeft == 0) {
                 win = true;
@@ -70,6 +92,29 @@ public class LogicGrid {
 
             return new int[]{player1.getCol(), player1.getRow(), player2.getCol(), player2.getRow()};
         }
+    }
+
+    private int[] keepFalling(PlayerCharacter movingPlayer, Block[][] grid, int destinationCol, int destinationRow) {
+
+        if (!grid[destinationCol][destinationRow].isColliding(movingPlayer, Action.FALLING)) {
+            movingPlayer.setPosition(destinationCol, destinationRow);
+            System.out.println("Falling!");
+
+            // TODO: This commented out solution makes players fall one block at a time but only
+            // when the other one moves; this is not the intended behavior but it could be
+            // if we implement a timer.
+
+            // return new int[]{player1.getCol(), player1.getRow(), player2.getCol(), player2.getRow()};
+
+            // Recursive solution: This makes players disappear from a platform and immediately appear below
+
+            verifyAction(movingPlayer.getId(), Action.FALLING);
+
+        }
+
+        movingPlayer.setFalling(false);
+        return new int[]{player1.getCol(), player1.getRow(), player2.getCol(), player2.getRow()};
+
     }
 
     public PlayerCharacter getPlayer1() {

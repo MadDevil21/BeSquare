@@ -5,7 +5,8 @@ public enum Action {
     MOVE_RIGHT(1, 0, "M R"),
     MOVE_LEFT(-1, 0, "M L"),
     JUMP_RIGHT(1, 1, "J R"),
-    JUMP_LEFT(-1, 1, "J L");
+    JUMP_LEFT(-1, 1, "J L"),
+    FALLING(0, 1, "F D");
 
     private int colChange;
     private int rowChange;
