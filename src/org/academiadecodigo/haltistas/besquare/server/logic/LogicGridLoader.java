@@ -4,6 +4,7 @@ import org.academiadecodigo.haltistas.besquare.server.environment.Block;
 import org.academiadecodigo.haltistas.besquare.server.environment.BlockFactory;
 import org.academiadecodigo.haltistas.besquare.server.environment.BlockType;
 import org.academiadecodigo.haltistas.besquare.server.environment.Exit;
+import org.academiadecodigo.haltistas.besquare.util.Message;
 
 import java.io.BufferedReader;
 import java.io.FileReader;
@@ -14,31 +15,27 @@ public class LogicGridLoader {
     public static Block[][] loadLevel(Levels level, LogicGrid logicGrid) throws IOException {
 
         BufferedReader fromFile = new BufferedReader(new FileReader(level.getMatrix()));
-
         Block[][] grid = new Block[LogicGrid.COLS][LogicGrid.ROWS];
-
         String readLine;
-
         int workingRow = 0;
 
         while ((readLine = fromFile.readLine()) != null) {
+
             readRow(workingRow, readLine, grid, logicGrid);
             workingRow++;
-
         }
 
         return grid;
-
     }
 
     private static void readRow(int row, String line, Block[][] grid, LogicGrid logicGrid) {
-        System.out.println("Interpreting line " + line);
+
+        System.out.println(Message.INTERPRET_LINE + line);
+
         for (int col = 0; col < LogicGrid.COLS; col++) {
 
             grid[col][row] = interpretChar(line.charAt(col), col, row, logicGrid);
-
         }
-
     }
 
     private static Block interpretChar(char currentChar, int col, int row, LogicGrid logicGrid) {
@@ -51,6 +48,7 @@ public class LogicGridLoader {
 
                 returnBlock = BlockFactory.createBlock(BlockType.PLATFORM, col, row);
                 break;
+
             case '.':
 
                 returnBlock = BlockFactory.createBlock(BlockType.BACKGROUND, col, row);
@@ -76,11 +74,9 @@ public class LogicGridLoader {
                 break;
 
             default:
-                System.err.println("Problem in interpretChar method");
+                System.err.println(Message.ERR_INTERPRET);
         }
 
         return returnBlock;
-
     }
-
 }

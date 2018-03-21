@@ -17,6 +17,7 @@ public class LogicGrid {
     private Block[][] grid;
     private Exit exit;
     private int tokensLeft = 0;
+    private boolean win;
 
     //TODO: Grid loader should inform the grid how many tokens there are and where they are
     //TODO: This could be stored in a list or a map
@@ -26,18 +27,15 @@ public class LogicGrid {
         grid = new Block[COLS][ROWS];
         player1 = new PlayerCharacter(COLS, ROWS, 1);
         player2 = new PlayerCharacter(COLS, ROWS, 2);
-
     }
 
     public void load(Levels currentLevel) throws IOException {
+
         grid = LogicGridLoader.loadLevel(currentLevel, this);
         exit.setActive();
-
     }
 
     public int[] verifyAction(int playerId, Action selectedAction) {
-
-        System.out.println("verifing " + playerId + selectedAction.toString());
 
         PlayerCharacter movingPlayer;
 
@@ -54,14 +52,10 @@ public class LogicGrid {
 
             // TODO: Method should recognize when a token was grabbed and remove 1 from the number of tokens left
 
-            System.out.println(movingPlayer);
-
             int destinationCol = movingPlayer.getCol() + selectedAction.getColChange();
             int destinationRow = movingPlayer.getRow() + selectedAction.getRowChange();
 
-            System.out.println(grid[destinationCol] + " " + grid[destinationCol][destinationRow]);
             Collidable destinationBlock = grid[destinationCol][destinationRow];
-
 
             if (!destinationBlock.isColliding(movingPlayer, selectedAction)) {
 
@@ -70,13 +64,12 @@ public class LogicGrid {
 
             destinationBlock.doCollide(movingPlayer);
 
-            if (exit.isColliding(player1, player2)) {
-                System.out.println("EXITOITOITOI");
+            if (exit.isColliding(player1, player2) && tokensLeft == 0) {
+                win = true;
             }
 
             return new int[]{player1.getCol(), player1.getRow(), player2.getCol(), player2.getRow()};
         }
-
     }
 
     public PlayerCharacter getPlayer1() {
@@ -87,14 +80,8 @@ public class LogicGrid {
         return player2;
     }
 
-    public int getTokensLeft() {
-        return tokensLeft;
-
-    }
-
-    public boolean activeExit() {
-        return exit.isActive();
-
+    public boolean levelWon() {
+        return win;
     }
 
     public void setExit(Exit exit) {
