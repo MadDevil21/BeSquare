@@ -70,6 +70,7 @@ public class Game {
 
                 gameState = GameState.NEW_LEVEL;
                 loadNewLevel(level);
+                return null;
             }
 
         }

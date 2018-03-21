@@ -66,6 +66,9 @@ public class GameField {
         p1Sprite = new CharacterSprite(FilePath.PLAYER1);
         p2Sprite = new CharacterSprite(FilePath.PLAYER2);
 
+        p1Sprite.getSprite().delete();
+        p2Sprite.getSprite().delete();
+
         int player1X = logicToCoord(player1col);
         int player1Y = logicToCoord(player1row);
         int player2X = logicToCoord(player2col);

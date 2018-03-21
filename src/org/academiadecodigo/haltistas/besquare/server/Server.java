@@ -83,6 +83,7 @@ public class Server {
         if (toClient != null) {
             broadcast(toClient);
         }
+
     }
 
     // method to accept the 2 players into the server

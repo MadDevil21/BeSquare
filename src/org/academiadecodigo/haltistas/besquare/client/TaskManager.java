@@ -31,6 +31,7 @@ public class TaskManager {
             
             field.loadBackground(backgroundPath);
             field.loadCharacters(player1col, player1row, player2col, player2row);
+            return;
         }
 
         field.moveCharacters(player1col, player1row, player2col, player2row);

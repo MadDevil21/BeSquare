@@ -12,7 +12,7 @@ public enum Action {
     private String actionText;
 
     Action(int colChange, int rowChange, String actionText) {
-
+        this.actionText = actionText;
         this.colChange = colChange;
         this.rowChange = rowChange;
     }
