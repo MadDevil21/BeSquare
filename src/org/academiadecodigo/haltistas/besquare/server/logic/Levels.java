@@ -11,6 +11,7 @@ public enum Levels {
     private  final String matrix;
 
     Levels(String background, String matrix) {
+
         this.background = background;
         this.matrix = matrix;
     }

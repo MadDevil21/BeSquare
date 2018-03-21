@@ -25,8 +25,6 @@ public class Game {
         gameState = GameState.NEW_LEVEL;
 
         loadNewLevel(level);
-
-
     }
 
     private void loadNewLevel(Levels level) {
@@ -51,13 +49,11 @@ public class Game {
         server.broadcast(initialBroadcast);
 
         gameLoop();
-
     }
 
     private void gameLoop() {
 
         gameState = GameState.GAME;
-
     }
 
     public synchronized String process(int playerId, String fromClient) {
@@ -71,8 +67,10 @@ public class Game {
             level = nextLevel();
 
             if(level!= null) {
+
                 gameState = GameState.NEW_LEVEL;
                 loadNewLevel(level);
+                return null;
             }
 
         }
@@ -87,16 +85,12 @@ public class Game {
         // TODO if there are no more levels, the game should end
 
         for (Levels levels : Levels.values()) {
+
             if (level.ordinal() == levels.ordinal()){
                 nextLevel = Levels.values()[level.ordinal()+1];
-
             }
-
         }
 
         return nextLevel;
-
     }
-
-
 }

@@ -13,46 +13,42 @@ public class Controller implements KeyboardHandler {
         this.client = client;
     }
 
-    public void init(){
+    public void init() {
 
         Keyboard keyboard = new Keyboard(this);
 
-        int[] keys = new int[] {
+        int[] keys = new int[]{
+
                 KeyboardEvent.KEY_RIGHT,
                 KeyboardEvent.KEY_LEFT
         };
 
+        for (int key : keys) {
 
-
-
-        for (int key: keys){
             KeyboardEvent event = new KeyboardEvent();
             event.setKey(key);
             event.setKeyboardEventType(KeyboardEventType.KEY_PRESSED);
             keyboard.addEventListener(event);
-
         }
     }
-
 
     @Override
     public void keyPressed(KeyboardEvent keyboardEvent) {
 
-        if(keyboardEvent.getKey() == KeyboardEvent.KEY_RIGHT){
+        if (keyboardEvent.getKey() == KeyboardEvent.KEY_RIGHT) {
+
             client.moveRight();
-            System.out.println("key pressed right");
             return;
         }
 
-        if(keyboardEvent.getKey() == KeyboardEvent.KEY_LEFT){
+        if (keyboardEvent.getKey() == KeyboardEvent.KEY_LEFT) {
+
             client.moveLeft();
-            System.out.println("key pressed left");
             return;
         }
     }
 
     @Override
     public void keyReleased(KeyboardEvent keyboardEvent) {
-
     }
 }

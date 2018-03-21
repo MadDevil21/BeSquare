@@ -27,80 +27,94 @@ public class LogicGrid {
         grid = new Block[COLS][ROWS];
         player1 = new PlayerCharacter(COLS, ROWS, 1);
         player2 = new PlayerCharacter(COLS, ROWS, 2);
-
     }
 
     public void load(Levels currentLevel) throws IOException {
+
         grid = LogicGridLoader.loadLevel(currentLevel, this);
         exit.setActive();
-
     }
 
     public int[] verifyAction(int playerId, Action selectedAction) {
 
-        System.out.println("verifing " + playerId + selectedAction.toString());
+        PlayerCharacter movingPlayer;
 
-        PlayerCharacter movingPlayer = checkPlayerNumber(playerId);
+        if (playerId == player1.getId()) {
 
+            movingPlayer = player1;
+
+        } else {
+
+            movingPlayer = player2;
+        }
 
         synchronized (this) {
 
+            int destinationCol;
+            int destinationRow;
+
+            if (movingPlayer.isFalling()) {
+
+                destinationCol = movingPlayer.getCol();
+                destinationRow = movingPlayer.getRow() + 1;
+
+                return keepFalling(movingPlayer, grid, destinationCol, destinationRow);
+
+            }
+
             // TODO: Method should recognize when a token was grabbed and remove 1 from the number of tokens left
 
-            System.out.println(movingPlayer);
+            destinationCol = movingPlayer.getCol() + selectedAction.getColChange();
+            destinationRow = movingPlayer.getRow() + selectedAction.getRowChange();
 
-            int destinationCol = movingPlayer.getCol() + selectedAction.getColChange();
-            int destinationRow = movingPlayer.getRow() + selectedAction.getRowChange();
+            Block destinationBlock = grid[destinationCol][destinationRow];
 
-            System.out.println(grid[destinationCol] + " " + grid[destinationCol][destinationRow]);
-            Collidable destinationBlock = grid[destinationCol][destinationRow];
-
-
-            // check if destination block is collidable and if it is sets PlayerCharacter's positions accordingly
             if (!destinationBlock.isColliding(movingPlayer)) {
 
                 movingPlayer.setPosition(destinationCol, destinationRow);
+
             }
 
-            // checks if PlayerCharacter is going to fall and if so sets it's positions
-            destinationBlock = checkFall(movingPlayer, (Block) destinationBlock);
+            if (!grid[movingPlayer.getCol()][movingPlayer.getRow() + 1].isColliding(movingPlayer)) {
+
+                movingPlayer.setFalling(true);
+                System.out.println("I'm about to fall");
+                verifyAction(movingPlayer.getId(), Action.FALLING);
+
+            }
 
             destinationBlock.doCollide(movingPlayer);
 
+
             if (exit.isColliding(player1, player2) && tokensLeft == 0) {
                 win = true;
-
             }
 
             return new int[]{player1.getCol(), player1.getRow(), player2.getCol(), player2.getRow()};
         }
-
     }
 
-    private PlayerCharacter checkPlayerNumber(int playerId) {
+    private int[] keepFalling(PlayerCharacter movingPlayer, Block[][] grid, int destinationCol, int destinationRow) {
 
-        if (playerId == player1.getId()) {
+        if (!grid[destinationCol][destinationRow].isColliding(movingPlayer)) {
+            movingPlayer.setPosition(destinationCol, destinationRow);
+            System.out.println("Falling!");
 
-            return player1;
-        } else {
+            // TODO: This commented out solution makes players fall one block at a time but only
+            // when the other one moves; this is not the intended behavior but it could be
+            // if we implement a timer.
 
-            return player2;
-        }
-    }
+            // return new int[]{player1.getCol(), player1.getRow(), player2.getCol(), player2.getRow()};
 
-    private Collidable checkFall(PlayerCharacter movingPlayer, Block destinationBlock) {
+            // Recursive solution: This makes players disappear from a platform and immediately appear below
 
-        int underlyingBlockRow = destinationBlock.getRow() - 1;
-        System.out.println(underlyingBlockRow);
-        Collidable underlyingBlock = grid[destinationBlock.getCol()][underlyingBlockRow];
-        System.out.println("ff");
+            verifyAction(movingPlayer.getId(), Action.FALLING);
 
-        if (underlyingBlock.isColliding(movingPlayer)) {
-            movingPlayer.setPosition(destinationBlock.getCol(), underlyingBlockRow);
-            checkFall(movingPlayer, (Block) underlyingBlock);
         }
 
-        return underlyingBlock;
+        movingPlayer.setFalling(false);
+        return new int[]{player1.getCol(), player1.getRow(), player2.getCol(), player2.getRow()};
+
     }
 
     public PlayerCharacter getPlayer1() {

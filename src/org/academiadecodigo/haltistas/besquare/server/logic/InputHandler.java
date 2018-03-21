@@ -1,15 +1,13 @@
 package org.academiadecodigo.haltistas.besquare.server.logic;
 
 import org.academiadecodigo.haltistas.besquare.client.Action;
+import org.academiadecodigo.haltistas.besquare.util.Message;
 
 public class InputHandler {
-
 
     public static Action interpret(String fromClient) {
 
         Action selectedAction = null;
-
-        System.out.println(fromClient);
 
         switch (fromClient) {
 
@@ -29,9 +27,8 @@ public class InputHandler {
                 selectedAction = Action.JUMP_LEFT;
                 break;
 
-                default:
-                    System.err.println("Received invalid fromClient HALP string");
-
+            default:
+                System.err.println(Message.ERR_HALP_STRING);
         }
 
         return selectedAction;
