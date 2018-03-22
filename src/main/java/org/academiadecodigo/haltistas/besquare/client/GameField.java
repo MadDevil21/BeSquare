@@ -1,6 +1,7 @@
 package org.academiadecodigo.haltistas.besquare.client;
 
 import org.academiadecodigo.haltistas.besquare.FilePath;
+import org.academiadecodigo.haltistas.besquare.client.timer.Gravity;
 import org.academiadecodigo.simplegraphics.pictures.Picture;
 
 import java.util.HashMap;
@@ -116,6 +117,10 @@ public class GameField {
     private int logicToCoord(int number) {
 
         return number * CELL_SIZE;
+    }
+
+    public void setupGravity(Gravity gravity) {
+       gravity.setCharacterSprites(p1Sprite, p2Sprite);
     }
 }
 

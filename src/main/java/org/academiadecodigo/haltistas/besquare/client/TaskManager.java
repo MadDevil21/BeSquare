@@ -5,17 +5,21 @@ import org.academiadecodigo.haltistas.besquare.client.event.Event;
 import org.academiadecodigo.haltistas.besquare.client.event.GameEvent;
 import org.academiadecodigo.haltistas.besquare.client.event.NewLevelEvent;
 import org.academiadecodigo.haltistas.besquare.client.event.TokenEvent;
+import org.academiadecodigo.haltistas.besquare.client.timer.Gravity;
 import org.academiadecodigo.haltistas.besquare.util.Message;
+
+import java.util.Timer;
 
 public class TaskManager {
 
     private GameField field;
     private Event event;
+    private Timer timer;
 
     TaskManager(GameField gameField) {
 
         this.field = gameField;
-
+        timer = new Timer();
     }
 
     protected void interpret(String fromServer) {
@@ -36,6 +40,11 @@ public class TaskManager {
 
             case TOKEN:
                 event = new TokenEvent(instructions);
+                break;
+            case FALLING:
+                Gravity gravity = new Gravity(timer);
+                field.setupGravity(gravity);
+                event = gravity;
                 break;
         }
 

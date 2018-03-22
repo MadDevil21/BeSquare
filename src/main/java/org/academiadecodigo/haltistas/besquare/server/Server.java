@@ -78,7 +78,11 @@ public class Server {
 
     protected void process(int playerId, String fromClient) {
 
-        game.process(playerId, fromClient);
+        String toClient = game.process(playerId, fromClient);
+
+        if (toClient != null) {
+            broadcast(toClient);
+        }
 
     }
 
