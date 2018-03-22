@@ -3,6 +3,7 @@ package org.academiadecodigo.haltistas.besquare.server.logic;
 import org.academiadecodigo.haltistas.besquare.GameState;
 import org.academiadecodigo.haltistas.besquare.client.Action;
 import org.academiadecodigo.haltistas.besquare.server.Server;
+import org.academiadecodigo.haltistas.besquare.server.environment.Token;
 
 import java.io.IOException;
 
@@ -45,8 +46,21 @@ public class Game {
         int[] positions = {initialP1X, initialP1Y, initialP2X, initialP2Y};
 
         String initialBroadcast = OutputHandler.buildPacket(gameState, level, positions);
-
         server.broadcast(initialBroadcast);
+
+        String tokenBroadcast = "";
+
+        for (Integer tokenIndex : grid.getTokenMap().keySet()) {
+            Token token = grid.getTokenMap().get(tokenIndex);
+
+            int tokenCol = token.getCol();
+            int tokenRow = token.getRow();
+
+            System.out.println(tokenBroadcast);
+            tokenBroadcast = OutputHandler.tokenPacketBuilder(1, tokenCol, tokenRow);
+
+            server.broadcast(tokenBroadcast);
+        }
 
         gameLoop();
     }
@@ -62,11 +76,23 @@ public class Game {
 
         int[] positions = grid.verifyAction(playerId, selectedAction);
 
-        if (grid.levelWon()){
+        int tokenIndex = grid.checkTokenCollisions(playerId);
+
+        System.out.println(tokenIndex);
+
+        if (tokenIndex != -1) {
+            //TODO: OutputHandler TokenPacketBuilder should go here;
+
+            String eatenTokenBroadcast = OutputHandler.tokenPacketBuilder(0, tokenIndex);
+            server.broadcast(eatenTokenBroadcast);
+
+        }
+
+        if (grid.levelWon()) {
 
             level = nextLevel();
 
-            if(level!= null) {
+            if (level != null) {
 
                 gameState = GameState.NEW_LEVEL;
                 loadNewLevel(level);
@@ -78,7 +104,7 @@ public class Game {
         return OutputHandler.buildPacket(gameState, level, positions);
     }
 
-    private Levels nextLevel(){
+    private Levels nextLevel() {
 
         Levels nextLevel = null;
 
@@ -86,8 +112,8 @@ public class Game {
 
         for (Levels levels : Levels.values()) {
 
-            if (level.ordinal() == levels.ordinal()){
-                nextLevel = Levels.values()[level.ordinal()+1];
+            if (level.ordinal() == levels.ordinal()) {
+                nextLevel = Levels.values()[level.ordinal() + 1];
             }
         }
 
