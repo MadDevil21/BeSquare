@@ -13,7 +13,7 @@ public class LogicGridLoader {
 
 
         BufferedReader fromFile = new BufferedReader(new FileReader(
-                        LogicGridLoader.class.getResource(level.getMatrix()).getFile()));
+                LogicGridLoader.class.getResource(level.getMatrix()).getFile()));
 
         Block[][] grid = new Block[LogicGrid.COLS][LogicGrid.ROWS];
 
