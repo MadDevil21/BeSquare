@@ -62,6 +62,11 @@ public class Game {
 
         int[] positions = grid.verifyAction(playerId, selectedAction);
 
+        if (grid.checkTokenCollisions(playerId) != null){
+            //TODO: OutputHandler TokenPacketBuilder should go here;
+
+        }
+
         if (grid.levelWon()){
 
             level = nextLevel();
