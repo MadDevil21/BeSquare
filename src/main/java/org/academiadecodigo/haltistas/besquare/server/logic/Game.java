@@ -5,6 +5,7 @@ import org.academiadecodigo.haltistas.besquare.client.Action;
 import org.academiadecodigo.haltistas.besquare.server.Server;
 import org.academiadecodigo.haltistas.besquare.server.environment.Token;
 import org.academiadecodigo.haltistas.besquare.server.logic.helpers.CollisionHelper;
+import org.academiadecodigo.haltistas.besquare.server.logic.timer.Gravity;
 
 import java.io.IOException;
 
@@ -69,28 +70,32 @@ public class Game {
     private void gameLoop() {
 
         status = Status.GAME;
+        Gravity gravity = new Gravity();
+
+        gravity.setGame(this);
+        grid.setupGravity(gravity);
     }
 
-    public synchronized String process(int playerId, String fromClient) {
+    public synchronized void process(int playerId, String fromClient) {
 
         Action selectedAction = InputHandler.interpret(fromClient);
-        System.out.println( "at server reset level: " + selectedAction);
+        System.out.println("at server reset level: " + selectedAction);
 
-        if(selectedAction.equals(Action.RESET_LEVEL)){
-            System.out.println( "at server reset level:  IF " + selectedAction);
+        if (selectedAction.equals(Action.RESET_LEVEL)) {
+            System.out.println("at server reset level:  IF " + selectedAction);
             loadNewLevel(level);
 
         }
 
         int[] positions = grid.verifyAction(playerId, selectedAction);
 
-        int tokenIndex = CollisionHelper.tokenCollisions(playerId, grid);
+        processThisShit(positions);
 
-        if (tokenIndex != -1) {
-            String eatenTokenBroadcast = OutputHandler.tokenPacketBuilder(0, tokenIndex);
-            server.broadcast(eatenTokenBroadcast);
+    }
 
-        }
+    public void processThisShit(int[] positions) {
+        checkPlayerToken(grid.getPlayer1().getId());
+        checkPlayerToken(grid.getPlayer2().getId());
 
         if (grid.levelWon()) {
 
@@ -100,12 +105,22 @@ public class Game {
 
                 status = Status.NEW_LEVEL;
                 loadNewLevel(level);
-                return null;
+                return;
             }
 
         }
 
-        return OutputHandler.buildPacket(status, level, positions);
+        server.broadcast(OutputHandler.buildPacket(status, level, positions));
+    }
+
+    private void checkPlayerToken(int playerId) {
+        int tokenIndex = CollisionHelper.tokenCollisions(playerId, grid);
+
+        if (tokenIndex != -1) {
+            String eatenTokenBroadcast = OutputHandler.tokenPacketBuilder(0, tokenIndex);
+            server.broadcast(eatenTokenBroadcast);
+
+        }
     }
 
     private Levels nextLevel() {

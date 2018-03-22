@@ -11,10 +11,10 @@ x..............................x
 x..............................x
 x..............................x
 x.1.2.......................e..x
-xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
-xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
-xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
-xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+xxxxxxxxxxx.....xxxxxxxxxxxxxxxx
+xxxxxxxxxxx....xxxxxxxxxxxxxxxxx
+xxxxxxxxxxx.xxxxxxxxxxxxxxxxxxxx
+xxxxxxxxxxx.xxxxxxxxxxxxxxxxxxxx
 xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
 xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
 xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx

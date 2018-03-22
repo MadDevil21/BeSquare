@@ -7,15 +7,18 @@ import org.academiadecodigo.haltistas.besquare.server.environment.Exit;
 import org.academiadecodigo.haltistas.besquare.server.environment.Token;
 import org.academiadecodigo.haltistas.besquare.server.logic.helpers.CollisionHelper;
 import org.academiadecodigo.haltistas.besquare.server.logic.helpers.FallHelper;
+import org.academiadecodigo.haltistas.besquare.server.logic.timer.Gravity;
 
 import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Timer;
 
 public class LogicGrid {
 
     public static final int COLS = 32;
     public static final int ROWS = 20;
+    private static final long FRAME_RATE = 200;
 
     private PlayerCharacter player1;
     private PlayerCharacter player2;
@@ -24,6 +27,8 @@ public class LogicGrid {
     private Exit exit;
     private Map<Integer, Token> tokenMap;
     private boolean win;
+    private Gravity gravity;
+    private Timer timer;
 
 
     LogicGrid() {
@@ -32,6 +37,7 @@ public class LogicGrid {
         player1 = new PlayerCharacter(COLS, ROWS, 1);
         player2 = new PlayerCharacter(COLS, ROWS, 2);
         tokenMap = new HashMap<>();
+        timer = new Timer();
 
     }
 
@@ -74,6 +80,8 @@ public class LogicGrid {
 
             if (exit.isColliding(player1, player2) && tokenMap.isEmpty()) {
                 win = true;
+                gravity.hovering();
+                gravity.cancel();
             }
 
             return new int[]{player1.getCol(), player1.getRow(), player2.getCol(), player2.getRow()};
@@ -135,5 +143,14 @@ public class LogicGrid {
 
     public void setExit(Exit exit) {
         this.exit = exit;
+    }
+
+    public void setupGravity(Gravity gravity) {
+
+        this.gravity = gravity;
+        gravity.setBlocks(grid);
+        gravity.addPlayer(player1);
+        gravity.addPlayer(player2);
+        timer.scheduleAtFixedRate(gravity, 0, FRAME_RATE);
     }
 }

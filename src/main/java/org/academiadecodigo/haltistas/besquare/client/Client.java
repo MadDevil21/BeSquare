@@ -1,6 +1,5 @@
 package org.academiadecodigo.haltistas.besquare.client;
 
-import org.academiadecodigo.haltistas.besquare.GameState;
 import org.academiadecodigo.haltistas.besquare.util.Message;
 
 import java.io.*;
