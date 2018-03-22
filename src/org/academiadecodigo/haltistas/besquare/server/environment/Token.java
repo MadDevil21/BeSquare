@@ -8,4 +8,10 @@ public class Token extends Background {
         super(col, row);
     }
 
+    @Override
+    public boolean isColliding(PlayerCharacter playerCharacter) {
+        return playerCharacter.getCol() == super.getCol() &&
+                playerCharacter.getRow() == super.getRow();
+
+    }
 }

@@ -58,8 +58,10 @@ public class OutputHandler {
         StringBuilder sb = new StringBuilder();
 
         sb.append(GameState.TOKEN.name() + ' ');
-        sb.append(action + ' ');
-        sb.append(tokenIndex + ' ');
+        sb.append(action);
+        sb.append(' ');
+        sb.append(tokenIndex);
+        sb.append(' ');
         sb.append("0 0 0");
 
         return sb.toString();

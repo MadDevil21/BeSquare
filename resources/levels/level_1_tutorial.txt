@@ -7,10 +7,10 @@
 x..............................x
 x..............................x
 x..............................x
+x.............t................x
 x..............................x
 x..............................x
-x..............................x
-x.1.2...t....t......t........e.x
+x.1.2..t..t..t...t..t..t.....e.x
 xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
 xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
 xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx

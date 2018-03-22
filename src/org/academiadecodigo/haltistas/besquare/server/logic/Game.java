@@ -77,7 +77,10 @@ public class Game {
         int[] positions = grid.verifyAction(playerId, selectedAction);
 
         int tokenIndex = grid.checkTokenCollisions(playerId);
-        if (tokenIndex != -1){
+
+        System.out.println(tokenIndex);
+
+        if (tokenIndex != -1) {
             //TODO: OutputHandler TokenPacketBuilder should go here;
 
             String eatenTokenBroadcast = OutputHandler.tokenPacketBuilder(0, tokenIndex);
@@ -85,11 +88,11 @@ public class Game {
 
         }
 
-        if (grid.levelWon()){
+        if (grid.levelWon()) {
 
             level = nextLevel();
 
-            if(level!= null) {
+            if (level != null) {
 
                 gameState = GameState.NEW_LEVEL;
                 loadNewLevel(level);
@@ -101,7 +104,7 @@ public class Game {
         return OutputHandler.buildPacket(gameState, level, positions);
     }
 
-    private Levels nextLevel(){
+    private Levels nextLevel() {
 
         Levels nextLevel = null;
 
@@ -109,8 +112,8 @@ public class Game {
 
         for (Levels levels : Levels.values()) {
 
-            if (level.ordinal() == levels.ordinal()){
-                nextLevel = Levels.values()[level.ordinal()+1];
+            if (level.ordinal() == levels.ordinal()) {
+                nextLevel = Levels.values()[level.ordinal() + 1];
             }
         }
 

@@ -156,20 +156,32 @@ public class LogicGrid {
 
     public int checkTokenCollisions(int id) {
 
-        int eatenToken = -1;
+        int eatenTokenIndex = -1;
 
         PlayerCharacter checkedCharacter = currentCharacter(id);
 
-        for (int i = 0; i < tokenMap.size(); i++) {
-            if (tokenMap.get(i).isColliding(checkedCharacter)) {
-                eatenToken = i;
-                tokenMap.remove(i);
-                return eatenToken;
+        for (Integer index : tokenMap.keySet()) {
+
+            if (tokenMap.get(index) == null) {
+                continue;
+            }
+
+            Token checkedToken = tokenMap.get(index);
+
+            if (checkedToken.isColliding(checkedCharacter)) {
+                eatenTokenIndex = index;
+
+                System.out.println("Om nom nom token # " + eatenTokenIndex);
+                tokenMap.remove(eatenTokenIndex);
+
+                return eatenTokenIndex;
 
             }
+
         }
 
-        return eatenToken;
+        return eatenTokenIndex;
+
     }
 
 
