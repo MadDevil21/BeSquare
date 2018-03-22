@@ -10,6 +10,8 @@ import org.academiadecodigo.haltistas.besquare.server.logic.helpers.FallHelper;
 
 import java.io.IOException;
 import java.util.HashMap;
+import java.util.LinkedList;
+import java.util.List;
 import java.util.Map;
 
 public class LogicGrid {
@@ -43,17 +45,20 @@ public class LogicGrid {
 
     public int[] verifyAction(int playerId, Action selectedAction) {
 
+        player1.setFallen(false);
+        player2.setFallen(false);
+
         PlayerCharacter movingPlayer = fetchById(playerId);
 
         synchronized (this) {
+
+            checkJump(movingPlayer, selectedAction);
 
             if (FallHelper.shouldKeepFalling(movingPlayer)) {
                 FallHelper.processFall(movingPlayer, grid);
                 return new int[]{player1.getCol(), player1.getRow(), player2.getCol(), player2.getRow()};
 
             }
-
-            checkJump(movingPlayer, selectedAction);
 
             int destinationCol = movingPlayer.getCol() + selectedAction.getColChange();
             int destinationRow = movingPlayer.getRow() + selectedAction.getRowChange();
@@ -135,5 +140,9 @@ public class LogicGrid {
 
     public void setExit(Exit exit) {
         this.exit = exit;
+    }
+
+    public boolean anyPlayerIsFalling() {
+        return player1.hasFallen() || player2.hasFallen();
     }
 }

@@ -4,48 +4,41 @@ import org.academiadecodigo.haltistas.besquare.client.CharacterSprite;
 import org.academiadecodigo.haltistas.besquare.client.GameField;
 import org.academiadecodigo.haltistas.besquare.client.event.Event;
 
-import java.util.Timer;
+import java.util.Arrays;
 import java.util.TimerTask;
 
 public class Gravity extends TimerTask implements Event {
 
-    private static final long FRAME_RATE = 60;
     private int[] finalPositions;
-    private Timer timer;
     private GameField field;
     private CharacterSprite p1Sprite;
     private CharacterSprite p2Sprite;
     private int deltaRowP1;
     private int deltaRowP2;
 
-    public Gravity(Timer timer) {
-        this.timer = timer;
-    }
-
     @Override
     public void run() {
 
         System.out.println(deltaRowP1 + " " + deltaRowP2);
         if (deltaRowP1 <= 0 && deltaRowP2 <= 0) {
-            System.out.println("canceling");
             this.cancel();
             return;
         }
 
-        movePlayer1(finalPositions[0], finalPositions[1]);
-        movePlayer2(finalPositions[2], finalPositions[3]);
+        movePlayer1();
+        movePlayer2();
     }
 
-    private void movePlayer2(int col, int row) {
-        if (!p2Sprite.isInPosition(col, row)) {
+    private void movePlayer2() {
+        if (deltaRowP2 > 0) {
             field.moveCharacters(p1Sprite.getCol(), p1Sprite.getRow() , p2Sprite.getCol(),
                     p2Sprite.getRow() + 1);
             deltaRowP2--;
         }
     }
 
-    private void movePlayer1(int x, int y) {
-        if (!p1Sprite.isInPosition(x, y)) {
+    private void movePlayer1() {
+        if (deltaRowP1 > 0) {
             field.moveCharacters(p1Sprite.getCol(), p1Sprite.getRow() + 1
                     , p2Sprite.getCol(), p2Sprite.getRow());
             deltaRowP1--;
@@ -58,23 +51,40 @@ public class Gravity extends TimerTask implements Event {
         processToInts(data);
 
         this.field = field;
-        timer.scheduleAtFixedRate(this, 0, FRAME_RATE);
     }
 
     private void processToInts(String[] data) {
-
+        System.out.println(data.length);
         finalPositions = new int[data.length - 1];
-        for (int i = 1; i < data.length; i++) {
-            finalPositions[i - 1] = Integer.parseInt(data[i]);
-        }
+        finalPositions[0] = parseInt(data[2]);
+        finalPositions[1] = parseInt(data[3]);
+        finalPositions[2] = parseInt(data[4]);
+        finalPositions[3] = parseInt(data[5]);
 
         deltaRowP1 = finalPositions[1] - p1Sprite.getRow();
         deltaRowP2 = finalPositions[3] - p2Sprite.getRow();
 
     }
 
+    private int parseInt(String datum) {
+        return Integer.parseInt(datum);
+    }
+
     public void setCharacterSprites(CharacterSprite p1Sprite, CharacterSprite p2Sprite) {
         this.p1Sprite = p1Sprite;
         this.p2Sprite = p2Sprite;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Gravity gravity = (Gravity) o;
+        return Arrays.equals(finalPositions, gravity.finalPositions);
+    }
+
+    @Override
+    public int hashCode() {
+        return Arrays.hashCode(finalPositions);
     }
 }

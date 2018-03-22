@@ -74,10 +74,10 @@ public class Game {
     public synchronized String process(int playerId, String fromClient) {
 
         Action selectedAction = InputHandler.interpret(fromClient);
-        System.out.println( "at server reset level: " + selectedAction);
+        System.out.println("at server reset level: " + selectedAction);
 
-        if(selectedAction.equals(Action.RESET_LEVEL)){
-            System.out.println( "at server reset level:  IF " + selectedAction);
+        if (selectedAction.equals(Action.RESET_LEVEL)) {
+            System.out.println("at server reset level:  IF " + selectedAction);
             loadNewLevel(level);
 
         }
@@ -90,6 +90,10 @@ public class Game {
             String eatenTokenBroadcast = OutputHandler.tokenPacketBuilder(0, tokenIndex);
             server.broadcast(eatenTokenBroadcast);
 
+        }
+
+        if (grid.anyPlayerIsFalling() && hadFallingAction(selectedAction)) {
+            status = Status.FALLING;
         }
 
         if (grid.levelWon()) {
@@ -105,7 +109,12 @@ public class Game {
 
         }
 
+
         return OutputHandler.buildPacket(status, level, positions);
+    }
+
+    private boolean hadFallingAction(Action selectedAction) {
+        return selectedAction.equals(Action.JUMP_LEFT) || selectedAction.equals(Action.JUMP_RIGHT);
     }
 
     private Levels nextLevel() {
