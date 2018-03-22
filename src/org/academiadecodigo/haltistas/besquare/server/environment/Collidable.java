@@ -5,7 +5,7 @@ import org.academiadecodigo.haltistas.besquare.server.PlayerCharacter;
 
 public interface Collidable {
 
-    boolean isColliding(PlayerCharacter playerCharacter, Action action);
+    boolean isColliding(PlayerCharacter playerCharacter);
 
     void doCollide(PlayerCharacter player);
 }

@@ -10,7 +10,7 @@ public class Background extends Block {
     }
 
     @Override
-    public boolean isColliding(PlayerCharacter playerCharacter, Action action) {
+    public boolean isColliding(PlayerCharacter playerCharacter) {
         return false;
     }
 
