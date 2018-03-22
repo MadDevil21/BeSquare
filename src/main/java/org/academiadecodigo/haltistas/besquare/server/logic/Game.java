@@ -4,6 +4,7 @@ import org.academiadecodigo.haltistas.besquare.Status;
 import org.academiadecodigo.haltistas.besquare.client.Action;
 import org.academiadecodigo.haltistas.besquare.server.Server;
 import org.academiadecodigo.haltistas.besquare.server.environment.Token;
+import org.academiadecodigo.haltistas.besquare.server.logic.helpers.CollisionHelper;
 
 import java.io.IOException;
 
@@ -76,13 +77,9 @@ public class Game {
 
         int[] positions = grid.verifyAction(playerId, selectedAction);
 
-        int tokenIndex = grid.checkTokenCollisions(playerId);
-
-        System.out.println(tokenIndex);
+        int tokenIndex = CollisionHelper.tokenCollisions(playerId, grid);
 
         if (tokenIndex != -1) {
-            //TODO: OutputHandler TokenPacketBuilder should go here;
-
             String eatenTokenBroadcast = OutputHandler.tokenPacketBuilder(0, tokenIndex);
             server.broadcast(eatenTokenBroadcast);
 
@@ -119,4 +116,5 @@ public class Game {
 
         return nextLevel;
     }
+
 }

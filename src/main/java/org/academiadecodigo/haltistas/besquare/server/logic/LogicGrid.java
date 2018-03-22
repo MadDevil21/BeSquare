@@ -5,6 +5,7 @@ import org.academiadecodigo.haltistas.besquare.server.PlayerCharacter;
 import org.academiadecodigo.haltistas.besquare.server.environment.Block;
 import org.academiadecodigo.haltistas.besquare.server.environment.Exit;
 import org.academiadecodigo.haltistas.besquare.server.environment.Token;
+import org.academiadecodigo.haltistas.besquare.server.logic.helpers.CollisionHelper;
 import org.academiadecodigo.haltistas.besquare.server.logic.helpers.FallHelper;
 
 import java.io.IOException;
@@ -46,40 +47,30 @@ public class LogicGrid {
 
         synchronized (this) {
 
-            int destinationCol;
-            int destinationRow;
-
             if (FallHelper.shouldKeepFalling(movingPlayer)) {
-
                 FallHelper.processFall(movingPlayer, grid);
-
                 return new int[]{player1.getCol(), player1.getRow(), player2.getCol(), player2.getRow()};
 
             }
 
             checkJump(movingPlayer, selectedAction);
 
-            destinationCol = movingPlayer.getCol() + selectedAction.getColChange();
-            destinationRow = movingPlayer.getRow() + selectedAction.getRowChange();
+            int destinationCol = movingPlayer.getCol() + selectedAction.getColChange();
+            int destinationRow = movingPlayer.getRow() + selectedAction.getRowChange();
 
             Block destinationBlock = grid[destinationCol][destinationRow];
 
-            if (!destinationBlock.isColliding(movingPlayer)) {
-
-                movingPlayer.setPosition(destinationCol, destinationRow);
-            }
+            CollisionHelper.processCollision(movingPlayer, destinationBlock, grid);
 
             movingPlayer.setJumping(false);
 
-            if (!grid[movingPlayer.getCol()][movingPlayer.getRow() + 1].isColliding(movingPlayer)) {
-
+            if (!CollisionHelper.platformUnder(movingPlayer, grid)) {
                 movingPlayer.setFalling(true);
                 verifyAction(movingPlayer.getId(), Action.FALLING);
 
             }
 
-            destinationBlock.doCollide(movingPlayer);
-
+            win = CollisionHelper.checkWin(this);
 
             if (exit.isColliding(player1, player2) && tokenMap.isEmpty()) {
                 win = true;
@@ -88,6 +79,7 @@ public class LogicGrid {
             return new int[]{player1.getCol(), player1.getRow(), player2.getCol(), player2.getRow()};
 
         }
+
     }
 
     private void checkJump(PlayerCharacter movingPlayer, Action selectedAction) {
@@ -95,14 +87,6 @@ public class LogicGrid {
         if (selectedAction == Action.JUMP_LEFT || selectedAction == Action.JUMP_RIGHT) {
             movingPlayer.setJumping(true);
         }
-    }
-
-    public PlayerCharacter getPlayer1() {
-        return player1;
-    }
-
-    public PlayerCharacter getPlayer2() {
-        return player2;
     }
 
     public boolean levelWon() {
@@ -115,19 +99,16 @@ public class LogicGrid {
 
     }
 
-    private PlayerCharacter fetchById(int id) {
-        PlayerCharacter currentCharacter = null;
+    public PlayerCharacter fetchById(int id) {
+        PlayerCharacter pickedCharacter;
 
         if (id == player1.getId()) {
-
-            currentCharacter = player1;
+            pickedCharacter = player1;
 
         } else {
-
-            currentCharacter = player2;
+            pickedCharacter = player2;
         }
-
-        return currentCharacter;
+        return pickedCharacter;
 
     }
 
@@ -135,41 +116,21 @@ public class LogicGrid {
         return tokenMap;
     }
 
-    public int checkTokenCollisions(int id) {
-
-        int eatenTokenIndex = -1;
-
-        PlayerCharacter checkedCharacter = fetchById(id);
-
-        for (Integer index : tokenMap.keySet()) {
-
-            if (tokenMap.get(index) == null) {
-                continue;
-            }
-
-            Token checkedToken = tokenMap.get(index);
-
-            if (checkedToken.isColliding(checkedCharacter)) {
-                eatenTokenIndex = index;
-
-                System.out.println("Om nom nom token # " + eatenTokenIndex);
-                removeToken(eatenTokenIndex);
-
-                return eatenTokenIndex;
-
-            }
-
-        }
-
-        return eatenTokenIndex;
-
-    }
-
-
-
     public void removeToken(Integer index) {
         tokenMap.remove(index);
 
+    }
+
+    public PlayerCharacter getPlayer1() {
+        return player1;
+    }
+
+    public PlayerCharacter getPlayer2() {
+        return player2;
+    }
+
+    public Exit getExit() {
+        return exit;
     }
 
     public void setExit(Exit exit) {

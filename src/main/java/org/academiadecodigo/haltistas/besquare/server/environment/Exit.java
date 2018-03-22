@@ -22,7 +22,10 @@ public class Exit extends Background {
             return false;
         }
 
-        return p1.getCol() == getCol() && p2.getCol() == getCol() && p1.getRow() == getRow() && p2.getRow() == getRow();
+        return p1.getCol() == getCol() &&
+                p2.getCol() == getCol() &&
+                p1.getRow() == getRow() &&
+                p2.getRow() == getRow();
     }
 
     @Override
