@@ -1,6 +1,5 @@
 package org.academiadecodigo.haltistas.besquare.server.environment;
 
-import org.academiadecodigo.haltistas.besquare.client.Action;
 import org.academiadecodigo.haltistas.besquare.server.PlayerCharacter;
 
 public abstract class Block implements Collidable {

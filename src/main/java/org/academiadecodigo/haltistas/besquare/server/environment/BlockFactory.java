@@ -1,7 +1,5 @@
 package org.academiadecodigo.haltistas.besquare.server.environment;
 
-import org.academiadecodigo.haltistas.besquare.server.PlayerCharacter;
-
 public class BlockFactory {
 
     public static Block createBlock(BlockType blockType, int col, int row) {

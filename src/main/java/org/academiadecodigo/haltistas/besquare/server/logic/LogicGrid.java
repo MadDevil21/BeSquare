@@ -2,7 +2,8 @@ package org.academiadecodigo.haltistas.besquare.server.logic;
 
 import org.academiadecodigo.haltistas.besquare.client.Action;
 import org.academiadecodigo.haltistas.besquare.server.PlayerCharacter;
-import org.academiadecodigo.haltistas.besquare.server.environment.*;
+import org.academiadecodigo.haltistas.besquare.server.environment.Block;
+import org.academiadecodigo.haltistas.besquare.server.environment.Exit;
 
 import java.io.IOException;
 
