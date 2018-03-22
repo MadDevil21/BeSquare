@@ -3,6 +3,7 @@ package org.academiadecodigo.haltistas.besquare.server.logic;
 import org.academiadecodigo.haltistas.besquare.GameState;
 import org.academiadecodigo.haltistas.besquare.client.Action;
 import org.academiadecodigo.haltistas.besquare.server.Server;
+import org.academiadecodigo.haltistas.besquare.server.environment.Token;
 
 import java.io.IOException;
 
@@ -45,8 +46,21 @@ public class Game {
         int[] positions = {initialP1X, initialP1Y, initialP2X, initialP2Y};
 
         String initialBroadcast = OutputHandler.buildPacket(gameState, level, positions);
-
         server.broadcast(initialBroadcast);
+
+        String tokenBroadcast = "";
+
+        for (Integer tokenIndex : grid.getTokenMap().keySet()) {
+            Token token = grid.getTokenMap().get(tokenIndex);
+
+            int tokenCol = token.getCol();
+            int tokenRow = token.getRow();
+
+            System.out.println(tokenBroadcast);
+            tokenBroadcast = OutputHandler.tokenPacketBuilder(1, tokenCol, tokenRow);
+
+            server.broadcast(tokenBroadcast);
+        }
 
         gameLoop();
     }
@@ -62,8 +76,12 @@ public class Game {
 
         int[] positions = grid.verifyAction(playerId, selectedAction);
 
-        if (grid.checkTokenCollisions(playerId) != null){
+        int tokenIndex = grid.checkTokenCollisions(playerId);
+        if (tokenIndex != -1){
             //TODO: OutputHandler TokenPacketBuilder should go here;
+
+            String eatenTokenBroadcast = OutputHandler.tokenPacketBuilder(0, tokenIndex);
+            server.broadcast(eatenTokenBroadcast);
 
         }
 

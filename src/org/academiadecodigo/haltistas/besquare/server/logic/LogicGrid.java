@@ -150,22 +150,26 @@ public class LogicGrid {
 
     }
 
-    public Token checkTokenCollisions(int id) {
+    public Map<Integer, Token> getTokenMap() {
+        return tokenMap;
+    }
 
-        Token eatenToken = null;
+    public int checkTokenCollisions(int id) {
+
+        int eatenToken = -1;
 
         PlayerCharacter checkedCharacter = currentCharacter(id);
 
         for (int i = 0; i < tokenMap.size(); i++) {
             if (tokenMap.get(i).isColliding(checkedCharacter)) {
-                eatenToken = tokenMap.get(i);
+                eatenToken = i;
                 tokenMap.remove(i);
+                return eatenToken;
 
             }
         }
 
         return eatenToken;
-
     }
 
 

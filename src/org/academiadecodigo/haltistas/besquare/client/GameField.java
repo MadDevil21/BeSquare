@@ -3,6 +3,7 @@ package org.academiadecodigo.haltistas.besquare.client;
 import org.academiadecodigo.haltistas.besquare.FilePath;
 import org.academiadecodigo.simplegraphics.pictures.Picture;
 
+import java.util.HashMap;
 import java.util.Map;
 
 public class GameField {
@@ -13,6 +14,12 @@ public class GameField {
     private Picture background;
     private CharacterSprite p1Sprite;
     private CharacterSprite p2Sprite;
+    private Map<Integer, Picture> tokenSprites;
+
+    public GameField(){
+        tokenSprites = new HashMap<>();
+
+    }
 
     /**
      * Method to calculate the final X and Y positions for players, which come in Col and Row format and need
@@ -81,11 +88,29 @@ public class GameField {
         p2Sprite.getSprite().draw();
     }
 
-    protected void loadToken(int col, int row){
+    protected void createTokenSprite(int col, int row){
 
-        Picture tokenSprite = new Picture(col, row, FilePath.TOKEN);
+        System.out.println("trying to create at col " + col);
+        int tokenX = logicToCoord(col);
+        System.out.println("creating token at x: " + tokenX);
+        System.out.println("trying to create at col " + row);
+        int tokenY = logicToCoord(row);
+        System.out.println("creating token at y: " + tokenY);
+
+        Picture tokenSprite = new Picture(tokenX, tokenY, FilePath.TOKEN);
+        int index = tokenSprites.size();
+
         tokenSprite.draw();
+        tokenSprites.put(index, tokenSprite);
     }
+
+    protected void killTokenSprite(int index){
+
+        tokenSprites.get(index).delete();
+        tokenSprites.remove(index);
+
+    }
+
 
     private int logicToCoord(int number){
 

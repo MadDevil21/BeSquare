@@ -25,6 +25,7 @@ public class TaskManager {
         int position2col = toInt(instructions[4]);
         int position2row = toInt(instructions[5]);
 
+
         if (instructions[0].equals(GameState.NEW_LEVEL.name())) {
 
             backgroundPath = changeLevel(instructions[1]);
@@ -34,8 +35,24 @@ public class TaskManager {
             return;
         }
 
+        // TODO refactor this into methods
+
         if (instructions[0].equals(GameState.TOKEN.name())) {
-            field.loadToken(position1col, position1row);
+
+            if (instructions[1].equals("1")) {
+
+                int col = toInt(instructions[2]);
+                int row = toInt(instructions[3]);
+
+                field.createTokenSprite(col, row);
+
+            } else if (instructions[1].equals("0")) {
+
+                field.killTokenSprite(toInt(instructions[2]));
+
+            }
+            return;
+
         }
 
         field.moveCharacters(position1col, position1row, position2col, position2row);
