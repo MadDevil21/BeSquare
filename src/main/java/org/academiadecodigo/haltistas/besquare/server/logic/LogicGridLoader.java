@@ -3,9 +3,9 @@ package org.academiadecodigo.haltistas.besquare.server.logic;
 import org.academiadecodigo.haltistas.besquare.server.environment.*;
 import org.academiadecodigo.haltistas.besquare.util.Message;
 
-import java.io.*;
-import java.util.LinkedList;
-import java.util.List;
+import java.io.BufferedReader;
+import java.io.FileReader;
+import java.io.IOException;
 
 public class LogicGridLoader {
 
@@ -57,6 +57,7 @@ public class LogicGridLoader {
                 break;
 
             case 't':
+
                 logicGrid.addTokenToMap(new Token(col, row));
                 returnBlock = BlockFactory.createBlock(BlockType.BACKGROUND, col, row);
                 break;
