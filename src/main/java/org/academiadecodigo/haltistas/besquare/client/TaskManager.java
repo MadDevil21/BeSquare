@@ -1,11 +1,10 @@
 package org.academiadecodigo.haltistas.besquare.client;
 
 import org.academiadecodigo.haltistas.besquare.Status;
-import org.academiadecodigo.haltistas.besquare.client.Event.Event;
-import org.academiadecodigo.haltistas.besquare.client.Event.GameEvent;
-import org.academiadecodigo.haltistas.besquare.client.Event.NewLevelEvent;
-import org.academiadecodigo.haltistas.besquare.client.Event.TokenEvent;
-import org.academiadecodigo.haltistas.besquare.server.logic.Levels;
+import org.academiadecodigo.haltistas.besquare.client.event.Event;
+import org.academiadecodigo.haltistas.besquare.client.event.GameEvent;
+import org.academiadecodigo.haltistas.besquare.client.event.NewLevelEvent;
+import org.academiadecodigo.haltistas.besquare.client.event.TokenEvent;
 import org.academiadecodigo.haltistas.besquare.util.Message;
 
 public class TaskManager {

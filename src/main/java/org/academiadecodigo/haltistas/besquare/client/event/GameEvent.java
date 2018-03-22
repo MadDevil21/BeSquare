@@ -1,4 +1,4 @@
-package org.academiadecodigo.haltistas.besquare.client.Event;
+package org.academiadecodigo.haltistas.besquare.client.event;
 
 import org.academiadecodigo.haltistas.besquare.client.GameField;
 

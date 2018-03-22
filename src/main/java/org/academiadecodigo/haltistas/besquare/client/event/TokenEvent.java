@@ -1,4 +1,4 @@
-package org.academiadecodigo.haltistas.besquare.client.Event;
+package org.academiadecodigo.haltistas.besquare.client.event;
 
 import org.academiadecodigo.haltistas.besquare.client.GameField;
 
@@ -10,18 +10,21 @@ public class TokenEvent extends AbstractEvent {
     @Override
     public void process(String[] data, GameField field) {
 
-        if (data[1].equals("1")) {
+        if (isCreateToken(data[1])) {
 
             int col = toInt(data[2]);
             int row = toInt(data[3]);
 
             field.createTokenSprite(col, row);
-
-        } else if (data[1].equals("0")) {
-
-            field.killTokenSprite(toInt(data[2]));
-
+            return;
         }
 
+        int indexToKill = toInt(data[2]);
+        field.killTokenSprite(indexToKill);
+
+    }
+
+    private boolean isCreateToken(String data) {
+        return data.equals("1");
     }
 }

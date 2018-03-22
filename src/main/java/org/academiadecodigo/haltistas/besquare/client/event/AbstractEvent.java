@@ -1,6 +1,4 @@
-package org.academiadecodigo.haltistas.besquare.client.Event;
-
-import org.academiadecodigo.haltistas.besquare.client.GameField;
+package org.academiadecodigo.haltistas.besquare.client.event;
 
 public abstract class AbstractEvent implements Event {
 
