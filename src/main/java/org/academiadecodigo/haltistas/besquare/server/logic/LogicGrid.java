@@ -5,11 +5,10 @@ import org.academiadecodigo.haltistas.besquare.server.PlayerCharacter;
 import org.academiadecodigo.haltistas.besquare.server.environment.Block;
 import org.academiadecodigo.haltistas.besquare.server.environment.Exit;
 import org.academiadecodigo.haltistas.besquare.server.environment.Token;
+import org.academiadecodigo.haltistas.besquare.server.logic.helpers.FallHelper;
 
 import java.io.IOException;
 import java.util.HashMap;
-import java.util.LinkedList;
-import java.util.List;
 import java.util.Map;
 
 public class LogicGrid {
@@ -26,10 +25,7 @@ public class LogicGrid {
     private boolean win;
 
 
-    //TODO: Grid loader should inform the grid how many tokens there are and where they are
-    //TODO: This could be stored in a list or a map
-
-    public LogicGrid() {
+    LogicGrid() {
 
         grid = new Block[COLS][ROWS];
         player1 = new PlayerCharacter(COLS, ROWS, 1);
@@ -46,22 +42,20 @@ public class LogicGrid {
 
     public int[] verifyAction(int playerId, Action selectedAction) {
 
-        PlayerCharacter movingPlayer = currentCharacter(playerId);
+        PlayerCharacter movingPlayer = fetchById(playerId);
 
         synchronized (this) {
 
             int destinationCol;
             int destinationRow;
 
-            if (movingPlayer.isFalling() && !movingPlayer.isJumping()) {
+            if (FallHelper.shouldKeepFalling(movingPlayer)) {
 
-                destinationCol = movingPlayer.getCol();
-                destinationRow = movingPlayer.getRow() + 1;
-                return keepFalling(movingPlayer, grid, destinationCol, destinationRow);
+                FallHelper.processFall(movingPlayer, grid);
+
+                return new int[]{player1.getCol(), player1.getRow(), player2.getCol(), player2.getRow()};
 
             }
-
-            // TODO: Method should recognize when a token was grabbed and remove 1 from the number of tokens left
 
             checkJump(movingPlayer, selectedAction);
 
@@ -103,29 +97,6 @@ public class LogicGrid {
         }
     }
 
-    private int[] keepFalling(PlayerCharacter movingPlayer, Block[][] grid, int destinationCol, int destinationRow) {
-
-        if (!grid[destinationCol][destinationRow].isColliding(movingPlayer)) {
-            movingPlayer.setPosition(destinationCol, destinationRow);
-            System.out.println("Falling!");
-
-            // TODO: This commented out solution makes players fall one block at a time but only
-            // when the other one moves; this is not the intended behavior but it could be
-            // if we implement a timer.
-
-            // return new int[]{player1.getCol(), player1.getRow(), player2.getCol(), player2.getRow()};
-
-            // Recursive solution: This makes players disappear from a platform and immediately appear below
-
-            verifyAction(movingPlayer.getId(), Action.FALLING);
-
-        }
-
-        movingPlayer.setFalling(false);
-        return new int[]{player1.getCol(), player1.getRow(), player2.getCol(), player2.getRow()};
-
-    }
-
     public PlayerCharacter getPlayer1() {
         return player1;
     }
@@ -144,7 +115,7 @@ public class LogicGrid {
 
     }
 
-    private PlayerCharacter currentCharacter(int id) {
+    private PlayerCharacter fetchById(int id) {
         PlayerCharacter currentCharacter = null;
 
         if (id == player1.getId()) {
@@ -168,7 +139,7 @@ public class LogicGrid {
 
         int eatenTokenIndex = -1;
 
-        PlayerCharacter checkedCharacter = currentCharacter(id);
+        PlayerCharacter checkedCharacter = fetchById(id);
 
         for (Integer index : tokenMap.keySet()) {
 
@@ -182,7 +153,7 @@ public class LogicGrid {
                 eatenTokenIndex = index;
 
                 System.out.println("Om nom nom token # " + eatenTokenIndex);
-                tokenMap.remove(eatenTokenIndex);
+                removeToken(eatenTokenIndex);
 
                 return eatenTokenIndex;
 
@@ -193,6 +164,7 @@ public class LogicGrid {
         return eatenTokenIndex;
 
     }
+
 
 
     public void removeToken(Integer index) {
