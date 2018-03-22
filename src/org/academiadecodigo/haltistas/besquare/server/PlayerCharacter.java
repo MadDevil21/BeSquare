@@ -6,6 +6,7 @@ public class PlayerCharacter {
     private int col;
     private int row;
     private boolean isFalling = false;
+    private boolean isJumping = false;
 
     public PlayerCharacter(int col, int row, int id) {
         this.col = col;
@@ -38,5 +39,13 @@ public class PlayerCharacter {
     public void setFalling(boolean falling) {
 
         isFalling = falling;
+    }
+
+    public boolean isJumping() {
+        return isJumping;
+    }
+
+    public void setJumping(boolean jumping) {
+        isJumping = jumping;
     }
 }
