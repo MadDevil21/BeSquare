@@ -27,6 +27,10 @@ public class InputHandler {
                 selectedAction = Action.JUMP_LEFT;
                 break;
 
+            case "R L":
+                selectedAction = Action.RESET_LEVEL;
+                break;
+
             default:
                 System.err.println(Message.ERR_HALP_STRING);
         }

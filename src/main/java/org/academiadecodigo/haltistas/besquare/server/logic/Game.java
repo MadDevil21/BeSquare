@@ -74,6 +74,13 @@ public class Game {
     public synchronized String process(int playerId, String fromClient) {
 
         Action selectedAction = InputHandler.interpret(fromClient);
+        System.out.println( "at server reset level: " + selectedAction);
+
+        if(selectedAction.equals(Action.RESET_LEVEL)){
+            System.out.println( "at server reset level:  IF " + selectedAction);
+            loadNewLevel(level);
+
+        }
 
         int[] positions = grid.verifyAction(playerId, selectedAction);
 
