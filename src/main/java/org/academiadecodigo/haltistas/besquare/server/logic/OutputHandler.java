@@ -1,6 +1,6 @@
 package org.academiadecodigo.haltistas.besquare.server.logic;
 
-import org.academiadecodigo.haltistas.besquare.GameState;
+import org.academiadecodigo.haltistas.besquare.Status;
 
 public class OutputHandler {
 
@@ -8,17 +8,17 @@ public class OutputHandler {
      * This Utility class will build a String in the correct protocol standard for the game, for the server to
      * send to the clients, after updating their positions.
      *
-     * @param gs                Current GameState;
+     * @param status            Current status;
      * @param level             Current level;
      * @param playerCoordinates Player coordinates, in the following order: player 1 X, player 1 Y, player 2 X, player 2 Y;
      * @return A string formatted per our protocol standard.
      */
 
-    public static String buildPacket(GameState gs, Levels level, int[] playerCoordinates) {
+    public static String buildPacket(Status status, Levels level, int[] playerCoordinates) {
 
         StringBuilder sb = new StringBuilder();
 
-        sb.append(gs.name());
+        sb.append(status.name());
         sb.append(' ');
 
         sb.append(level.name());
@@ -40,7 +40,7 @@ public class OutputHandler {
     public static String tokenPacketBuilder(int action, int col, int row) {
         StringBuilder sb = new StringBuilder();
 
-        sb.append(GameState.TOKEN.name() + ' ');
+        sb.append(Status.TOKEN.name() + ' ');
         sb.append(action);
         sb.append(' ');
         sb.append(col);
@@ -57,7 +57,7 @@ public class OutputHandler {
 
         StringBuilder sb = new StringBuilder();
 
-        sb.append(GameState.TOKEN.name() + ' ');
+        sb.append(Status.TOKEN.name() + ' ');
         sb.append(action);
         sb.append(' ');
         sb.append(tokenIndex);

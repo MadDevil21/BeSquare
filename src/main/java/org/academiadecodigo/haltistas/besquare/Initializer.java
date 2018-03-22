@@ -10,7 +10,6 @@ import java.net.Socket;
 public class Initializer {
 
     private Controller controller;
-    private GameState gameState;
     private Menu menu;
 
     public static void main(String[] args) {

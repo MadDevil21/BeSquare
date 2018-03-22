@@ -1,6 +1,6 @@
 package org.academiadecodigo.haltistas.besquare.server.logic;
 
-import org.academiadecodigo.haltistas.besquare.GameState;
+import org.academiadecodigo.haltistas.besquare.Status;
 import org.academiadecodigo.haltistas.besquare.client.Action;
 import org.academiadecodigo.haltistas.besquare.server.Server;
 import org.academiadecodigo.haltistas.besquare.server.environment.Token;
@@ -9,8 +9,8 @@ import java.io.IOException;
 
 public class Game {
 
+    private Status status;
     private LogicGrid grid;
-    private GameState gameState;
     private Levels level;
     private Server server;
 
@@ -23,7 +23,7 @@ public class Game {
         // TODO change levels
         this.level = Levels.LEVEL_1;
 
-        gameState = GameState.NEW_LEVEL;
+        status = Status.NEW_LEVEL;
 
         loadNewLevel(level);
     }
@@ -45,7 +45,7 @@ public class Game {
 
         int[] positions = {initialP1X, initialP1Y, initialP2X, initialP2Y};
 
-        String initialBroadcast = OutputHandler.buildPacket(gameState, level, positions);
+        String initialBroadcast = OutputHandler.buildPacket(status, level, positions);
         server.broadcast(initialBroadcast);
 
         String tokenBroadcast = "";
@@ -67,7 +67,7 @@ public class Game {
 
     private void gameLoop() {
 
-        gameState = GameState.GAME;
+        status = Status.GAME;
     }
 
     public synchronized String process(int playerId, String fromClient) {
@@ -94,14 +94,14 @@ public class Game {
 
             if (level != null) {
 
-                gameState = GameState.NEW_LEVEL;
+                status = Status.NEW_LEVEL;
                 loadNewLevel(level);
                 return null;
             }
 
         }
 
-        return OutputHandler.buildPacket(gameState, level, positions);
+        return OutputHandler.buildPacket(status, level, positions);
     }
 
     private Levels nextLevel() {
