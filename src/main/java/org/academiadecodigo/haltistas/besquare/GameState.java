@@ -5,7 +5,8 @@ public enum GameState {
     MENU("M"),
     GAME("G"),
     NEW_LEVEL("N"),
-    QUIT("Q");
+    QUIT("Q"),
+    TOKEN("T");
 
     private String state;
 

@@ -1,5 +1,6 @@
 package org.academiadecodigo.haltistas.besquare.client;
 
+import org.academiadecodigo.haltistas.besquare.util.Message;
 import org.academiadecodigo.simplegraphics.keyboard.Keyboard;
 import org.academiadecodigo.simplegraphics.keyboard.KeyboardEvent;
 import org.academiadecodigo.simplegraphics.keyboard.KeyboardEventType;
@@ -19,8 +20,10 @@ public class Controller implements KeyboardHandler {
 
         int[] keys = new int[]{
 
-                KeyboardEvent.KEY_RIGHT,
-                KeyboardEvent.KEY_LEFT
+                KeyboardEvent.KEY_K,
+                KeyboardEvent.KEY_J,
+                KeyboardEvent.KEY_H,
+                KeyboardEvent.KEY_L
         };
 
         for (int key : keys) {
@@ -35,16 +38,26 @@ public class Controller implements KeyboardHandler {
     @Override
     public void keyPressed(KeyboardEvent keyboardEvent) {
 
-        if (keyboardEvent.getKey() == KeyboardEvent.KEY_RIGHT) {
+        switch (keyboardEvent.getKey()) {
 
-            client.moveRight();
-            return;
-        }
+            case KeyboardEvent.KEY_K:
+                client.moveRight();
+                break;
 
-        if (keyboardEvent.getKey() == KeyboardEvent.KEY_LEFT) {
+            case KeyboardEvent.KEY_J:
+                client.moveLeft();
+                break;
 
-            client.moveLeft();
-            return;
+            case KeyboardEvent.KEY_H:
+                client.jumpLeft();
+                break;
+
+            case KeyboardEvent.KEY_L:
+                client.jumpRight();
+                break;
+
+            default:
+                System.err.println(Message.ERR_CONTROLLER);
         }
     }
 

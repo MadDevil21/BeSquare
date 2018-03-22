@@ -50,6 +50,19 @@ public class Client {
         sendAction(actionValue);
     }
 
+    public void jumpRight() {
+
+        String actionValue = Action.JUMP_RIGHT.getActionText();
+        sendAction(actionValue);
+    }
+
+
+    public void jumpLeft() {
+
+        String actionValue = Action.JUMP_LEFT.getActionText();
+        sendAction(actionValue);
+    }
+
     private void initOutStream() {
 
         try {

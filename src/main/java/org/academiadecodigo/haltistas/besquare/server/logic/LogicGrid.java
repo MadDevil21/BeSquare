@@ -4,8 +4,13 @@ import org.academiadecodigo.haltistas.besquare.client.Action;
 import org.academiadecodigo.haltistas.besquare.server.PlayerCharacter;
 import org.academiadecodigo.haltistas.besquare.server.environment.Block;
 import org.academiadecodigo.haltistas.besquare.server.environment.Exit;
+import org.academiadecodigo.haltistas.besquare.server.environment.Token;
 
 import java.io.IOException;
+import java.util.HashMap;
+import java.util.LinkedList;
+import java.util.List;
+import java.util.Map;
 
 public class LogicGrid {
 
@@ -17,8 +22,9 @@ public class LogicGrid {
 
     private Block[][] grid;
     private Exit exit;
-    private int tokensLeft = 0;
+    private Map<Integer, Token> tokenMap;
     private boolean win;
+
 
     //TODO: Grid loader should inform the grid how many tokens there are and where they are
     //TODO: This could be stored in a list or a map
@@ -28,6 +34,8 @@ public class LogicGrid {
         grid = new Block[COLS][ROWS];
         player1 = new PlayerCharacter(COLS, ROWS, 1);
         player2 = new PlayerCharacter(COLS, ROWS, 2);
+        tokenMap = new HashMap<>();
+
     }
 
     public void load(Levels currentLevel) throws IOException {
@@ -38,32 +46,24 @@ public class LogicGrid {
 
     public int[] verifyAction(int playerId, Action selectedAction) {
 
-        PlayerCharacter movingPlayer;
-
-        if (playerId == player1.getId()) {
-
-            movingPlayer = player1;
-
-        } else {
-
-            movingPlayer = player2;
-        }
+        PlayerCharacter movingPlayer = currentCharacter(playerId);
 
         synchronized (this) {
 
             int destinationCol;
             int destinationRow;
 
-            if (movingPlayer.isFalling()) {
+            if (movingPlayer.isFalling() && !movingPlayer.isJumping()) {
 
                 destinationCol = movingPlayer.getCol();
                 destinationRow = movingPlayer.getRow() + 1;
-
                 return keepFalling(movingPlayer, grid, destinationCol, destinationRow);
 
             }
 
             // TODO: Method should recognize when a token was grabbed and remove 1 from the number of tokens left
+
+            checkJump(movingPlayer, selectedAction);
 
             destinationCol = movingPlayer.getCol() + selectedAction.getColChange();
             destinationRow = movingPlayer.getRow() + selectedAction.getRowChange();
@@ -73,13 +73,13 @@ public class LogicGrid {
             if (!destinationBlock.isColliding(movingPlayer)) {
 
                 movingPlayer.setPosition(destinationCol, destinationRow);
-
             }
+
+            movingPlayer.setJumping(false);
 
             if (!grid[movingPlayer.getCol()][movingPlayer.getRow() + 1].isColliding(movingPlayer)) {
 
                 movingPlayer.setFalling(true);
-                System.out.println("I'm about to fall");
                 verifyAction(movingPlayer.getId(), Action.FALLING);
 
             }
@@ -87,11 +87,19 @@ public class LogicGrid {
             destinationBlock.doCollide(movingPlayer);
 
 
-            if (exit.isColliding(player1, player2) && tokensLeft == 0) {
+            if (exit.isColliding(player1, player2) && tokenMap.isEmpty()) {
                 win = true;
             }
 
             return new int[]{player1.getCol(), player1.getRow(), player2.getCol(), player2.getRow()};
+
+        }
+    }
+
+    private void checkJump(PlayerCharacter movingPlayer, Action selectedAction) {
+
+        if (selectedAction == Action.JUMP_LEFT || selectedAction == Action.JUMP_RIGHT) {
+            movingPlayer.setJumping(true);
         }
     }
 
@@ -128,6 +136,68 @@ public class LogicGrid {
 
     public boolean levelWon() {
         return win;
+    }
+
+    public void addTokenToMap(Token token) {
+        int size = tokenMap.size();
+        tokenMap.put(size, token);
+
+    }
+
+    private PlayerCharacter currentCharacter(int id) {
+        PlayerCharacter currentCharacter = null;
+
+        if (id == player1.getId()) {
+
+            currentCharacter = player1;
+
+        } else {
+
+            currentCharacter = player2;
+        }
+
+        return currentCharacter;
+
+    }
+
+    public Map<Integer, Token> getTokenMap() {
+        return tokenMap;
+    }
+
+    public int checkTokenCollisions(int id) {
+
+        int eatenTokenIndex = -1;
+
+        PlayerCharacter checkedCharacter = currentCharacter(id);
+
+        for (Integer index : tokenMap.keySet()) {
+
+            if (tokenMap.get(index) == null) {
+                continue;
+            }
+
+            Token checkedToken = tokenMap.get(index);
+
+            if (checkedToken.isColliding(checkedCharacter)) {
+                eatenTokenIndex = index;
+
+                System.out.println("Om nom nom token # " + eatenTokenIndex);
+                tokenMap.remove(eatenTokenIndex);
+
+                return eatenTokenIndex;
+
+            }
+
+        }
+
+        return eatenTokenIndex;
+
+    }
+
+
+    public void removeToken(Integer index) {
+        tokenMap.remove(index);
+
     }
 
     public void setExit(Exit exit) {

@@ -42,7 +42,7 @@ public class PlayerHandler implements Runnable {
                 // if one player lost connection spam null, block to prevent that
                 if (message == null) {
 
-                    System.out.println(playerId + Message.LOST_CONNECTION);
+                    System.out.println(playerId + Message.ERR_CONNECTION);
                     socket.close();
                     break;
                 }

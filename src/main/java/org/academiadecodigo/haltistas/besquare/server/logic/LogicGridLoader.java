@@ -1,22 +1,24 @@
 package org.academiadecodigo.haltistas.besquare.server.logic;
 
-import org.academiadecodigo.haltistas.besquare.server.environment.Block;
-import org.academiadecodigo.haltistas.besquare.server.environment.BlockFactory;
-import org.academiadecodigo.haltistas.besquare.server.environment.BlockType;
-import org.academiadecodigo.haltistas.besquare.server.environment.Exit;
+import org.academiadecodigo.haltistas.besquare.server.environment.*;
 import org.academiadecodigo.haltistas.besquare.util.Message;
 
-import java.io.BufferedReader;
-import java.io.FileReader;
-import java.io.IOException;
+import java.io.*;
+import java.util.LinkedList;
+import java.util.List;
 
 public class LogicGridLoader {
 
     public static Block[][] loadLevel(Levels level, LogicGrid logicGrid) throws IOException {
 
-        BufferedReader fromFile = new BufferedReader(new FileReader(level.getMatrix()));
+
+        BufferedReader fromFile = new BufferedReader(new FileReader(
+                        LogicGridLoader.class.getResource(level.getMatrix()).getFile()));
+
         Block[][] grid = new Block[LogicGrid.COLS][LogicGrid.ROWS];
+
         String readLine;
+
         int workingRow = 0;
 
         while ((readLine = fromFile.readLine()) != null) {
@@ -51,6 +53,11 @@ public class LogicGridLoader {
 
             case '.':
 
+                returnBlock = BlockFactory.createBlock(BlockType.BACKGROUND, col, row);
+                break;
+
+            case 't':
+                logicGrid.addTokenToMap(new Token(col, row));
                 returnBlock = BlockFactory.createBlock(BlockType.BACKGROUND, col, row);
                 break;
 
