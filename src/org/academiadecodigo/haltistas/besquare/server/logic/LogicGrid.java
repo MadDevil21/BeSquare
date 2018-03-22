@@ -51,16 +51,17 @@ public class LogicGrid {
             int destinationCol;
             int destinationRow;
 
-            if (movingPlayer.isFalling()) {
+            if (movingPlayer.isFalling() && !movingPlayer.isJumping()) {
 
                 destinationCol = movingPlayer.getCol();
                 destinationRow = movingPlayer.getRow() + 1;
-
                 return keepFalling(movingPlayer, grid, destinationCol, destinationRow);
 
             }
 
             // TODO: Method should recognize when a token was grabbed and remove 1 from the number of tokens left
+
+            checkJump(movingPlayer, selectedAction);
 
             destinationCol = movingPlayer.getCol() + selectedAction.getColChange();
             destinationRow = movingPlayer.getRow() + selectedAction.getRowChange();
@@ -70,13 +71,13 @@ public class LogicGrid {
             if (!destinationBlock.isColliding(movingPlayer)) {
 
                 movingPlayer.setPosition(destinationCol, destinationRow);
-
             }
+
+            movingPlayer.setJumping(false);
 
             if (!grid[movingPlayer.getCol()][movingPlayer.getRow() + 1].isColliding(movingPlayer)) {
 
                 movingPlayer.setFalling(true);
-                System.out.println("I'm about to fall");
                 verifyAction(movingPlayer.getId(), Action.FALLING);
 
             }
@@ -90,6 +91,13 @@ public class LogicGrid {
 
             return new int[]{player1.getCol(), player1.getRow(), player2.getCol(), player2.getRow()};
 
+        }
+    }
+
+    private void checkJump(PlayerCharacter movingPlayer, Action selectedAction) {
+
+        if (selectedAction == Action.JUMP_LEFT || selectedAction == Action.JUMP_RIGHT) {
+            movingPlayer.setJumping(true);
         }
     }
 
