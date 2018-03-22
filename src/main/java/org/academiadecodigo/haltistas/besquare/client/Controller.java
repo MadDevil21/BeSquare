@@ -23,7 +23,8 @@ public class Controller implements KeyboardHandler {
                 KeyboardEvent.KEY_K,
                 KeyboardEvent.KEY_J,
                 KeyboardEvent.KEY_H,
-                KeyboardEvent.KEY_L
+                KeyboardEvent.KEY_L,
+                KeyboardEvent.KEY_R
         };
 
         for (int key : keys) {
@@ -54,6 +55,10 @@ public class Controller implements KeyboardHandler {
 
             case KeyboardEvent.KEY_L:
                 client.jumpRight();
+                break;
+
+            case KeyboardEvent.KEY_R:
+                client.resetLevel();
                 break;
 
             default:
