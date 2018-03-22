@@ -81,6 +81,12 @@ public class GameField {
         p2Sprite.getSprite().draw();
     }
 
+    protected void loadToken(int col, int row){
+
+        Picture tokenSprite = new Picture(col, row, FilePath.TOKEN);
+        tokenSprite.draw();
+    }
+
     private int logicToCoord(int number){
 
         return number * CELL_SIZE;

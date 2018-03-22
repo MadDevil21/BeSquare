@@ -35,4 +35,18 @@ public class OutputHandler {
 
         return sb.toString();
     }
+
+    private String tokenPacketBuilder(GameState gs, Levels level, int col, int row){
+
+        StringBuilder sb = new StringBuilder();
+
+        sb.append(gs.name() + ' ');
+        sb.append(level.name() +  ' ');
+        sb.append(col + ' ');
+        sb.append(row + ' ');
+        sb.append("x x");
+
+        return sb.toString();
+
+    }
 }
