@@ -38,7 +38,7 @@ public class CollisionHelper {
             if (checkedToken.isColliding(checkedCharacter)) {
                 eatenTokenIndex = index;
 
-                System.out.println("Om nom nom token # " + eatenTokenIndex);
+                //System.out.println("Om nom nom token # " + eatenTokenIndex);
                 grid.removeToken(eatenTokenIndex);
 
                 return eatenTokenIndex;

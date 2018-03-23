@@ -33,7 +33,7 @@ public class Server {
         ServerSocket server;
 
         server = new ServerSocket(portNumber);
-        System.out.println(Message.SERVER_START + server);
+        //System.out.println(Message.SERVER_START + server);
 
         while (connectedPlayers < NUM_PLAYERS) {
 
@@ -57,7 +57,7 @@ public class Server {
                 players.get(playerId).send(toClient);
             }
 
-            System.out.println(Message.HALP_BROADCAST + toClient);
+            //System.out.println(Message.HALP_BROADCAST + toClient);
         }
     }
 

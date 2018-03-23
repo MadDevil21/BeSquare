@@ -31,7 +31,7 @@ public class LogicGridLoader {
 
     private static void readRow(int row, String line, Block[][] grid, LogicGrid logicGrid) {
 
-        System.out.println(Message.INTERPRET_LINE + line);
+        //System.out.println(Message.INTERPRET_LINE + line);
 
         for (int col = 0; col < LogicGrid.COLS; col++) {
 

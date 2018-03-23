@@ -27,7 +27,7 @@ public class TaskManager {
 
     protected void interpret(String fromServer) {
 
-        System.out.println(Message.HALP_BROADCAST + fromServer);
+        //System.out.println(Message.HALP_BROADCAST + fromServer);
         String[] instructions = fromServer.split(" ");
 
         Status currentStatus = stringToStatus(instructions[0]);
