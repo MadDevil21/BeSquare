@@ -68,10 +68,6 @@ public class LogicGrid {
 
             win = CollisionHelper.checkWin(this);
 
-            if (exit.isColliding(player1, player2) && tokenMap.isEmpty()) {
-                win = true;
-            }
-
             return new int[]{player1.getCol(), player1.getRow(), player2.getCol(), player2.getRow()};
 
         }

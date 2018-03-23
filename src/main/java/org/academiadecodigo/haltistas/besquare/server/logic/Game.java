@@ -26,7 +26,6 @@ public class Game {
 
     public void init() {
 
-        // TODO change levels
         this.level = Levels.LEVEL_1;
 
         status = Status.NEW_LEVEL;
@@ -162,22 +161,20 @@ public class Game {
         return nextLevel;
     }
 
-    public void processThisShit(int[] positions, Action selectedAction) {
-        checkPlayerToken(grid.getPlayer1().getId());
-        checkPlayerToken(grid.getPlayer2().getId());
+    public synchronized void processThisShit(int[] positions, Action selectedAction) {
 
         if (grid.anyPlayerIsFalling() && hadFallingAction(selectedAction)) {
             status = Status.FALLING;
         }
 
         if (grid.levelWon()) {
+            gravity.cancel();
 
             level = nextLevel();
 
             if (level != null) {
 
                 status = Status.NEW_LEVEL;
-                gravity.cancel();
                 loadNewLevel(level);
                 return;
             }
@@ -185,16 +182,6 @@ public class Game {
         }
 
         server.broadcast(OutputHandler.buildPacket(status, level, positions));
-    }
-
-    private void checkPlayerToken(int playerId) {
-        int tokenIndex = CollisionHelper.tokenCollisions(playerId, grid);
-
-        if (tokenIndex != -1) {
-            String eatenTokenBroadcast = OutputHandler.tokenPacketBuilder(0, tokenIndex);
-            server.broadcast(eatenTokenBroadcast);
-
-        }
     }
 
     private void checkDoors(KeyColor key) {

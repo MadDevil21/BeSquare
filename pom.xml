@@ -6,7 +6,7 @@
 
     <groupId>org.academiadecodigo.haltistas</groupId>
     <artifactId>BeSquare</artifactId>
-    <version>0.87-SNAPSHOT</version>
+    <version>0.99-SNAPSHOT</version>
 
     <build>
         <plugins>
@@ -17,7 +17,7 @@
                 <configuration>
                     <archive>
                         <manifest>
-                            <mainClass>org.academiadecodigo.haltistas.Server</mainClass>
+                            <mainClass>org.academiadecodigo.haltistas.besquare.Initializer</mainClass>
                         </manifest>
                     </archive>
                 </configuration>
@@ -29,7 +29,7 @@
                 <configuration>
                     <archive>
                         <manifest>
-                            <mainclass>org.academiadecodigo.haltistas.besquare.Server</mainclass>
+                            <mainclass>org.academiadecodigo.haltistas.besquare.Initializer</mainclass>
                         </manifest>
                     </archive>
                     <descriptorRefs>
@@ -61,7 +61,7 @@
         <dependency>
             <groupId>org.academiadecodigo.haltistas</groupId>
             <artifactId>simple-graphics</artifactId>
-            <version>1.0.2</version>
+            <version>1.1.2</version>
         </dependency>
     </dependencies>
 
