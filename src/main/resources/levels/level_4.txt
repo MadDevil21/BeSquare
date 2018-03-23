@@ -14,7 +14,7 @@ x............t....t..........xxx
 x............x....x...........xx
 x..........xxx....xxx.........xx
 x......t.xxx........xxx.t......x
-xx.....xxxx.xx...xx..xxxx.....xx
-xx.t.xxxxxxxxxtetxxxxxxxxxx.t.xx
+xx.....xxxxxxx...xx..xxxx.....xx
+xx.t.xxxxxxxxx.etxxxxxxxxxx.t.xx
 xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
 xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
