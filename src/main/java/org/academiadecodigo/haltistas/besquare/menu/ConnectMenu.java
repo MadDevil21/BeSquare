@@ -108,4 +108,20 @@ public class ConnectMenu extends AbstractMenu {
         ipText.delete();
         portText.delete();
     }
+
+    public void ipErase() {
+        if (ip.equals("")){
+            return;
+        }
+        ip = ip.substring(0, ip.length() -1);
+        ipText.setText(ip);
+    }
+
+    public void portErase() {
+        if (port.equals("")){
+            return;
+        }
+        port = port.substring(0, port.length() -1);
+        portText.setText(port);
+    }
 }

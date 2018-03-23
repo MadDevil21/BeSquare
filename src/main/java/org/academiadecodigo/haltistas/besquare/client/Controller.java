@@ -147,6 +147,11 @@ public class Controller implements KeyboardHandler {
 
     @Override
     public void keyBackspace() {
+        if (!checkIP) {
+            connectMenu.ipErase();
+            return;
+        }
+        connectMenu.portErase();
 
     }
 
