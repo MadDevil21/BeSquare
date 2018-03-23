@@ -18,7 +18,7 @@ public class Client {
         GameField gameField = new GameField();
 
         taskManager = new TaskManager(gameField);
-        startConnections();       // TODO: temporary solution
+        startConnections();
     }
 
     private void startConnections() {

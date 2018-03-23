@@ -24,6 +24,8 @@ public class FilePath {
     public final static String LEVEL_6_PNG = "/backgrounds/endView.png";
     public final static String LEVEL_6_TXT = "/levels/unbuilded_Level.txt";
 
+    public final static String MENU_BACKGROUND = "/backgrounds/menu_1.png";
+
     public final static String RED_BUTTON = "sprites/redButton.png";
     public final static String RED_DOOR = "sprites/redDoor.png";
     public final static String GREEN_BUTTON = "sprites/greenButton.png";

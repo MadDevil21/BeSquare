@@ -38,7 +38,7 @@ public class GameField {
      * @see CharacterSprite#move(int, int)
      */
 
-    public void moveCharacters(int player1col, int player1row, int player2col, int player2row) { // TODO: temporary solution
+    public void moveCharacters(int player1col, int player1row, int player2col, int player2row) {
 
         int player1X = logicToCoord(player1col);
         int player1Y = logicToCoord(player1row);

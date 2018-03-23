@@ -1,5 +1,9 @@
 package org.academiadecodigo.haltistas.besquare.client;
 
+import org.academiadecodigo.haltistas.besquare.GameState;
+import org.academiadecodigo.haltistas.besquare.Initializer;
+import org.academiadecodigo.haltistas.besquare.menu.ConnectMenu;
+import org.academiadecodigo.haltistas.besquare.menu.MainMenu;
 import org.academiadecodigo.haltistas.besquare.util.Message;
 import org.academiadecodigo.simplegraphics.keyboard.Keyboard;
 import org.academiadecodigo.simplegraphics.keyboard.KeyboardEvent;
