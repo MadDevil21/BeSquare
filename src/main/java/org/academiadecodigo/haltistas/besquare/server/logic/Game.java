@@ -5,6 +5,7 @@ import org.academiadecodigo.haltistas.besquare.client.Action;
 import org.academiadecodigo.haltistas.besquare.server.Server;
 import org.academiadecodigo.haltistas.besquare.server.environment.Token;
 import org.academiadecodigo.haltistas.besquare.server.logic.helpers.CollisionHelper;
+import org.academiadecodigo.haltistas.besquare.server.logic.timer.ServerGravity;
 
 import java.io.IOException;
 
@@ -14,9 +15,12 @@ public class Game {
     private LogicGrid grid;
     private Levels level;
     private Server server;
+    private ServerGravity gravity;
 
     public Game(Server server) {
         this.server = server;
+        gravity = new ServerGravity();
+        gravity.setGame(this);
     }
 
     public void init() {
@@ -38,6 +42,8 @@ public class Game {
         } catch (IOException e) {
             e.printStackTrace();
         }
+
+        grid.setupGravity(gravity);
 
         int initialP1X = grid.getPlayer1().getCol();
         int initialP1Y = grid.getPlayer1().getRow();
@@ -71,7 +77,7 @@ public class Game {
         status = Status.GAME;
     }
 
-    public synchronized String process(int playerId, String fromClient) {
+    public synchronized void process(int playerId, String fromClient) {
 
         Action selectedAction = InputHandler.interpret(fromClient);
         System.out.println("at server reset level: " + selectedAction);
@@ -84,37 +90,12 @@ public class Game {
 
         int[] positions = grid.verifyAction(playerId, selectedAction);
 
-        int tokenIndex = CollisionHelper.tokenCollisions(playerId, grid);
-
-        if (tokenIndex != -1) {
-            String eatenTokenBroadcast = OutputHandler.tokenPacketBuilder(0, tokenIndex);
-            server.broadcast(eatenTokenBroadcast);
-
-        }
-
-        if (grid.anyPlayerIsFalling() && hadFallingAction(selectedAction)) {
-            status = Status.FALLING;
-        }
-
-        if (grid.levelWon()) {
-
-            level = nextLevel();
-
-            if (level != null) {
-
-                status = Status.NEW_LEVEL;
-                loadNewLevel(level);
-                return null;
-            }
-
-        }
-
-
-        return OutputHandler.buildPacket(status, level, positions);
+        processThisShit(positions, selectedAction);
     }
 
-    private boolean hadFallingAction(Action selectedAction) {
-        return selectedAction.equals(Action.JUMP_LEFT) || selectedAction.equals(Action.JUMP_RIGHT);
+    private boolean hadFallingAction(Action selectedAction) { //ugly as fuck... to late to fix...
+        return selectedAction != null &&
+                (selectedAction.equals(Action.JUMP_LEFT) || selectedAction.equals(Action.JUMP_RIGHT));
     }
 
     private Levels nextLevel() {
@@ -133,4 +114,37 @@ public class Game {
         return nextLevel;
     }
 
+    public void processThisShit(int[] positions, Action selectedAction) {
+        checkPlayerToken(grid.getPlayer1().getId());
+        checkPlayerToken(grid.getPlayer2().getId());
+
+        if (grid.anyPlayerIsFalling() && hadFallingAction(selectedAction)) {
+            status = Status.FALLING;
+        }
+
+        if (grid.levelWon()) {
+
+            level = nextLevel();
+
+            if (level != null) {
+
+                status = Status.NEW_LEVEL;
+                loadNewLevel(level);
+                return;
+            }
+
+        }
+
+        server.broadcast(OutputHandler.buildPacket(status, level, positions));
+    }
+
+    private void checkPlayerToken(int playerId) {
+        int tokenIndex = CollisionHelper.tokenCollisions(playerId, grid);
+
+        if (tokenIndex != -1) {
+            String eatenTokenBroadcast = OutputHandler.tokenPacketBuilder(0, tokenIndex);
+            server.broadcast(eatenTokenBroadcast);
+
+        }
+    }
 }

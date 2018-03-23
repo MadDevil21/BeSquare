@@ -16,6 +16,8 @@ public class FallHelper {
         int destinationCol = character.getCol();
         int destinationRow = character.getRow() + 1;
 
+        System.out.println(grid[destinationCol][destinationRow]);
+
         if (!grid[destinationCol][destinationRow].isColliding(character)) {
             character.setPosition(destinationCol, destinationRow);
             character.setFallen(true);
@@ -28,8 +30,8 @@ public class FallHelper {
 
             // Recursive solution: This makes players disappear from a platform and immediately appear below
 
-            processFall(character, grid);
 
+            return;
         }
 
         character.setFalling(false);
