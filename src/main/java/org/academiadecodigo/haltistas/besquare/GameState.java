@@ -2,7 +2,8 @@ package org.academiadecodigo.haltistas.besquare;
 
 public enum GameState {
 
-    MENU("M"),
+    MAIN_MENU("M"),
+    CONNECT_MENU("E"),
     GAME("G"),
     NEW_LEVEL("N"),
     QUIT("Q"),

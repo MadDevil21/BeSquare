@@ -8,7 +8,7 @@ import java.util.Map;
 
 public class GameField {
 
-    static final int PADDING = 10;
+    public static final int PADDING = 10;
     public static final int CELL_SIZE = 30;
 
     private Picture background;

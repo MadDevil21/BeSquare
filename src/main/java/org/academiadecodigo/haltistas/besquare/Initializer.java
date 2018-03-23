@@ -2,7 +2,8 @@ package org.academiadecodigo.haltistas.besquare;
 
 import org.academiadecodigo.haltistas.besquare.client.Client;
 import org.academiadecodigo.haltistas.besquare.client.Controller;
-import org.academiadecodigo.haltistas.besquare.menu.Menu;
+import org.academiadecodigo.haltistas.besquare.menu.ConnectMenu;
+import org.academiadecodigo.haltistas.besquare.menu.MainMenu;
 
 
 import java.io.IOException;
@@ -12,7 +13,8 @@ public class Initializer {
 
     private Controller controller;
     public static GameState gameState;
-    private Menu menu;
+    private MainMenu mainMenu;
+    private ConnectMenu connectMenu;
 
     public static void main(String[] args) {
 
@@ -28,10 +30,13 @@ public class Initializer {
 
     public void init() {
 
-        gameState = GameState.MENU;
-        menu = new Menu();
-        controller = new Controller(menu);
-        menu.init();
+        gameState = GameState.MAIN_MENU;
+        connectMenu = new ConnectMenu();
+        mainMenu = new MainMenu();
+        controller = new Controller(mainMenu);
+
+        mainMenu.setConnectMenu(connectMenu);
+        mainMenu.init();
         controller.init();
     }
 }
