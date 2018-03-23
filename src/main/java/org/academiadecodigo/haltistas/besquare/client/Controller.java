@@ -15,10 +15,12 @@ public class Controller implements KeyboardHandler {
     private Client client;
     private MainMenu mainMenu;
     private ConnectMenu connectMenu;
+    private boolean checkIP;
 
     public Controller(MainMenu mainMenu) {
 
         this.mainMenu = mainMenu;
+        checkIP = false;
     }
 
     public void init() {
@@ -44,6 +46,18 @@ public class Controller implements KeyboardHandler {
     }
 
     @Override
+    public void keyPressed(char c) {
+
+        if(!checkIP) {
+
+            connectMenu.insertIP(c);
+            return;
+        }
+
+        connectMenu.insertPort(c);
+    }
+
+    @Override
     public void keyPressed(KeyboardEvent keyboardEvent) {
 
         switch (Initializer.gameState) {
@@ -55,7 +69,7 @@ public class Controller implements KeyboardHandler {
 
             case CONNECT_MENU:
 
-
+                connectMenuController();
                 break;
 
             case GAME:
@@ -82,11 +96,27 @@ public class Controller implements KeyboardHandler {
         }
     }
 
-    private void connectMenuController(KeyboardEvent keyboardEvent) {
+    private void connectMenuController() {
 
-        if (keyboardEvent.getKey() >= 48 && keyboardEvent.getKey() <= 57) {
+        switch (connectMenu.getMovePointer()) {
 
+            case 0:
 
+                connectMenu.hostServer();
+                break;
+
+            case 1:
+
+                connectMenu.hostGame();
+                Initializer.gameState = GameState.GAME;
+                break;
+
+            case 2:
+
+                connectMenu.joinGame();
+                Initializer.gameState = GameState.GAME;
+                break;
+        }
     }
 
     private void playerController(KeyboardEvent keyboardEvent) {
@@ -123,14 +153,24 @@ public class Controller implements KeyboardHandler {
 
     }
 
+
     @Override
     public void keyEnter() {
 
-        if (Initializer.gameState != GameState.MAIN_MENU) {
+        if (Initializer.gameState == GameState.MAIN_MENU) {
+
+            mainMenu.actionSelection();
             return;
         }
 
-        mainMenu.actionSelection();
+        if (Initializer.gameState == GameState.CONNECT_MENU) {
+
+            if (!checkIP) {
+                checkIP = true;
+            }
+
+            connectMenuController();
+        }
     }
 
     public void setConnectMenu(ConnectMenu connectMenu) {

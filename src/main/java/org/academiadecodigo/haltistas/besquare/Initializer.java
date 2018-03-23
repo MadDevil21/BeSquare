@@ -4,6 +4,7 @@ import org.academiadecodigo.haltistas.besquare.client.Client;
 import org.academiadecodigo.haltistas.besquare.client.Controller;
 import org.academiadecodigo.haltistas.besquare.menu.ConnectMenu;
 import org.academiadecodigo.haltistas.besquare.menu.MainMenu;
+import org.academiadecodigo.haltistas.besquare.server.Server;
 
 
 import java.io.IOException;
@@ -11,32 +12,50 @@ import java.net.Socket;
 
 public class Initializer {
 
-    private Controller controller;
     public static GameState gameState;
-    private MainMenu mainMenu;
-    private ConnectMenu connectMenu;
+
+    private Client client;
+    private Controller controller;
 
     public static void main(String[] args) {
 
-
-        try {
-
-            new Initializer().init();
-            new Client(new Socket("localhost", 20021));
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
+        new Initializer().init();
     }
 
     public void init() {
 
         gameState = GameState.MAIN_MENU;
-        connectMenu = new ConnectMenu();
-        mainMenu = new MainMenu();
+
+        ConnectMenu connectMenu = new ConnectMenu();
+        MainMenu mainMenu = new MainMenu();
         controller = new Controller(mainMenu);
 
+        controller.setConnectMenu(connectMenu);
         mainMenu.setConnectMenu(connectMenu);
-        mainMenu.init();
+        connectMenu.setInitializer(this);
         controller.init();
+        mainMenu.init();
+    }
+
+    public void hostServer(int port) {
+
+        try {
+            new Server().init(port);
+
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public void joinGame(String ip, int port) {
+
+        try {
+            client = new Client(new Socket(ip, port));
+
+            controller.setClient(client);
+
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 }

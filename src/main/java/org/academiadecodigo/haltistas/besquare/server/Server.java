@@ -14,22 +14,11 @@ import java.util.concurrent.Executors;
 public class Server {
 
     // constants and proprieties
-    private final static int PORT_NUMBER = 20021;
     private final static int NUM_PLAYERS = 2;
 
     private final Map<Integer, PlayerHandler> players;
     private ExecutorService executor;
     private Game game;
-
-    public static void main(String[] args) {
-
-        try {
-            new Server().init();
-
-        } catch (IOException ex) {
-            System.err.println(ex.getMessage());
-        }
-    }
 
     public Server() {
 
@@ -38,16 +27,12 @@ public class Server {
         this.executor = Executors.newFixedThreadPool(NUM_PLAYERS);
     }
 
-    public void init() throws IOException {
-        start();
-    }
-
-    private void start() throws IOException {
+    public void init(int portNumber) throws IOException {
 
         int connectedPlayers = 0;
         ServerSocket server;
 
-        server = new ServerSocket(PORT_NUMBER);
+        server = new ServerSocket(portNumber);
         System.out.println(Message.SERVER_START + server);
 
         while (connectedPlayers < NUM_PLAYERS) {

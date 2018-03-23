@@ -37,7 +37,7 @@ public class MainMenu extends AbstractMenu {
            System.exit(0);
         }
 
-        connectMenu.init();
+        connectMenu.init(movePointer);
     }
 
     @Override
