@@ -9,7 +9,8 @@ public enum Levels {
     LEVEL_3(FilePath.LEVEL_3_PNG, FilePath.LEVEL_3_TXT),
     LEVEL_4(FilePath.LEVEL_4_PNG, FilePath.LEVEL_4_TXT),
     LEVEL_5(FilePath.LEVEL_5_PNG, FilePath.LEVEL_5_TXT),
-    LEVEL_6(FilePath.LEVEL_6_PNG, FilePath.LEVEL_6_TXT);
+    LEVEL_6(FilePath.LEVEL_6_PNG, FilePath.LEVEL_6_TXT),
+    LEVEL_7(FilePath.LEVEL_7_PNG, FilePath.LEVEL_7_TXT);
 
     private final String background;
     private final String matrix;

@@ -108,11 +108,9 @@ public class Game {
     public synchronized void process(int playerId, String fromClient) {
 
         Action selectedAction = InputHandler.interpret(fromClient);
-        System.out.println("at server reset level: " + selectedAction);
 
         if (selectedAction.equals(Action.RESET_LEVEL)) {
             gravity.cancel();
-            System.out.println("at server reset level:  IF " + selectedAction);
             loadNewLevel(level);
 
         }
