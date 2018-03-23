@@ -104,6 +104,7 @@ public class ConnectMenu extends AbstractMenu {
 
     private void deleteAssets() {
 
+        deleteBackground();
         ipText.delete();
         portText.delete();
     }

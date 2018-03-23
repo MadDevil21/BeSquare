@@ -18,6 +18,8 @@ public abstract class AbstractMenu {
     protected int movePointer = 0;
     protected Text[] options;
     protected Font font;
+    protected Picture background;
+    protected Text optionText;
 
 
     public AbstractMenu() {
@@ -27,13 +29,13 @@ public abstract class AbstractMenu {
 
     protected void createBackground() {
 
-        Picture background = new Picture(GameField.PADDING, GameField.PADDING, FilePath.MENU_BACKGROUND);
+        background = new Picture(GameField.PADDING, GameField.PADDING, FilePath.MENU_BACKGROUND);
         background.draw();
     }
 
     protected Text createOption(int yPos, String option) {
 
-        Text optionText = new Text(optionsXPos(), yPos, option, font);
+        optionText = new Text(optionsXPos(), yPos, option, font);
 
         optionText.draw();
         optionText.setColor(Color.RED);
@@ -64,5 +66,10 @@ public abstract class AbstractMenu {
         options[movePointer].setColor(Color.RED);
         movePointer--;
         options[movePointer].setColor(Color.WHITE);
+    }
+
+    public void deleteBackground() {
+        background.delete();
+        optionText.delete();
     }
 }

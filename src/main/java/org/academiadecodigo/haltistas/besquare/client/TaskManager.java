@@ -17,7 +17,7 @@ public class TaskManager {
 
     protected void interpret(String fromServer) {
 
-        System.out.println(Message.HALP_BROADCAST + fromServer);
+        //System.out.println(Message.HALP_BROADCAST + fromServer);
         String[] instructions = fromServer.split(" ");
 
         int position1col = toInt(instructions[2]);

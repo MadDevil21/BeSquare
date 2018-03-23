@@ -3,17 +3,17 @@ package org.academiadecodigo.haltistas.besquare.server.logic;
 import org.academiadecodigo.haltistas.besquare.server.environment.*;
 import org.academiadecodigo.haltistas.besquare.util.Message;
 
-import java.io.BufferedReader;
-import java.io.FileReader;
-import java.io.IOException;
+import java.io.*;
 
 public class LogicGridLoader {
 
     public static Block[][] loadLevel(Levels level, LogicGrid logicGrid) throws IOException {
 
+        ClassLoader classloader = Thread.currentThread().getContextClassLoader();
+        InputStream is = classloader.getResourceAsStream(level.getMatrix());
 
-        BufferedReader fromFile = new BufferedReader(new FileReader(
-                        LogicGridLoader.class.getResource(level.getMatrix()).getFile()));
+        BufferedReader fromFile = new BufferedReader(new InputStreamReader(is));
+
 
         Block[][] grid = new Block[LogicGrid.COLS][LogicGrid.ROWS];
 
