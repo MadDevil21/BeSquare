@@ -19,8 +19,6 @@ public class Game {
 
     public Game(Server server) {
         this.server = server;
-        gravity = new ServerGravity();
-        gravity.setGame(this);
     }
 
     public void init() {
@@ -36,6 +34,8 @@ public class Game {
     private void loadNewLevel(Levels level) {
 
         grid = new LogicGrid();
+        gravity = new ServerGravity();
+        gravity.setGame(this);
 
         try {
             grid.load(level);
@@ -83,6 +83,7 @@ public class Game {
         System.out.println("at server reset level: " + selectedAction);
 
         if (selectedAction.equals(Action.RESET_LEVEL)) {
+            gravity.cancel();
             System.out.println("at server reset level:  IF " + selectedAction);
             loadNewLevel(level);
 

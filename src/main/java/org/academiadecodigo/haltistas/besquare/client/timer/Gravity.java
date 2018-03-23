@@ -19,7 +19,6 @@ public class Gravity extends TimerTask implements Event {
     @Override
     public void run() {
 
-        System.out.println(deltaRowP1 + " " + deltaRowP2);
         if (deltaRowP1 <= 0 && deltaRowP2 <= 0) {
             this.cancel();
             return;
@@ -54,7 +53,6 @@ public class Gravity extends TimerTask implements Event {
     }
 
     private void processToInts(String[] data) {
-        System.out.println(data.length);
         finalPositions = new int[data.length - 1];
         finalPositions[0] = parseInt(data[2]);
         finalPositions[1] = parseInt(data[3]);

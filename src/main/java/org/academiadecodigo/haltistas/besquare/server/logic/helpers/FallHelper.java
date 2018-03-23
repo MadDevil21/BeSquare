@@ -16,8 +16,6 @@ public class FallHelper {
         int destinationCol = character.getCol();
         int destinationRow = character.getRow() + 1;
 
-        System.out.println(grid[destinationCol][destinationRow]);
-
         if (!grid[destinationCol][destinationRow].isColliding(character)) {
             character.setPosition(destinationCol, destinationRow);
             character.setFallen(true);

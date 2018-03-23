@@ -6,7 +6,7 @@ import java.util.Timer;
 
 public class GravityAnimation implements Runnable {
 
-    private static final long FRAME_RATE = 150;
+    private static final long FRAME_RATE = 100;
     private Timer timer;
     private Queue<Gravity> gravities;
 
@@ -36,7 +36,6 @@ public class GravityAnimation implements Runnable {
     public void addGravity(Gravity gravity) {
 
         if (gravities.contains(gravity)) {
-            System.out.println("returning");
             return;
         }
 

@@ -16,7 +16,7 @@ public class LogicGrid {
 
     public static final int COLS = 32;
     public static final int ROWS = 20;
-    private static final long FRAME_RATE = 150;
+    private static final long FRAME_RATE = 100;
 
     private PlayerCharacter player1;
     private PlayerCharacter player2;
@@ -141,5 +141,9 @@ public class LogicGrid {
         gravity.addPlayer(player1);
         gravity.addPlayer(player2);
 
+    }
+
+    public Timer getTimer() {
+        return timer;
     }
 }
