@@ -66,7 +66,6 @@ public class Client {
     public void resetLevel() {
         String actionValue = Action.RESET_LEVEL.getActionText();
         sendAction(actionValue);
-        System.out.println(actionValue);
     }
 
     private void initOutStream() {

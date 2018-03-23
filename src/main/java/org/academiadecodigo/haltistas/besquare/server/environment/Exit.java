@@ -22,12 +22,10 @@ public class Exit extends Background {
             return false;
         }
 
-        return p1.getCol() == getCol() && p2.getCol() == getCol() && p1.getRow() == getRow() && p2.getRow() == getRow();
-    }
-
-    @Override
-    public void doCollide(PlayerCharacter player) {
-        super.doCollide(player);
+        return p1.getCol() == getCol() &&
+                p2.getCol() == getCol() &&
+                p1.getRow() == getRow() &&
+                p2.getRow() == getRow();
     }
 
     public void setActive() {

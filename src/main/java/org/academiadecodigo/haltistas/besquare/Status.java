@@ -5,5 +5,7 @@ public enum Status {
     GAME,
     NEW_LEVEL,
     QUIT,
-    TOKEN
+    TOKEN,
+    INTERACTIVE,
+    FALLING
 }

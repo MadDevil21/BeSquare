@@ -29,4 +29,8 @@ public class FilePath {
 
 
 
+    public final static String RED_BUTTON = "sprites/redButton.png";
+    public final static String RED_DOOR = "sprites/redDoor.png";
+    public final static String GREEN_BUTTON = "sprites/greenButton.png";
+    public final static String GREEN_DOOR = "sprites/greenDoor.png";
 }

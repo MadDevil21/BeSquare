@@ -1,6 +1,8 @@
 package org.academiadecodigo.haltistas.besquare.client;
 
 import org.academiadecodigo.haltistas.besquare.FilePath;
+import org.academiadecodigo.haltistas.besquare.server.environment.KeyColor;
+import org.academiadecodigo.haltistas.besquare.client.timer.Gravity;
 import org.academiadecodigo.simplegraphics.pictures.Picture;
 
 import java.util.HashMap;
@@ -8,16 +10,20 @@ import java.util.Map;
 
 public class GameField {
 
-    static final int PADDING = 10;
+    public static final int PADDING = 10;
     public static final int CELL_SIZE = 30;
 
     private Picture background;
     private CharacterSprite p1Sprite;
     private CharacterSprite p2Sprite;
     private Map<Integer, Picture> tokenSprites;
+    private Map<KeyColor, Picture> buttonSprites;
+    private Map<KeyColor, Picture> doorSprites;
 
     public GameField() {
         tokenSprites = new HashMap<>();
+        buttonSprites = new HashMap<>();
+        doorSprites = new HashMap<>();
 
     }
 
@@ -91,12 +97,8 @@ public class GameField {
 
     public void createTokenSprite(int col, int row) {
 
-        System.out.println("trying to create at col " + col);
         int tokenX = logicToCoord(col);
-        System.out.println("creating token at x: " + tokenX);
-        System.out.println("trying to create at col " + row);
         int tokenY = logicToCoord(row);
-        System.out.println("creating token at y: " + tokenY);
 
         Picture tokenSprite = new Picture(tokenX, tokenY, FilePath.TOKEN);
         int index = tokenSprites.size();
@@ -116,6 +118,19 @@ public class GameField {
     private int logicToCoord(int number) {
 
         return number * CELL_SIZE;
+    }
+
+
+    public Map<KeyColor, Picture> getButtonSprites() {
+        return buttonSprites;
+    }
+
+    public Map<KeyColor, Picture> getDoorSprites() {
+        return doorSprites;
+    }
+
+    public void setupGravity(Gravity gravity) {
+       gravity.setCharacterSprites(p1Sprite, p2Sprite);
     }
 }
 

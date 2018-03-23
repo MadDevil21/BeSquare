@@ -3,7 +3,12 @@ package org.academiadecodigo.haltistas.besquare.server.logic;
 import org.academiadecodigo.haltistas.besquare.Status;
 import org.academiadecodigo.haltistas.besquare.client.Action;
 import org.academiadecodigo.haltistas.besquare.server.Server;
+import org.academiadecodigo.haltistas.besquare.server.environment.Button;
+import org.academiadecodigo.haltistas.besquare.server.environment.Door;
+import org.academiadecodigo.haltistas.besquare.server.environment.KeyColor;
 import org.academiadecodigo.haltistas.besquare.server.environment.Token;
+import org.academiadecodigo.haltistas.besquare.server.logic.helpers.CollisionHelper;
+import org.academiadecodigo.haltistas.besquare.server.logic.timer.ServerGravity;
 
 import java.io.IOException;
 
@@ -13,6 +18,7 @@ public class Game {
     private LogicGrid grid;
     private Levels level;
     private Server server;
+    private ServerGravity gravity;
 
     public Game(Server server) {
         this.server = server;
@@ -30,13 +36,18 @@ public class Game {
 
     private void loadNewLevel(Levels level) {
 
+
         grid = new LogicGrid();
+        gravity = new ServerGravity();
+        gravity.setGame(this);
 
         try {
             grid.load(level);
         } catch (IOException e) {
             e.printStackTrace();
         }
+
+        grid.setupGravity(gravity);
 
         int initialP1X = grid.getPlayer1().getCol();
         int initialP1Y = grid.getPlayer1().getRow();
@@ -56,10 +67,35 @@ public class Game {
             int tokenCol = token.getCol();
             int tokenRow = token.getRow();
 
-            System.out.println(tokenBroadcast);
             tokenBroadcast = OutputHandler.tokenPacketBuilder(1, tokenCol, tokenRow);
 
             server.broadcast(tokenBroadcast);
+        }
+
+        String buttonBroadcast = "";
+
+        for (KeyColor key : grid.getButtonMap().keySet()) {
+            Button button = grid.getButtonMap().get(key);
+
+            int buttonCol = button.getCol();
+            int buttonRow = button.getRow();
+
+            buttonBroadcast = OutputHandler.buildInteractivePacket(0, 0, 0, buttonCol, buttonRow);
+
+            server.broadcast(buttonBroadcast);
+        }
+
+        String doorBroadcast = "";
+
+        for (KeyColor key : grid.getDoorMap().keySet()) {
+            Door door = grid.getDoorMap().get(key);
+
+            int doorCol = door.getCol();
+            int doorRow = door.getRow();
+
+            doorBroadcast = OutputHandler.buildInteractivePacket(0, 1, 0, doorCol, doorRow);
+
+            server.broadcast(doorBroadcast);
         }
 
         gameLoop();
@@ -70,45 +106,44 @@ public class Game {
         status = Status.GAME;
     }
 
-    public synchronized String process(int playerId, String fromClient) {
+    public synchronized void process(int playerId, String fromClient) {
 
         Action selectedAction = InputHandler.interpret(fromClient);
-        System.out.println( "at server reset level: " + selectedAction);
+        System.out.println("at server reset level: " + selectedAction);
 
-        if(selectedAction.equals(Action.RESET_LEVEL)){
-            System.out.println( "at server reset level:  IF " + selectedAction);
+        if (selectedAction.equals(Action.RESET_LEVEL)) {
+            gravity.cancel();
+            System.out.println("at server reset level:  IF " + selectedAction);
             loadNewLevel(level);
 
         }
 
         int[] positions = grid.verifyAction(playerId, selectedAction);
 
-        int tokenIndex = grid.checkTokenCollisions(playerId);
+        processThisShit(positions, selectedAction);
 
-        System.out.println(tokenIndex);
+
+        KeyColor color = CollisionHelper.activatorCollisions(playerId, grid);
+
+        if (color != null) {
+            checkDoors(color);
+            //For testing, this only works with default Red doors and buttons
+            String activatedButtonBroadcast = OutputHandler.buildInteractivePacket(0, 0, 1, 0, 0);
+            server.broadcast(activatedButtonBroadcast);
+        }
+
+        int tokenIndex = CollisionHelper.tokenCollisions(playerId, grid);
 
         if (tokenIndex != -1) {
-            //TODO: OutputHandler TokenPacketBuilder should go here;
-
             String eatenTokenBroadcast = OutputHandler.tokenPacketBuilder(0, tokenIndex);
             server.broadcast(eatenTokenBroadcast);
 
         }
+    }
 
-        if (grid.levelWon()) {
-
-            level = nextLevel();
-
-            if (level != null) {
-
-                status = Status.NEW_LEVEL;
-                loadNewLevel(level);
-                return null;
-            }
-
-        }
-
-        return OutputHandler.buildPacket(status, level, positions);
+    private boolean hadFallingAction(Action selectedAction) { //ugly as fuck... to late to fix...
+        return selectedAction != null &&
+                (selectedAction.equals(Action.JUMP_LEFT) || selectedAction.equals(Action.JUMP_RIGHT));
     }
 
     private Levels nextLevel() {
@@ -127,5 +162,48 @@ public class Game {
         return nextLevel;
     }
 
+    public void processThisShit(int[] positions, Action selectedAction) {
+        checkPlayerToken(grid.getPlayer1().getId());
+        checkPlayerToken(grid.getPlayer2().getId());
+
+        if (grid.anyPlayerIsFalling() && hadFallingAction(selectedAction)) {
+            status = Status.FALLING;
+        }
+
+        if (grid.levelWon()) {
+
+            level = nextLevel();
+
+            if (level != null) {
+
+                status = Status.NEW_LEVEL;
+                gravity.cancel();
+                loadNewLevel(level);
+                return;
+            }
+
+        }
+
+        server.broadcast(OutputHandler.buildPacket(status, level, positions));
+    }
+
+    private void checkPlayerToken(int playerId) {
+        int tokenIndex = CollisionHelper.tokenCollisions(playerId, grid);
+
+        if (tokenIndex != -1) {
+            String eatenTokenBroadcast = OutputHandler.tokenPacketBuilder(0, tokenIndex);
+            server.broadcast(eatenTokenBroadcast);
+
+        }
+    }
+
+    private void checkDoors(KeyColor key) {
+        if (grid.getDoorMap().containsKey(key)) {
+
+            grid.getDoorMap().get(key).open();
+
+        }
+
+    }
 
 }

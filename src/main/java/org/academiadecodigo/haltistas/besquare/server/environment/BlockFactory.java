@@ -21,11 +21,18 @@ public class BlockFactory {
 
                 block = new Background(col, row);
                 break;
+
         }
 
         return block;
     }
 
+    public static Button createInteractive(int col, int row, KeyColor color){
+        return new Button(col, row, color);
+    }
+    public static Door movingPlatform(int col, int row, KeyColor color){
+        return new Door(col, row, color);
+    }
     public static Exit createExit(int col, int row) {
         return new Exit(col, row);
     }
