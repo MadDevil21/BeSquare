@@ -91,12 +91,8 @@ public class GameField {
 
     public void createTokenSprite(int col, int row) {
 
-        System.out.println("trying to create at col " + col);
         int tokenX = logicToCoord(col);
-        System.out.println("creating token at x: " + tokenX);
-        System.out.println("trying to create at col " + row);
         int tokenY = logicToCoord(row);
-        System.out.println("creating token at y: " + tokenY);
 
         Picture tokenSprite = new Picture(tokenX, tokenY, FilePath.TOKEN);
         int index = tokenSprites.size();

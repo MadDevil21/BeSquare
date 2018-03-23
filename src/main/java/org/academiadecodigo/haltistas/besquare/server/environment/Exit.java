@@ -28,11 +28,6 @@ public class Exit extends Background {
                 p2.getRow() == getRow();
     }
 
-    @Override
-    public void doCollide(PlayerCharacter player) {
-        super.doCollide(player);
-    }
-
     public void setActive() {
         active = true;
     }

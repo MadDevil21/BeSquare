@@ -3,6 +3,7 @@ package org.academiadecodigo.haltistas.besquare.server.logic;
 import org.academiadecodigo.haltistas.besquare.server.environment.*;
 import org.academiadecodigo.haltistas.besquare.util.Message;
 
+import javax.swing.plaf.synth.ColorType;
 import java.io.BufferedReader;
 import java.io.FileReader;
 import java.io.IOException;
@@ -13,7 +14,7 @@ public class LogicGridLoader {
 
 
         BufferedReader fromFile = new BufferedReader(new FileReader(
-                        LogicGridLoader.class.getResource(level.getMatrix()).getFile()));
+                LogicGridLoader.class.getResource(level.getMatrix()).getFile()));
 
         Block[][] grid = new Block[LogicGrid.COLS][LogicGrid.ROWS];
 
@@ -54,6 +55,18 @@ public class LogicGridLoader {
             case '.':
 
                 returnBlock = BlockFactory.createBlock(BlockType.BACKGROUND, col, row);
+                break;
+
+            case 'b':
+
+                returnBlock = BlockFactory.createInteractive(col, row, KeyColor.BLUE);
+                logicGrid.addInteractiveMap((Interactive)returnBlock);
+                break;
+
+            case 'B':
+
+                returnBlock = BlockFactory.movingPlatform(col, row, KeyColor.BLUE);
+                logicGrid.addMovingMap((MovingPlatform)returnBlock);
                 break;
 
             case 't':

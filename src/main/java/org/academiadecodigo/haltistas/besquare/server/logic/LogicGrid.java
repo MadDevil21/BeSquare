@@ -2,9 +2,7 @@ package org.academiadecodigo.haltistas.besquare.server.logic;
 
 import org.academiadecodigo.haltistas.besquare.client.Action;
 import org.academiadecodigo.haltistas.besquare.server.PlayerCharacter;
-import org.academiadecodigo.haltistas.besquare.server.environment.Block;
-import org.academiadecodigo.haltistas.besquare.server.environment.Exit;
-import org.academiadecodigo.haltistas.besquare.server.environment.Token;
+import org.academiadecodigo.haltistas.besquare.server.environment.*;
 import org.academiadecodigo.haltistas.besquare.server.logic.helpers.CollisionHelper;
 import org.academiadecodigo.haltistas.besquare.server.logic.helpers.FallHelper;
 
@@ -23,6 +21,8 @@ public class LogicGrid {
     private Block[][] grid;
     private Exit exit;
     private Map<Integer, Token> tokenMap;
+    private Map<KeyColor, Interactive> interactiveMap;
+    private Map<KeyColor, MovingPlatform> movingMap;
     private boolean win;
 
 
@@ -32,6 +32,8 @@ public class LogicGrid {
         player1 = new PlayerCharacter(COLS, ROWS, 1);
         player2 = new PlayerCharacter(COLS, ROWS, 2);
         tokenMap = new HashMap<>();
+        interactiveMap = new HashMap<>();
+        movingMap = new HashMap<>();
 
     }
 
@@ -112,12 +114,46 @@ public class LogicGrid {
 
     }
 
+    private void checkDoors(KeyColor color){
+        for (KeyColor keyColor : movingMap.keySet()) {
+            if (keyColor.equals(color)) {
+                movingMap.get(color).open();
+
+            }
+        }
+    }
+
     public Map<Integer, Token> getTokenMap() {
         return tokenMap;
     }
 
     public void removeToken(Integer index) {
         tokenMap.remove(index);
+
+    }
+
+    public void addInteractiveMap(Interactive interactive) {
+        interactiveMap.put(interactive.getColor(), interactive);
+
+    }
+
+    public void addMovingMap(MovingPlatform platform){
+        movingMap.put(platform.getColor(), platform);
+
+    }
+
+    public Map<KeyColor, MovingPlatform> getMovingMap() {
+        return movingMap;
+    }
+
+    public Map<KeyColor, Interactive> getInteractiveMap() {
+
+        return interactiveMap;
+    }
+
+    private void resetInteractive(){
+        interactiveMap.clear();
+        movingMap.clear();
 
     }
 

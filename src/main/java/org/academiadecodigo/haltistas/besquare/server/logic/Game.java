@@ -3,6 +3,8 @@ package org.academiadecodigo.haltistas.besquare.server.logic;
 import org.academiadecodigo.haltistas.besquare.Status;
 import org.academiadecodigo.haltistas.besquare.client.Action;
 import org.academiadecodigo.haltistas.besquare.server.Server;
+import org.academiadecodigo.haltistas.besquare.server.environment.KeyColor;
+import org.academiadecodigo.haltistas.besquare.server.environment.MovingPlatform;
 import org.academiadecodigo.haltistas.besquare.server.environment.Token;
 import org.academiadecodigo.haltistas.besquare.server.logic.helpers.CollisionHelper;
 
@@ -51,6 +53,7 @@ public class Game {
 
         String tokenBroadcast = "";
 
+
         for (Integer tokenIndex : grid.getTokenMap().keySet()) {
             Token token = grid.getTokenMap().get(tokenIndex);
 
@@ -74,15 +77,19 @@ public class Game {
     public synchronized String process(int playerId, String fromClient) {
 
         Action selectedAction = InputHandler.interpret(fromClient);
-        System.out.println( "at server reset level: " + selectedAction);
 
         if(selectedAction.equals(Action.RESET_LEVEL)){
-            System.out.println( "at server reset level:  IF " + selectedAction);
             loadNewLevel(level);
 
         }
 
         int[] positions = grid.verifyAction(playerId, selectedAction);
+
+        KeyColor color = CollisionHelper.activatorCollisions(playerId, grid);
+
+        if (color != null){
+            checkDoors(color);
+        }
 
         int tokenIndex = CollisionHelper.tokenCollisions(playerId, grid);
 
@@ -123,5 +130,14 @@ public class Game {
 
         return nextLevel;
     }
+
+    private void checkDoors(KeyColor key){
+            if (grid.getMovingMap().containsKey(key)){
+
+                grid.getMovingMap().get(key).open();
+
+            }
+
+        }
 
 }

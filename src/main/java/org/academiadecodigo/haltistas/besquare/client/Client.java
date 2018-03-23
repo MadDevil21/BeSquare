@@ -1,6 +1,5 @@
 package org.academiadecodigo.haltistas.besquare.client;
 
-import org.academiadecodigo.haltistas.besquare.GameState;
 import org.academiadecodigo.haltistas.besquare.util.Message;
 
 import java.io.*;
@@ -67,7 +66,6 @@ public class Client {
     public void resetLevel(){
         String actionValue = Action.RESET_LEVEL.getActionText();
         sendAction(actionValue);
-        System.out.println(actionValue);
     }
 
     private void initOutStream() {

@@ -4,19 +4,23 @@ import org.academiadecodigo.haltistas.besquare.server.PlayerCharacter;
 
 public class Interactive extends Platform {
 
-    public Interactive(int col, int row) {
+    private KeyColor color;
+
+    public Interactive(int col, int row, KeyColor color) {
         super(col, row);
+        this.color = color;
+
     }
 
     private boolean active;
 
     @Override
     public boolean isColliding(PlayerCharacter playerCharacter) {
-        return super.isColliding(playerCharacter);
+        return playerCharacter.getCol() == super.getCol() &&
+                playerCharacter.getRow() == super.getRow();
     }
 
-    @Override
-    public void doCollide(PlayerCharacter player) {
-        super.doCollide(player);
+    public KeyColor getColor() {
+        return color;
     }
 }

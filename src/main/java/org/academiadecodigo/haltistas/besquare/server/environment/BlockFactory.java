@@ -21,11 +21,18 @@ public class BlockFactory {
 
                 block = new Background(col, row);
                 break;
+
         }
 
         return block;
     }
 
+    public static Interactive createInteractive(int col, int row, KeyColor color){
+        return new Interactive(col, row, color);
+    }
+    public static MovingPlatform movingPlatform(int col, int row, KeyColor color){
+        return new MovingPlatform(col, row, color);
+    }
     public static Exit createExit(int col, int row) {
         return new Exit(col, row);
     }
