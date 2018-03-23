@@ -2,32 +2,22 @@ package org.academiadecodigo.haltistas.besquare.server.environment;
 
 import org.academiadecodigo.haltistas.besquare.server.PlayerCharacter;
 
-public class MovingPlatform extends Platform{
+public class Button extends Platform {
 
     private KeyColor color;
-    private boolean isActive = false;
 
-    public MovingPlatform(int col, int row, KeyColor color) {
+    public Button(int col, int row, KeyColor color) {
         super(col, row);
         this.color = color;
 
     }
 
+    private boolean active;
+
     @Override
     public boolean isColliding(PlayerCharacter playerCharacter) {
-
-        return !isActive;
-
-    }
-
-    public void open(){
-        isActive = true;
-
-    }
-
-    public void close(){
-        isActive = false;
-
+        return playerCharacter.getCol() == super.getCol() &&
+                playerCharacter.getRow() == super.getRow();
     }
 
     public KeyColor getColor() {

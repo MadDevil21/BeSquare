@@ -64,7 +64,7 @@ public class CollisionHelper {
     public static KeyColor activatorCollisions(int playerID, LogicGrid grid){
 
         KeyColor returnColor = null;
-        Map<KeyColor, Interactive> interactiveMap = grid.getInteractiveMap();
+        Map<KeyColor, Button> interactiveMap = grid.getButtonMap();
 
         PlayerCharacter checkedCharacter = grid.fetchById(playerID);
 
@@ -74,7 +74,7 @@ public class CollisionHelper {
                 continue;
             }
 
-            Interactive button = grid.getInteractiveMap().get(color);
+            Button button = grid.getButtonMap().get(color);
 
             //TODO extract this nested if to another method
 

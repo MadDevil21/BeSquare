@@ -1,10 +1,7 @@
 package org.academiadecodigo.haltistas.besquare.client;
 
 import org.academiadecodigo.haltistas.besquare.Status;
-import org.academiadecodigo.haltistas.besquare.client.event.Event;
-import org.academiadecodigo.haltistas.besquare.client.event.GameEvent;
-import org.academiadecodigo.haltistas.besquare.client.event.NewLevelEvent;
-import org.academiadecodigo.haltistas.besquare.client.event.TokenEvent;
+import org.academiadecodigo.haltistas.besquare.client.event.*;
 import org.academiadecodigo.haltistas.besquare.util.Message;
 
 public class TaskManager {
@@ -26,6 +23,7 @@ public class TaskManager {
         Status currentStatus = stringToStatus(instructions[0]);
 
         switch (currentStatus) {
+
             case NEW_LEVEL:
                 event = new NewLevelEvent(instructions);
                 break;
@@ -35,8 +33,15 @@ public class TaskManager {
                 break;
 
             case TOKEN:
+
                 event = new TokenEvent(instructions);
                 break;
+
+            case INTERACTIVE:
+
+                event = new InteractiveEvent(instructions);
+                break;
+
         }
 
         event.process(instructions, field);

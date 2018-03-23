@@ -21,8 +21,8 @@ public class LogicGrid {
     private Block[][] grid;
     private Exit exit;
     private Map<Integer, Token> tokenMap;
-    private Map<KeyColor, Interactive> interactiveMap;
-    private Map<KeyColor, MovingPlatform> movingMap;
+    private Map<KeyColor, Button> buttonMap;
+    private Map<KeyColor, Door> doorMap;
     private boolean win;
 
 
@@ -32,13 +32,13 @@ public class LogicGrid {
         player1 = new PlayerCharacter(COLS, ROWS, 1);
         player2 = new PlayerCharacter(COLS, ROWS, 2);
         tokenMap = new HashMap<>();
-        interactiveMap = new HashMap<>();
-        movingMap = new HashMap<>();
+        buttonMap = new HashMap<>();
+        doorMap = new HashMap<>();
 
     }
 
     public void load(Levels currentLevel) throws IOException {
-
+        resetInteractive();
         grid = LogicGridLoader.loadLevel(currentLevel, this);
         exit.setActive();
     }
@@ -115,9 +115,9 @@ public class LogicGrid {
     }
 
     private void checkDoors(KeyColor color){
-        for (KeyColor keyColor : movingMap.keySet()) {
+        for (KeyColor keyColor : doorMap.keySet()) {
             if (keyColor.equals(color)) {
-                movingMap.get(color).open();
+                doorMap.get(color).open();
 
             }
         }
@@ -132,28 +132,27 @@ public class LogicGrid {
 
     }
 
-    public void addInteractiveMap(Interactive interactive) {
-        interactiveMap.put(interactive.getColor(), interactive);
+    public void addInteractiveMap(Button button) {
+        buttonMap.put(button.getColor(), button);
 
     }
 
-    public void addMovingMap(MovingPlatform platform){
-        movingMap.put(platform.getColor(), platform);
+    public void addMovingMap(Door platform){
+        doorMap.put(platform.getColor(), platform);
 
     }
 
-    public Map<KeyColor, MovingPlatform> getMovingMap() {
-        return movingMap;
+    public Map<KeyColor, Door> getDoorMap() {
+        return doorMap;
     }
 
-    public Map<KeyColor, Interactive> getInteractiveMap() {
-
-        return interactiveMap;
+    public Map<KeyColor, Button> getButtonMap() {
+        return buttonMap;
     }
 
     private void resetInteractive(){
-        interactiveMap.clear();
-        movingMap.clear();
+        buttonMap.clear();
+        doorMap.clear();
 
     }
 

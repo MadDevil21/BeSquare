@@ -1,6 +1,7 @@
 package org.academiadecodigo.haltistas.besquare.client;
 
 import org.academiadecodigo.haltistas.besquare.FilePath;
+import org.academiadecodigo.haltistas.besquare.server.environment.KeyColor;
 import org.academiadecodigo.simplegraphics.pictures.Picture;
 
 import java.util.HashMap;
@@ -8,16 +9,20 @@ import java.util.Map;
 
 public class GameField {
 
-    static final int PADDING = 10;
+    public static final int PADDING = 10;
     public static final int CELL_SIZE = 30;
 
     private Picture background;
     private CharacterSprite p1Sprite;
     private CharacterSprite p2Sprite;
     private Map<Integer, Picture> tokenSprites;
+    private Map<KeyColor, Picture> buttonSprites;
+    private Map<KeyColor, Picture> doorSprites;
 
     public GameField() {
         tokenSprites = new HashMap<>();
+        buttonSprites = new HashMap<>();
+        doorSprites = new HashMap<>();
 
     }
 
@@ -112,6 +117,15 @@ public class GameField {
     private int logicToCoord(int number) {
 
         return number * CELL_SIZE;
+    }
+
+
+    public Map<KeyColor, Picture> getButtonSprites() {
+        return buttonSprites;
+    }
+
+    public Map<KeyColor, Picture> getDoorSprites() {
+        return doorSprites;
     }
 }
 

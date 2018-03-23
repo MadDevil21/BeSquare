@@ -3,8 +3,9 @@ package org.academiadecodigo.haltistas.besquare.server.logic;
 import org.academiadecodigo.haltistas.besquare.Status;
 import org.academiadecodigo.haltistas.besquare.client.Action;
 import org.academiadecodigo.haltistas.besquare.server.Server;
+import org.academiadecodigo.haltistas.besquare.server.environment.Button;
+import org.academiadecodigo.haltistas.besquare.server.environment.Door;
 import org.academiadecodigo.haltistas.besquare.server.environment.KeyColor;
-import org.academiadecodigo.haltistas.besquare.server.environment.MovingPlatform;
 import org.academiadecodigo.haltistas.besquare.server.environment.Token;
 import org.academiadecodigo.haltistas.besquare.server.logic.helpers.CollisionHelper;
 
@@ -60,10 +61,35 @@ public class Game {
             int tokenCol = token.getCol();
             int tokenRow = token.getRow();
 
-            System.out.println(tokenBroadcast);
             tokenBroadcast = OutputHandler.tokenPacketBuilder(1, tokenCol, tokenRow);
 
             server.broadcast(tokenBroadcast);
+        }
+
+        String buttonBroadcast = "";
+
+        for (KeyColor key : grid.getButtonMap().keySet()) {
+            Button button = grid.getButtonMap().get(key);
+
+            int buttonCol = button.getCol();
+            int buttonRow = button.getRow();
+
+            buttonBroadcast = OutputHandler.buildInteractivePacket(0, 0, 0, buttonCol,buttonRow);
+
+            server.broadcast(buttonBroadcast);
+        }
+
+        String doorBroadcast = "";
+
+        for (KeyColor key : grid.getDoorMap ().keySet()) {
+            Door door = grid.getDoorMap().get(key);
+
+            int doorCol = door.getCol();
+            int doorRow = door.getRow();
+
+            doorBroadcast = OutputHandler.buildInteractivePacket(0, 1, 0, doorCol, doorRow);
+
+            server.broadcast(doorBroadcast);
         }
 
         gameLoop();
@@ -78,7 +104,7 @@ public class Game {
 
         Action selectedAction = InputHandler.interpret(fromClient);
 
-        if(selectedAction.equals(Action.RESET_LEVEL)){
+        if (selectedAction.equals(Action.RESET_LEVEL)) {
             loadNewLevel(level);
 
         }
@@ -87,8 +113,11 @@ public class Game {
 
         KeyColor color = CollisionHelper.activatorCollisions(playerId, grid);
 
-        if (color != null){
+        if (color != null) {
             checkDoors(color);
+            //For testing, this only works with default Red doors and buttons
+            String activatedButtonBroadcast = OutputHandler.buildInteractivePacket(0, 0, 1,0,0);
+            server.broadcast(activatedButtonBroadcast);
         }
 
         int tokenIndex = CollisionHelper.tokenCollisions(playerId, grid);
@@ -131,13 +160,13 @@ public class Game {
         return nextLevel;
     }
 
-    private void checkDoors(KeyColor key){
-            if (grid.getMovingMap().containsKey(key)){
+    private void checkDoors(KeyColor key) {
+        if (grid.getDoorMap().containsKey(key)) {
 
-                grid.getMovingMap().get(key).open();
-
-            }
+            grid.getDoorMap().get(key).open();
 
         }
+
+    }
 
 }
