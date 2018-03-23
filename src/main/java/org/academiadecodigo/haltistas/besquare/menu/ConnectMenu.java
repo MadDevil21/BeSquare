@@ -89,12 +89,12 @@ public class ConnectMenu extends AbstractMenu {
     }
 
     public void joinGame() {
-        initializer.joinGame("192.168.1.29", 20021);
+        initializer.joinGame(ip, 20021);
     }
 
     public void hostGame() {
         initializer.hostServer(20021);
-        initializer.joinGame("192.168.1.29", 20021);
+        initializer.joinGame(ip, 20021);
     }
 
     public int getMovePointer() {
