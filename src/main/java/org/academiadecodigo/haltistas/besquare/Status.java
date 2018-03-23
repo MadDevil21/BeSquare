@@ -6,6 +6,6 @@ public enum Status {
     NEW_LEVEL,
     QUIT,
     TOKEN,
-    INTERACTIVE
-
+    INTERACTIVE,
+    FALLING
 }

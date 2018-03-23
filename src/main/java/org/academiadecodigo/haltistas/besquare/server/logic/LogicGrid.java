@@ -5,15 +5,16 @@ import org.academiadecodigo.haltistas.besquare.server.PlayerCharacter;
 import org.academiadecodigo.haltistas.besquare.server.environment.*;
 import org.academiadecodigo.haltistas.besquare.server.logic.helpers.CollisionHelper;
 import org.academiadecodigo.haltistas.besquare.server.logic.helpers.FallHelper;
+import org.academiadecodigo.haltistas.besquare.server.logic.timer.ServerGravity;
 
 import java.io.IOException;
-import java.util.HashMap;
-import java.util.Map;
+import java.util.*;
 
 public class LogicGrid {
 
     public static final int COLS = 32;
     public static final int ROWS = 20;
+    private static final long FRAME_RATE = 60;
 
     private PlayerCharacter player1;
     private PlayerCharacter player2;
@@ -24,6 +25,7 @@ public class LogicGrid {
     private Map<KeyColor, Button> buttonMap;
     private Map<KeyColor, Door> doorMap;
     private boolean win;
+    private Timer timer;
 
 
     LogicGrid() {
@@ -34,6 +36,7 @@ public class LogicGrid {
         tokenMap = new HashMap<>();
         buttonMap = new HashMap<>();
         doorMap = new HashMap<>();
+        timer = new Timer();
 
     }
 
@@ -45,15 +48,12 @@ public class LogicGrid {
 
     public int[] verifyAction(int playerId, Action selectedAction) {
 
+        player1.setFallen(false);
+        player2.setFallen(false);
+
         PlayerCharacter movingPlayer = fetchById(playerId);
 
         synchronized (this) {
-
-            if (FallHelper.shouldKeepFalling(movingPlayer)) {
-                FallHelper.processFall(movingPlayer, grid);
-                return new int[]{player1.getCol(), player1.getRow(), player2.getCol(), player2.getRow()};
-
-            }
 
             checkJump(movingPlayer, selectedAction);
 
@@ -65,12 +65,6 @@ public class LogicGrid {
             CollisionHelper.processCollision(movingPlayer, destinationBlock, grid);
 
             movingPlayer.setJumping(false);
-
-            if (!CollisionHelper.platformUnder(movingPlayer, grid)) {
-                movingPlayer.setFalling(true);
-                verifyAction(movingPlayer.getId(), Action.FALLING);
-
-            }
 
             win = CollisionHelper.checkWin(this);
 
@@ -170,5 +164,21 @@ public class LogicGrid {
 
     public void setExit(Exit exit) {
         this.exit = exit;
+    }
+
+    public boolean anyPlayerIsFalling() {
+        return player1.hasFallen() || player2.hasFallen();
+    }
+
+    public void setupGravity(ServerGravity gravity) {
+        gravity.setBlocks(grid);
+        timer.scheduleAtFixedRate(gravity, 0, FRAME_RATE);
+        gravity.addPlayer(player1);
+        gravity.addPlayer(player2);
+
+    }
+
+    public Timer getTimer() {
+        return timer;
     }
 }

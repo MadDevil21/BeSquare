@@ -1,5 +1,6 @@
 package org.academiadecodigo.haltistas.besquare.client;
 
+import org.academiadecodigo.haltistas.besquare.server.logic.Game;
 import org.academiadecodigo.simplegraphics.pictures.Picture;
 
 public class CharacterSprite {
@@ -54,5 +55,17 @@ public class CharacterSprite {
 
     public Picture getSprite() {
         return sprite;
+    }
+
+    public boolean isInPosition(int col, int row) {
+        return getCol() == col && getRow() == row;
+    }
+
+    public int getCol() {
+        return sprite.getX() / GameField.CELL_SIZE;
+    }
+
+    public int getRow() {
+        return sprite.getY() / GameField.CELL_SIZE;
     }
 }

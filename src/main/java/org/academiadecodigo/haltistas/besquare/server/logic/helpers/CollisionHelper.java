@@ -18,16 +18,6 @@ public class CollisionHelper {
             movingPlayer.setPosition(destinationBlock.getCol(), destinationBlock.getRow());
     }
 
-    public static boolean platformUnder(PlayerCharacter movingPlayer, Block[][] grid){
-
-        int playerCol = movingPlayer.getCol();
-        int playerRow = movingPlayer.getRow();
-
-        Block underPlayer = grid[playerCol][playerRow+1];
-
-        return underPlayer.isColliding(movingPlayer);
-
-    }
 
     public static int tokenCollisions(int playerID, LogicGrid grid) {
 

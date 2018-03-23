@@ -18,7 +18,7 @@ public class FallHelper {
 
         if (!grid[destinationCol][destinationRow].isColliding(character)) {
             character.setPosition(destinationCol, destinationRow);
-            System.out.println("Falling!");
+            character.setFallen(true);
 
             // TODO: This commented out solution makes players fall one block at a time but only
             // when the other one moves; this is not the intended behavior but it could be
@@ -28,11 +28,10 @@ public class FallHelper {
 
             // Recursive solution: This makes players disappear from a platform and immediately appear below
 
-            processFall(character, grid);
 
+            return;
         }
 
         character.setFalling(false);
-
     }
 }
