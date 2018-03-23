@@ -22,7 +22,7 @@ public class FilePath {
     public final static String LEVEL_5_TXT = "/levels/level_5.txt";
 
     public final static String LEVEL_6_PNG = "/backgrounds/endView.png";
-    public final static String LEVEL_6_TXT = "/levels/level_2.txt";
+    public final static String LEVEL_6_TXT = "/levels/unbuilded_Level.txt";
 
     public final static String RED_BUTTON = "sprites/redButton.png";
     public final static String RED_DOOR = "sprites/redDoor.png";
