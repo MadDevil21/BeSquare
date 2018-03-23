@@ -19,11 +19,6 @@ public abstract class Block implements Collidable {
         return isColliding;
     }
 
-    @Override
-    public void doCollide(PlayerCharacter player) {
-
-    }
-
     public int getCol() {
         return col;
     }

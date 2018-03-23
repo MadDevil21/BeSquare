@@ -132,6 +132,10 @@ public class Controller implements KeyboardHandler {
                 client.jumpRight();
                 break;
 
+            case KeyboardEvent.KEY_R:
+                client.resetLevel();
+                break;
+
             default:
                 System.err.println(Message.ERR_CONTROLLER);
         }

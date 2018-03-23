@@ -6,5 +6,4 @@ public interface Collidable {
 
     boolean isColliding(PlayerCharacter playerCharacter);
 
-    void doCollide(PlayerCharacter player);
 }

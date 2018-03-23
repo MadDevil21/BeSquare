@@ -56,6 +56,18 @@ public class LogicGridLoader {
                 returnBlock = BlockFactory.createBlock(BlockType.BACKGROUND, col, row);
                 break;
 
+            case 'r':
+
+                returnBlock = BlockFactory.createInteractive(col, row, KeyColor.RED);
+                logicGrid.addInteractiveMap((Button)returnBlock);
+                break;
+
+            case 'R':
+
+                returnBlock = BlockFactory.movingPlatform(col, row, KeyColor.RED);
+                logicGrid.addMovingMap((Door)returnBlock);
+                break;
+
             case 't':
 
                 logicGrid.addTokenToMap(new Token(col, row));

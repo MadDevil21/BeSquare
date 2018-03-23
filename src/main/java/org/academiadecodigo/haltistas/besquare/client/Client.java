@@ -18,7 +18,7 @@ public class Client {
         GameField gameField = new GameField();
 
         taskManager = new TaskManager(gameField);
-        startConnections();       // TODO: temporary solution
+        startConnections();
     }
 
     private void startConnections() {
@@ -58,6 +58,11 @@ public class Client {
     public void jumpLeft() {
 
         String actionValue = Action.JUMP_LEFT.getActionText();
+        sendAction(actionValue);
+    }
+
+    public void resetLevel() {
+        String actionValue = Action.RESET_LEVEL.getActionText();
         sendAction(actionValue);
     }
 

@@ -14,8 +14,4 @@ public class Killer extends Platform{
         return super.isColliding(playerCharacter);
     }
 
-    @Override
-    public void doCollide(PlayerCharacter player) {
-        super.doCollide(player);
-    }
 }

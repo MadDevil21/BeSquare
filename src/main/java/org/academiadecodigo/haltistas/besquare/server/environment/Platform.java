@@ -13,8 +13,4 @@ public class Platform extends Block {
         return true;
     }
 
-    @Override
-    public void doCollide(PlayerCharacter player) {
-        super.doCollide(player);
-    }
 }

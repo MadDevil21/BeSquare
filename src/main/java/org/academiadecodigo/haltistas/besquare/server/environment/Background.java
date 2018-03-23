@@ -13,7 +13,4 @@ public class Background extends Block {
         return false;
     }
 
-    @Override
-    public void doCollide(PlayerCharacter player) {
-    }
 }
