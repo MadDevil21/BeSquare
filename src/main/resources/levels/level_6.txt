@@ -6,9 +6,9 @@
 ................................
 xx............................xx
 xx......xxxx..................xx
-xxx...........................xx
-xxxx..................xxxx....xx
-xxxxxt1txxxx....2....exxxxxxxxxx
+xxx.......RR..................xx
+xxxx......R...........xxxx....xx
+xxxxxt1.xxxx.r..2....exxxxxxxxxx
 xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
 xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
 xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
