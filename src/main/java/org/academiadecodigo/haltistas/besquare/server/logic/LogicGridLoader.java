@@ -3,17 +3,16 @@ package org.academiadecodigo.haltistas.besquare.server.logic;
 import org.academiadecodigo.haltistas.besquare.server.environment.*;
 import org.academiadecodigo.haltistas.besquare.util.Message;
 
-import java.io.BufferedReader;
-import java.io.FileReader;
-import java.io.IOException;
+import java.io.*;
 
 public class LogicGridLoader {
 
     public static Block[][] loadLevel(Levels level, LogicGrid logicGrid) throws IOException {
 
+        File file = new File(level.getMatrix());
 
         BufferedReader fromFile = new BufferedReader(new FileReader(
-                        LogicGridLoader.class.getResource(level.getMatrix()).getFile()));
+                LogicGridLoader.class.getResource(level.getMatrix()).getFile()));
 
         Block[][] grid = new Block[LogicGrid.COLS][LogicGrid.ROWS];
 
@@ -54,6 +53,18 @@ public class LogicGridLoader {
             case '.':
 
                 returnBlock = BlockFactory.createBlock(BlockType.BACKGROUND, col, row);
+                break;
+
+            case 'r':
+
+                returnBlock = BlockFactory.createInteractive(col, row, KeyColor.RED);
+                logicGrid.addInteractiveMap((Button)returnBlock);
+                break;
+
+            case 'R':
+
+                returnBlock = BlockFactory.movingPlatform(col, row, KeyColor.RED);
+                logicGrid.addMovingMap((Door)returnBlock);
                 break;
 
             case 't':

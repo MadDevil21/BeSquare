@@ -5,10 +5,14 @@ import org.academiadecodigo.haltistas.besquare.FilePath;
 public enum Levels {
 
     LEVEL_1(FilePath.LEVEL_1_PNG, FilePath.LEVEL_1_TXT),
-    LEVEL_2(FilePath.LEVEL_2_PNG, FilePath.LEVEL_2_TXT);
+    LEVEL_2(FilePath.LEVEL_2_PNG, FilePath.LEVEL_2_TXT),
+    LEVEL_3(FilePath.LEVEL_3_PNG, FilePath.LEVEL_3_TXT),
+    LEVEL_4(FilePath.LEVEL_4_PNG, FilePath.LEVEL_4_TXT),
+    LEVEL_5(FilePath.LEVEL_5_PNG, FilePath.LEVEL_5_TXT),
+    LEVEL_6(FilePath.LEVEL_6_PNG, FilePath.LEVEL_6_TXT);
 
     private final String background;
-    private  final String matrix;
+    private final String matrix;
 
     Levels(String background, String matrix) {
 

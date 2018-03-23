@@ -1,6 +1,8 @@
 package org.academiadecodigo.haltistas.besquare.client;
 
 import org.academiadecodigo.haltistas.besquare.FilePath;
+import org.academiadecodigo.haltistas.besquare.server.environment.KeyColor;
+import org.academiadecodigo.haltistas.besquare.client.timer.Gravity;
 import org.academiadecodigo.simplegraphics.pictures.Picture;
 
 import java.util.HashMap;
@@ -15,24 +17,28 @@ public class GameField {
     private CharacterSprite p1Sprite;
     private CharacterSprite p2Sprite;
     private Map<Integer, Picture> tokenSprites;
+    private Map<KeyColor, Picture> buttonSprites;
+    private Map<KeyColor, Picture> doorSprites;
 
-    public GameField(){
+    public GameField() {
         tokenSprites = new HashMap<>();
+        buttonSprites = new HashMap<>();
+        doorSprites = new HashMap<>();
 
     }
 
     /**
      * Method to calculate the final X and Y positions for players, which come in Col and Row format and need
      * to be in coordinate format when the move method in the sprites
-     * @see CharacterSprite#move(int, int)
      *
      * @param player1col Player 1's destination column
      * @param player1row Player 1's destination row
      * @param player2col Player 2's destination column
      * @param player2row Player 2's destination row
+     * @see CharacterSprite#move(int, int)
      */
 
-    protected void moveCharacters(int player1col, int player1row, int player2col, int player2row) { // TODO: temporary solution
+    public void moveCharacters(int player1col, int player1row, int player2col, int player2row) { // TODO: temporary solution
 
         int player1X = logicToCoord(player1col);
         int player1Y = logicToCoord(player1row);
@@ -44,11 +50,12 @@ public class GameField {
     }
 
     /**
-     *  Loads the background picture
+     * Loads the background picture
+     *
      * @param path Path to the background image in the resources folder
      */
 
-    protected void loadBackground(String path) {
+    public void loadBackground(String path) {
 
         if (background != null) {
             background.delete();
@@ -61,14 +68,14 @@ public class GameField {
     /**
      * Loads the character sprites to the initial positions when a new level starts
      * Values come from server in columns and rows and need to be converted to coordinates format
-     * @see #logicToCoord(int)
      *
      * @param player1col Player 1's column value
      * @param player1row Player 1's row value
      * @param player2col Player 2's column value
      * @param player2row Player 2's row value
+     * @see #logicToCoord(int)
      */
-    protected void loadCharacters(int player1col, int player1row, int player2col, int player2row) {
+    public void loadCharacters(int player1col, int player1row, int player2col, int player2row) {
 
         p1Sprite = new CharacterSprite(FilePath.PLAYER1);
         p2Sprite = new CharacterSprite(FilePath.PLAYER2);
@@ -88,14 +95,10 @@ public class GameField {
         p2Sprite.getSprite().draw();
     }
 
-    protected void createTokenSprite(int col, int row){
+    public void createTokenSprite(int col, int row) {
 
-        System.out.println("trying to create at col " + col);
         int tokenX = logicToCoord(col);
-        System.out.println("creating token at x: " + tokenX);
-        System.out.println("trying to create at col " + row);
         int tokenY = logicToCoord(row);
-        System.out.println("creating token at y: " + tokenY);
 
         Picture tokenSprite = new Picture(tokenX, tokenY, FilePath.TOKEN);
         int index = tokenSprites.size();
@@ -104,7 +107,7 @@ public class GameField {
         tokenSprites.put(index, tokenSprite);
     }
 
-    protected void killTokenSprite(int index){
+    public void killTokenSprite(int index) {
 
         tokenSprites.get(index).delete();
         tokenSprites.remove(index);
@@ -112,9 +115,22 @@ public class GameField {
     }
 
 
-    private int logicToCoord(int number){
+    private int logicToCoord(int number) {
 
         return number * CELL_SIZE;
+    }
+
+
+    public Map<KeyColor, Picture> getButtonSprites() {
+        return buttonSprites;
+    }
+
+    public Map<KeyColor, Picture> getDoorSprites() {
+        return doorSprites;
+    }
+
+    public void setupGravity(Gravity gravity) {
+       gravity.setCharacterSprites(p1Sprite, p2Sprite);
     }
 }
 

@@ -1,9 +1,5 @@
 package org.academiadecodigo.haltistas.besquare.client;
 
-import org.academiadecodigo.haltistas.besquare.GameState;
-import org.academiadecodigo.haltistas.besquare.Initializer;
-import org.academiadecodigo.haltistas.besquare.menu.ConnectMenu;
-import org.academiadecodigo.haltistas.besquare.menu.MainMenu;
 import org.academiadecodigo.haltistas.besquare.util.Message;
 import org.academiadecodigo.simplegraphics.keyboard.Keyboard;
 import org.academiadecodigo.simplegraphics.keyboard.KeyboardEvent;
@@ -130,6 +126,10 @@ public class Controller implements KeyboardHandler {
 
             case KeyboardEvent.KEY_L:
                 client.jumpRight();
+                break;
+
+            case KeyboardEvent.KEY_R:
+                client.resetLevel();
                 break;
 
             default:

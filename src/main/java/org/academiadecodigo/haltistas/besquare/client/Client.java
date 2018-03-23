@@ -61,6 +61,11 @@ public class Client {
         sendAction(actionValue);
     }
 
+    public void resetLevel() {
+        String actionValue = Action.RESET_LEVEL.getActionText();
+        sendAction(actionValue);
+    }
+
     private void initOutStream() {
 
         try {
