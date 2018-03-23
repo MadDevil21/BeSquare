@@ -16,7 +16,6 @@ public class ConnectMenu extends AbstractMenu {
     private int movePointer;
     private Text ipText;
     private Text portText;
-    private boolean ipAddress;
 
     private Initializer initializer;
 
@@ -29,7 +28,6 @@ public class ConnectMenu extends AbstractMenu {
         createBackground();
         createConnectOptions();
         index = 0;
-        ipAddress = false;
     }
 
     private void requestIP() {
@@ -42,7 +40,7 @@ public class ConnectMenu extends AbstractMenu {
     private void requestPort() {
 
         createOption(250, "PORT: ");
-        portText = new Text(optionsXPos() + 50, 250, port, font);
+        portText = new Text(optionsXPos() + 100, 250, port, font);
         portText.draw();
     }
 
@@ -55,6 +53,7 @@ public class ConnectMenu extends AbstractMenu {
     public void insertIP(char c) {
 
         if (ip.length() == MAX_DIGITS_IP) {
+
             return;
         }
 
@@ -78,23 +77,21 @@ public class ConnectMenu extends AbstractMenu {
         }
 
         port += c;
+
         portText.setText(port);
         portText.setColor(Color.WHITE);
     }
 
     public void hostServer() {
 
-        ipAddress = true;
-        initializer.hostServer(20021);
+        initializer.hostServer(Integer.parseInt(port));
+        deleteAssets();
     }
 
     public void joinGame() {
-        initializer.joinGame(ip, 20021);
-    }
 
-    public void hostGame() {
-        initializer.hostServer(20021);
-        initializer.joinGame(ip, 20021);
+        initializer.joinGame(ip, Integer.parseInt(port));
+        deleteAssets();
     }
 
     public int getMovePointer() {
@@ -105,11 +102,9 @@ public class ConnectMenu extends AbstractMenu {
         this.initializer = initializer;
     }
 
-    public boolean isIpAddress() {
-        return ipAddress;
-    }
+    private void deleteAssets() {
 
-    public boolean getIp() {
-        return !ip.equals("");
+        ipText.delete();
+        portText.delete();
     }
 }

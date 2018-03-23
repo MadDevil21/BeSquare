@@ -48,8 +48,7 @@ public class Controller implements KeyboardHandler {
     @Override
     public void keyPressed(char c) {
 
-        if(!checkIP) {
-
+        if (!checkIP) {
             connectMenu.insertIP(c);
             return;
         }
@@ -107,12 +106,6 @@ public class Controller implements KeyboardHandler {
 
             case 1:
 
-                connectMenu.hostGame();
-                Initializer.gameState = GameState.GAME;
-                break;
-
-            case 2:
-
                 connectMenu.joinGame();
                 Initializer.gameState = GameState.GAME;
                 break;
@@ -167,6 +160,7 @@ public class Controller implements KeyboardHandler {
 
             if (!checkIP) {
                 checkIP = true;
+                return;
             }
 
             connectMenuController();
@@ -179,5 +173,9 @@ public class Controller implements KeyboardHandler {
 
     public void setClient(Client client) {
         this.client = client;
+    }
+
+    public void setCheckIP(boolean checkIP) {
+        this.checkIP = checkIP;
     }
 }
