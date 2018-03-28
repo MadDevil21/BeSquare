@@ -1,9 +1,14 @@
 package org.academiadecodigo.haltistas.besquare.menu;
 
 import org.academiadecodigo.haltistas.besquare.GameState;
-import org.academiadecodigo.haltistas.besquare.Initializer;
+import org.academiadecodigo.haltistas.besquare.Launcher;
 import org.academiadecodigo.simplegraphics.graphics.Color;
 import org.academiadecodigo.simplegraphics.graphics.Text;
+
+import java.net.InetAddress;
+import java.net.UnknownHostException;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 public class ConnectMenu extends AbstractMenu {
 
@@ -17,11 +22,11 @@ public class ConnectMenu extends AbstractMenu {
     private Text ipText;
     private Text portText;
 
-    private Initializer initializer;
+    private Launcher launcher;
 
     public void init(int movePointer) {
 
-        Initializer.gameState = GameState.CONNECT_MENU;
+        Launcher.gameState = GameState.CONNECT_MENU;
         this.movePointer = movePointer;
         ip = "";
         port = "";
@@ -44,15 +49,18 @@ public class ConnectMenu extends AbstractMenu {
         portText.draw();
     }
 
-    private void createConnectOptions() {
+    protected void createConnectOptions() {
 
         requestIP();
+        if (movePointer == 0) {
+            fillIp();
+        }
         requestPort();
     }
 
     public void insertIP(char c) {
 
-        if (ip.length() == MAX_DIGITS_IP) {
+        if (validIP(ip)) {
 
             return;
         }
@@ -70,6 +78,18 @@ public class ConnectMenu extends AbstractMenu {
         ipText.setText(ip);
     }
 
+    private boolean validIP(String ip) {
+
+        System.out.println("IP " + ip);
+
+        Pattern pattern = Pattern.compile("^(\\d|[1-9]\\d|1\\d\\d|2([0-4]\\d|5[0-5]))\\.(\\d|[1-9]\\d|1\\d\\d|2([0-4]\\d|5[0-5]))\\.(\\d|[1-9]\\d|1\\d\\d|2([0-4]\\d|5[0-5]))\\.(\\d|[1-9]\\d|1\\d\\d|2([0-4]\\d|5[0-5]))$");
+        Matcher matcher = pattern.matcher(ip);
+
+        System.out.println("MATCHES " + matcher.matches());
+
+        return matcher.matches();
+    }
+
     public void insertPort(char c) {
 
         if (port.length() == MAX_DIGITS_PORT) {
@@ -83,14 +103,13 @@ public class ConnectMenu extends AbstractMenu {
     }
 
     public void hostServer() {
-
-        initializer.hostServer(Integer.parseInt(port));
+        launcher.hostServer(Integer.parseInt(port));
         deleteAssets();
     }
 
     public void joinGame() {
 
-        initializer.joinGame(ip, Integer.parseInt(port));
+        launcher.joinGame(ip, Integer.parseInt(port));
         deleteAssets();
     }
 
@@ -98,8 +117,8 @@ public class ConnectMenu extends AbstractMenu {
         return movePointer;
     }
 
-    public void setInitializer(Initializer initializer) {
-        this.initializer = initializer;
+    public void setLauncher(Launcher launcher) {
+        this.launcher = launcher;
     }
 
     private void deleteAssets() {
@@ -123,5 +142,19 @@ public class ConnectMenu extends AbstractMenu {
         }
         port = port.substring(0, port.length() -1);
         portText.setText(port);
+    }
+
+
+    public void fillIp() {
+        try {
+            ip = InetAddress.getLocalHost().getHostAddress();
+            ipText.setText(ip);
+        } catch (UnknownHostException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public boolean hasIp() {
+        return validIP(ip);
     }
 }

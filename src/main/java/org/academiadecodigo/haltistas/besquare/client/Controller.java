@@ -1,7 +1,7 @@
 package org.academiadecodigo.haltistas.besquare.client;
 
 import org.academiadecodigo.haltistas.besquare.GameState;
-import org.academiadecodigo.haltistas.besquare.Initializer;
+import org.academiadecodigo.haltistas.besquare.Launcher;
 import org.academiadecodigo.haltistas.besquare.menu.ConnectMenu;
 import org.academiadecodigo.haltistas.besquare.menu.MainMenu;
 import org.academiadecodigo.haltistas.besquare.util.Message;
@@ -33,7 +33,8 @@ public class Controller implements KeyboardHandler {
                 KeyboardEvent.KEY_L, KeyboardEvent.KEY_R, KeyboardEvent.KEY_DOWN, KeyboardEvent.KEY_UP,
                 KeyboardEvent.KEY_ENTER, KeyboardEvent.KEY_BACKSPACE, KeyboardEvent.KEY_0, KeyboardEvent.KEY_1,
                 KeyboardEvent.KEY_2, KeyboardEvent.KEY_3, KeyboardEvent.KEY_4, KeyboardEvent.KEY_5,
-                KeyboardEvent.KEY_6, KeyboardEvent.KEY_7, KeyboardEvent.KEY_8, KeyboardEvent.KEY_9
+                KeyboardEvent.KEY_6, KeyboardEvent.KEY_7, KeyboardEvent.KEY_8, KeyboardEvent.KEY_9,
+                46
         };
 
         for (int key : keys) {
@@ -48,6 +49,11 @@ public class Controller implements KeyboardHandler {
     @Override
     public void keyPressed(char c) {
 
+        System.out.println(c);
+        if (connectMenu.hasIp()) {
+            checkIP = true;
+        }
+
         if (!checkIP) {
             connectMenu.insertIP(c);
             return;
@@ -59,7 +65,7 @@ public class Controller implements KeyboardHandler {
     @Override
     public void keyPressed(KeyboardEvent keyboardEvent) {
 
-        switch (Initializer.gameState) {
+        switch (Launcher.gameState) {
 
             case MAIN_MENU:
 
@@ -100,14 +106,13 @@ public class Controller implements KeyboardHandler {
         switch (connectMenu.getMovePointer()) {
 
             case 0:
-
                 connectMenu.hostServer();
                 break;
 
             case 1:
 
                 connectMenu.joinGame();
-                Initializer.gameState = GameState.GAME;
+                Launcher.gameState = GameState.GAME;
                 break;
         }
     }
@@ -147,10 +152,13 @@ public class Controller implements KeyboardHandler {
 
     @Override
     public void keyBackspace() {
+
         if (!checkIP) {
+
             connectMenu.ipErase();
             return;
         }
+
         connectMenu.portErase();
 
     }
@@ -159,13 +167,13 @@ public class Controller implements KeyboardHandler {
     @Override
     public void keyEnter() {
 
-        if (Initializer.gameState == GameState.MAIN_MENU) {
+        if (Launcher.gameState == GameState.MAIN_MENU) {
 
             mainMenu.actionSelection();
             return;
         }
 
-        if (Initializer.gameState == GameState.CONNECT_MENU) {
+        if (Launcher.gameState == GameState.CONNECT_MENU) {
 
             if (!checkIP) {
                 checkIP = true;

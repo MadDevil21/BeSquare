@@ -6,7 +6,7 @@ import org.academiadecodigo.simplegraphics.graphics.Color;
 import org.academiadecodigo.simplegraphics.graphics.Text;
 import org.academiadecodigo.simplegraphics.pictures.Picture;
 
-import java.awt.*;
+import java.awt.Font;
 
 public abstract class AbstractMenu {
 

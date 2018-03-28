@@ -10,7 +10,7 @@ import org.academiadecodigo.haltistas.besquare.server.Server;
 import java.io.IOException;
 import java.net.Socket;
 
-public class Initializer {
+public class Launcher {
 
     public static GameState gameState;
 
@@ -19,7 +19,7 @@ public class Initializer {
 
     public static void main(String[] args) {
 
-        new Initializer().init();
+        new Launcher().init();
     }
 
     public void init() {
@@ -32,7 +32,7 @@ public class Initializer {
 
         controller.setConnectMenu(connectMenu);
         mainMenu.setConnectMenu(connectMenu);
-        connectMenu.setInitializer(this);
+        connectMenu.setLauncher(this);
         controller.init();
         mainMenu.init();
     }

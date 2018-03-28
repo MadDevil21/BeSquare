@@ -20,7 +20,7 @@
                             <appendAssemblyId>false</appendAssemblyId>
                             <archive>
                                 <manifest>
-                                    <mainClass>org.academiadecodigo.haltistas.besquare.Initializer</mainClass>
+                                    <mainClass>org.academiadecodigo.haltistas.besquare.Launcher</mainClass>
                                 </manifest>
                             </archive>
                             <descriptorRefs>
